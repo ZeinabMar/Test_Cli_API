@@ -7,9 +7,9 @@ from collections import namedtuple
 import pytest_check as check
 from schema import Use
 
-Test_Target = 'PS6x_card'
+Test_Target = 'snmp_cli'
 
-pytestmark = [pytest.mark.env_name("NP_env"), pytest.mark.cli_dev(Test_Target)]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

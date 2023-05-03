@@ -2,6 +2,6 @@ import pytest
 from collections import namedtuple
 import logging
 # Data:{PS6x_CARD, SC_CARD}
-Test_Target = 'PS6x_card'
+Test_Target = 'snmp_cli'
 # Data:{PS6x, PS4x}
-card_type = "PS6x"
+card_type = "sp5100"

@@ -1,0 +1,1326 @@
+#sp5100_switch_test_scenario_1
+bridge 1 protocol ieee
+int gpon-olt1/1
+	max-frame 1850
+	flowctrl tx 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable 
+int gpon-olt1/2
+	max-frame 1950 
+	flowctrl rx
+	description
+	switchport
+	bridge-group 1 spanning-tree disable 
+int gpon-olt1/3
+	max-frame 2550 
+	switchport 
+	bridge-group 1 spanning-tree enable stp
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_2
+bridge 1 protocol ieee
+	spanning-tree bridge 1 portfast bpdu-filter
+	spanning-tree bridge 1 portfast bpdu-guard
+int ge1/1
+	speed 1G
+	max-frame 1600
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	spanning-tree bpdu-filter enable
+	spanning-tree bpdu-guard disable
+int ge1/2
+	speed 1G 
+	max-frame 1700 
+	description 
+	switchport
+	bridge-group 1 spanning-tree enable 
+	spanning-tree bpdu-filter disable
+	spanning-tree bpdu-guard enable
+int ge1/3
+	speed 10G 
+	max-frame 1800 
+	description 
+	switchport
+	bridge-group 1 spanning-tree disable 
+	spanning-tree bpdu-filter enable
+	spanning-tree bpdu-guard enable
+	mirror both destination interface ge1/4
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_3
+bridge 1 protocol ieee-vlan-bridge
+	spanning-tree bridge 1 portfast bpdu-filter
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+int ge1/1
+	speed 1G 
+	max-frame 1600 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode access
+	switchport access 10
+	spanning-tree bpdu-filter enable
+	spanning-tree bpdu-guard enable
+	storm-control dlf level 45
+	storm-control broadcast level 55
+int ge1/2
+	speed 1G
+	max-frame 1700
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode trunk
+	switchport trunk tag 10-12 
+	no switchport trunk tag 11
+	spanning-tree bpdu-filter enable
+	spanning-tree bpdu-guard disable
+	mirror ingress destination interface ge1/4
+int ge1/3
+	max-frame 1800
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode trunk
+	switchport trunk tag 11,13-15 
+	no switchport trunk tag 13
+	spanning-tree bpdu-filter disable
+	spanning-tree bpdu-guard enable
+	storm-control broadcast level 65
+	storm-control multicast level 45
+	no storm-control multicast
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_4
+bridge 1 protocol rstp
+int gpon-olt1/1
+	max-frame 1850 
+	flowctrl rx
+	switchport 
+	bridge-group 1 spanning-tree enable
+	description
+	storm-control dlf level 38
+int gpon-olt1/2
+	max-frame 1950
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	storm-control broadcast level 48
+	storm-control broadcast level 55
+int gpon-olt1/3 
+	max-frame 2550 
+	switchport
+	bridge-group 1 spanning-tree enable 
+	flowctrl tx
+	storm-control multicast level 45
+	mirror egress destination interface gpon-olt1/5
+	no mirror egress
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_5
+bridge 1 protocol rstp
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+int ge1/3
+	speed 10G
+	max-frame 1850
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	spanning-tree edgeport
+	spanning-tree bpdu-guard enable
+	mirror both destination interface gpon-olt1/1
+	no mirror both
+int ge1/4
+	speed 1G
+	max-frame 1650
+	switchport
+	bridge-group 1 spanning-tree enable
+	spanning-tree bpdu-filter disable
+	spanning-tree bpdu-guard enable
+	spanning-tree autoedge
+int ge1/5
+	speed 10G
+	max-frame 2050
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	spanning-tree edgeport
+	spanning-tree bpdu-guard enable
+	no bridge-group 1
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_6
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 100 bridge 1 type customer state enable
+vlan 101 bridge 1 type customer state enable
+vlan 102 bridge 1 type customer state enable
+vlan 103 bridge 1 type customer state enable
+vlan 104 bridge 1 type customer state enable
+vlan 105 bridge 1 type customer state enable
+int ge1/1
+	speed 10G 
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode access
+	switchport access 100
+	spanning-tree edgeport
+	spanning-tree bpdu-guard enable
+	storm-control multicast level 45
+int ge1/2
+	max-frame 1650 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	storm-control broadcast level 85
+	switchport mode trunk
+	switchport trunk tag 101,103-105 
+	spanning-tree bpdu-filter enable
+	spanning-tree bpdu-guard enable
+	switchport trunk untag 101
+	spanning-tree edgeport
+int ge1/3
+	speed 1G 
+	max-frame 2050
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	storm-control broadcast level 75
+	switchport mode access
+	switchport access 102
+	spanning-tree edgeport
+	spanning-tree bpdu-guard enable
+	no switchport access
+	no storm-control broadcast
+int ge1/4
+	max-frame 2250 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	mirror egress destination interface gpon-olt1/15
+	switchport mode trunk
+	switchport trunk tag 101-105 
+	spanning-tree bpdu-filter enable
+	spanning-tree bpdu-guard enable
+	switchport trunk untag 101
+	spanning-tree edgeport
+	no switchport trunk tag 102,104
+	no mirror egress
+	
+////////////////////////////////////////////////////////////////////////////////////////	
+#sp5100_switch_test_scenario_7
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 1000 bridge 1 type customer state enable
+vlan 1001 bridge 1 type customer state enable
+vlan 1002 bridge 1 type customer state enable
+vlan 1003 bridge 1 type customer state enable
+vlan 1004 bridge 1 type customer state enable
+vlan 1005 bridge 1 type customer state enable
+int ge1/1
+	speed 10G 
+	flowctrl rx
+	description 
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode hybrid 
+	switchport access 1000 
+	switchport trunk tag 1001,1003-1005 
+	spanning-tree edgeport
+	no switchport trunk tag 1004
+int ge1/2
+	speed 1G 
+	max-frame 1650
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode trunk
+	switchport trunk tag 1001-1004 
+	no switchport trunk tag 1003
+	switchport trunk tag 1005
+	spanning-tree bpdu-guard enable
+	spanning-tree bpdu-filter enable
+	spanning-tree edgeport
+	storm-control broadcast level 25
+	switchport trunk untag 1001
+
+////////////////////////////////////////////////////////////////////////////////////////	
+#sp5100_switch_test_scenario_8
+bridge 1 protocol mstp
+	bridge 1 max-hops 5
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+spanning-tree bridge 1 mstp instance 2 vlan 10-12
+spanning-tree bridge 1 mstp instance 3 vlan 13-14
+int ge1/1
+	speed 10G
+	max-frame 2250
+	switchport
+	bridge-group 1 spanning-tree enable 
+	spanning-tree mstp instance 2
+	spanning-tree mstp instance 2 path-cost 200
+	switchport mode access
+	switchport access 10
+	spanning-tree bpdu-guard disable
+	spanning-tree bpdu-filter enable
+int ge1/2
+	speed 1G 
+	switchport
+	bridge-group 1 spanning-tree enable 
+	spanning-tree mstp instance 2
+	spanning-tree mstp instance 2 port-priority 32
+	switchport mode access
+	switchport access 10
+	spanning-tree bpdu-guard enable
+	spanning-tree bpdu-filter disable
+	storm-control broadcast level 35
+int ge1/3
+	speed 10G 
+	max-frame 2180
+	switchport
+	bridge-group 1 spanning-tree enable 
+	storm-control broadcast level 65
+	spanning-tree mstp instance 3
+	spanning-tree mstp instance 3 port-priority 64
+	spanning-tree mstp instance 3 path-cost 200
+	switchport mode trunk
+	switchport trunk tag 11-15 
+	switchport trunk untag 12
+	spanning-tree bpdu-guard enable
+	spanning-tree bpdu-filter enable
+	spanning-tree edgeport
+	no switchport trunk tag 11
+	storm-control multicast level 45
+	no storm-control broadcast
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_9
+bridge 1 protocol provider-rstp-edge
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 20 bridge 1 type service-point-point state enable
+vlan 21 bridge 1 type service-point-point state enable
+vlan 22 bridge 1 type service-point-point state enable
+vlan 23 bridge 1 type service-point-point state enable
+vlan 24 bridge 1 type service-point-point state enable
+registration table reg1 bridge 1 cvlan 10 svlan 20
+registration table reg2 bridge 1 cvlan 11 svlan 21
+int ge1/2
+	speed 10G 
+	duplex full 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-access
+	switchport QinQ access 10
+	switchport QinQ registration reg1
+int ge1/3
+	speed 1G
+	duplex full
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-access
+	switchport QinQ access 11
+	switchport QinQ registration reg2
+int ge1/4
+	speed 1G 
+	duplex full 
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-network 
+	switchport QinQ trunk mode S-tagged tag 20-22
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_10
+bridge 1 protocol provider-rstp-edge
+vlan 100 bridge 1 type customer state enable
+vlan 101 bridge 1 type customer state enable
+vlan 102 bridge 1 type customer state enable
+vlan 200 bridge 1 type service-point-point state enable
+vlan 201 bridge 1 type service-point-point state enable
+vlan 202 bridge 1 type service-point-point state enable
+registration table reg1 bridge 1 cvlan 100,101 svlan 200,201
+int gpon-olt1/1
+	duplex full
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 201-202 
+	max-frame 2100
+	description
+int gpon-olt1/2 
+	duplex full 
+	switchport 
+	bridge-group 1 spanning-tree disable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 202
+	max-frame 1970
+	description 
+int ge1/2
+	speed 10G
+	duplex full
+	max-frame 1850
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-trunk
+	switchport QinQ trunk mode C-tagged tag 100-102 egresstag enable
+	switchport QinQ registration reg1
+int ge1/3
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-trunk
+	switchport QinQ trunk mode C-tagged tag 100-102 egresstag enable
+	switchport QinQ registration reg1
+	no switchport QinQ registration
+	no switchport QinQ trunk tag 100,102
+	description 
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_11
+bridge 1 protocol provider-rstp-edge
+vlan 100 bridge 1 type customer state enable
+vlan 101 bridge 1 type customer state enable
+vlan 102 bridge 1 type customer state enable
+vlan 103 bridge 1 type customer state enable
+vlan 300 bridge 1 type service-point-point state enable
+vlan 301 bridge 1 type service-multipoint-multipoint state enable
+vlan 302 bridge 1 type service-point-point state enable
+registration table reg1 bridge 1 cvlan 100,102.103 svlan 300,302
+int gpon-olt1/3
+	duplex full
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-hybrid 
+	switchport QinQ access 103
+	switchport QinQ trunk mode C-tagged tag 100-102 egresstag enable
+	switchport QinQ registration reg1
+	description
+int gpon-olt1/7
+	duplex full
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-trunk 
+	switchport QinQ trunk mode C-tagged tag 100-103 egresstag enable
+	switchport QinQ registration reg1
+	no switchport QinQ trunk tag 101
+int ge1/5
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-hybrid 
+	switchport QinQ access 101
+	switchport QinQ trunk mode C-tagged tag 100,102-103 egresstag enable
+	switchport QinQ registration reg1
+int ge1/6
+	duplex full 
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network
+	switchport QinQ trunk mode S-tagged tag 300-302
+	max-frame 1970
+	description
+	no switchport QinQ trunk tag 301
+	speed 10G
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_12
+bridge 1 protocol provider-mstp-edge
+	bridge 1 max-hops 8
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 30 bridge 1 type service-point-point state enable
+vlan 31 bridge 1 type service-multipoint-multipoint state enable
+vlan 32 bridge 1 type service-multipoint-multipoint state enable
+vlan 33 bridge 1 type service-point-point state enable
+spanning-tree bridge 1 mstp instance 2 vlan 10-12
+spanning-tree bridge 1 mstp instance 3 vlan 13-14
+registration table reg1 bridge 1 cvlan 10,12 svlan 30,32
+registration table reg2 bridge 1 cvlan 13 svlan 33
+int gpon-olt1/4
+	duplex full 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 30-31,33
+	max-frame 1960
+	description
+int gpon-olt1/5
+	duplex full 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 31,33 
+	max-frame 1970  
+	description
+int ge1/3
+	duplex full 
+	speed 1G
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-trunk 
+	switchport QinQ trunk mode C-tagged tag 10-12 egresstag enable
+	switchport QinQ registration reg1
+	spanning-tree mstp instance 2
+	spanning-tree mstp instance 2 port-priority 32
+int ge1/6
+	max-frame 2080 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-edge-trunk 
+	switchport QinQ trunk mode C-tagged tag 13,14 egresstag enable
+	switchport QinQ registration reg2
+	spanning-tree mstp instance 3
+	spanning-tree mstp instance 3 port-priority 64
+	speed 10G
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_13
+ bridge 1 protocol provider-rstp
+vlan 2000 bridge 1 type service-point-point state enable
+vlan 2001 bridge 1 type service-multipoint-multipoint state enable
+vlan 2002 bridge 1 type service-multipoint-multipoint state enable
+vlan 2005 bridge 1 type service-point-point state enable
+int gpon-olt1/4 
+	duplex full
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-network 
+	switchport QinQ trunk mode port-base tag 2000
+int gpon-olt1/5
+	duplex full 
+	max-frame 1950 
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-network 
+	switchport QinQ trunk mode S-tagged tag 2005
+	no switchport QinQ trunk tag 2005
+int gpon-olt1/6
+	duplex full
+	max-frame 2050
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-network 
+	switchport QinQ trunk mode S-tagged tag 2000-2002,2005
+int gpon-olt1/7
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode port-base tag 2005
+	max-frame 1970 
+	description
+int gpon-olt1/8
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 2002
+	max-frame 1970 
+	description
+int gpon-olt1/8
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 2000-2002,2005
+	max-frame 1970 
+	description
+	no switchport QinQ trunk tag 2001
+				
+////////////////////////////////////////////////////////////////////////////////////////	
+#sp5100_switch_test_scenario_14
+bridge 1 protocol provider-rstp
+vlan 2000 bridge 1 type service-point-point state enable
+vlan 2001 bridge 1 type service-multipoint-multipoint state enable
+vlan 2002 bridge 1 type service-multipoint-multipoint state enable
+vlan 2003 bridge 1 type service-multipoint-multipoint state enable
+vlan 2004 bridge 1 type service-point-point state enable
+vlan 2005 bridge 1 type service-point-point state enable
+int gpon-olt1/1
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-network 
+	switchport QinQ trunk mode S-tagged tag 2000-2001
+	switchport QinQ trunk translation svlan-src 2005 svlan-des 2001
+int gpon-olt1/2
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 2000,2003-2005
+	max-frame 2120
+	description
+	no switchport QinQ trunk tag 2004
+	switchport QinQ trunk translation svlan-src 2004,2002 svlan-des 2000,2003
+	no switchport QinQ trunk translation svlan-src 2004
+int gpon-olt1/3
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 2003-2005
+	max-frame 2120
+	description
+	switchport QinQ trunk translation svlan-src 2000,2001 svlan-des 2003,2004
+int ge1/1
+	duplex full
+	speed 1G
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode customer-network 
+	switchport QinQ trunk mode S-tagged tag 2000-2001
+	switchport QinQ trunk translation svlan-src 2005 svlan-des 2001
+int ge1/2
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 2000,2003-2005
+	max-frame 2120
+	description
+	no switchport QinQ trunk tag 2004
+	switchport QinQ trunk translation svlan-src 2004,2002 svlan-des 2000,2003
+	no switchport QinQ trunk translation svlan-src 2000
+int ge1/3
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 2003-2005
+	max-frame 2120
+	description
+	switchport QinQ trunk translation svlan-src 2000 svlan-des 2003
+	switchport QinQ trunk translation svlan-src 2001 svlan-des 2004
+	no switchport QinQ trunk translation svlan-src 2003
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_15
+bridge 1 protocol ieee-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state disable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+qos enable
+class-map class1 match vlan 11,13
+policy-map police1 class class1 avg 15000 burst 1500 exceed-burst 500 exceed-action drop bucket full
+policy-map police2 class class1 avg 2000 burst 200 exceed-burst 20 exceed-action drop bucket full
+int gpon-olt1/11
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	service-policy input police2
+	switchport mode hybrid 
+	switchport access 10
+	switchport trunk tag 11,13-14
+	no switchport trunk tag 14 
+int gpon-olt1/12
+	max-frame 1650 
+	service-policy input police1 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode trunk
+	switchport trunk tag 11,13-15
+	no switchport trunk tag 14 
+	switchport trunk untag 15
+int ge1/1
+	speed 10G 
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode hybrid 
+	switchport access 10
+	switchport trunk tag 11,13-14
+	no switchport trunk tag 14 
+	service-policy input police2
+int ge1/2
+	speed 10G 
+	max-frame 1650 
+	service-policy input police1 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode trunk
+	switchport trunk tag 11,13-15
+	spanning-tree bpdu-guard enable
+	spanning-tree bpdu-filter enable
+	spanning-tree edgeport
+	no switchport trunk tag 14 
+	switchport trunk untag 15
+	no service-policy input
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_16
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method long 
+	spanning-tree bridge 1 portfast bpdu-filter
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state disable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+qos enable
+class-map class1 match vlan 11,13
+policy-map police1 class class1 avg 15000 burst 1500 exceed-burst 500 exceed-action drop bucket full
+policy-map police2 class class1 avg 2000 burst 200 exceed-burst 20 exceed-action drop bucket full
+int gpon-olt1/11
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	service-policy input police2
+	switchport mode hybrid 
+	switchport access 10
+	switchport trunk tag 11,13-14
+	no switchport trunk tag 14 
+int gpon-olt1/12
+	max-frame 1650 
+	service-policy input police1 
+	switchport 
+	bridge-group 1 spanning-tree disable 
+	switchport mode trunk
+	switchport trunk tag 11,13-15
+	no switchport trunk tag 14 
+	switchport trunk untag 15
+int ge1/1
+	speed 10G 
+	max-frame 1850
+	description
+	switchport
+	bridge-group 1 spanning-tree enable 
+	switchport mode hybrid 
+	switchport access 10
+	switchport trunk tag 11,13-14
+	no switchport trunk tag 14 
+	service-policy input police2
+int ge1/2
+	speed 10G 
+	max-frame 1650 
+	service-policy input police1 
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	switchport mode trunk
+	switchport trunk tag 11,13-15
+	spanning-tree bpdu-guard disable
+	spanning-tree edgeport
+	no switchport trunk tag 14 
+	switchport trunk untag 15
+	no service-policy input
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_17
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 100 bridge 1 type customer state enable
+vlan 101 bridge 1 type customer state enable
+vlan 102 bridge 1 type customer state enable
+vlan 103 bridge 1 type customer state enable
+vlan 104 bridge 1 type customer state enable
+vlan 105 bridge 1 type customer state enable
+qos enable 
+class-map class1 match vlan 100,101
+class-map class2 match vlan 102
+class-map class3 match vlan 103-105
+policy-map police1 class class1 avg 1000 burst 100 exceed-burst 10 exceed-action drop bucket full
+policy-map police1 class class2 avg 1200 burst 120 exceed-burst 12 exceed-action drop bucket full
+policy-map police2 class class3 avg 3000 burst 300 exceed-burst 30 exceed-action drop bucket full
+int ge1/1
+	speed 10G 
+	max-frame 1850
+	description 
+	switchport
+	bridge-group 1 spanning-tree enable  
+	switchport mode hybrid 
+	switchport access 100  
+	switchport trunk tag 101,103-105  
+	spanning-tree autoedge
+	no switchport trunk tag 104  
+	service-policy input police1
+int ge1/2
+	speed 10G 
+	max-frame 1650 
+	service-policy input police2
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 101,103-105  
+	spanning-tree bpdu-guard enable
+	spanning-tree edgeport
+	no switchport trunk tag 104  
+	switchport trunk untag 101
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_18
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 100 bridge 1 type customer state enable
+vlan 101 bridge 1 type customer state enable
+vlan 102 bridge 1 type customer state enable
+vlan 103 bridge 1 type customer state enable
+vlan 104 bridge 1 type customer state enable
+vlan 105 bridge 1 type customer state enable
+qos enable 
+class-map class1 match vlan 100,101
+class-map class2 match vlan 105
+policy-map police1 class class1 avg 1000 burst 100 exceed-burst 10 exceed-action drop bucket full
+policy-map police2 class class2 avg 1200 burst 120 exceed-burst 12 exceed-action drop bucket full
+policy-map police3 class class2 avg 1300 burst 130 exceed-burst 13 exceed-action drop bucket full
+no policy-map police3 class class2
+int gpon-olt1/1 
+	max-frame 1850 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	service-policy input police1
+int gpon-olt1/2 
+	max-frame 1950 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	service-policy input police2
+int gpon-olt1/3 
+	max-frame 2550 
+	service-policy input police1
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 103-105
+	no switchport trunk tag 104  
+	switchport trunk untag 103
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_19
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state disable
+vlan 11 bridge 1 type customer state disable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+qos enable 
+class-map class1 match vlan 12,13
+policy-map police1 class class1 avg 1000 burst 100 exceed-burst 10 exceed-action drop bucket full
+int gpon-olt1/2
+	service-policy input police1
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 13-15
+	no service-policy input
+int gpon-olt1/3
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 13-15  
+	service-policy input police1
+int ge1/4
+	max-frame 1850 
+	flowctrl both
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 12,14-15 
+	service-policy input police1
+	no switchport trunk tag 14
+int ge1/5
+	max-frame 1850 
+	flowctrl both
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 12,14-15 
+	service-policy input police1
+	no switchport trunk tag 14
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_20
+bridge 1 protocol provider-rstp-edge
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 21 bridge 1 type service-point-point state enable
+vlan 22 bridge 1 type service-point-point state enable
+vlan 23 bridge 1 type service-point-point state enable
+registration table reg1 bridge 1 cvlan 11,12 svlan 21,22
+int gpon-olt1/1, gpon-olt1/4
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 21,23
+	max-frame 2100 
+	description
+int ge1/1, ge1/2
+	duplex full
+	max-frame 1850 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode customer-edge-trunk 
+	switchport QinQ trunk mode C-tagged tag 11-13 egresstag enable
+	no switchport QinQ trunk tag 13
+	switchport QinQ registration reg1
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_21
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state disable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+vlan 20 bridge 1 type customer state disable
+vlan 21 bridge 1 type customer state enable
+vlan 22 bridge 1 type customer state enable
+vlan 23 bridge 1 type customer state enable
+vlan 24 bridge 1 type customer state enable
+vlan 25 bridge 1 type customer state enable
+int gpon-olt1/1, gpon-olt1/2, gpon-olt1/3 
+	max-frame 2050 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 11,13-15,22-25 
+	switchport trunk untag 11
+	no switchport trunk tag 14
+	storm-control multicast level 25
+int gpon-olt1/4, gpon-olt5, gpon-olt6
+	flowctrl both
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 12-14,23,25
+	switchport trunk untag 23
+	description
+int gpon-olt1/7, gpon-olt1/8, gpon-olt1/9
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 11,15,22
+	no switchport trunk tag 22,11
+	switchport trunk untag 15
+	max-frame full
+	storm-control broadcast level 35
+int ge1/1, ge1/2
+	speed 1G 
+	max-frame 1850 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	storm-control dlf level 15
+	switchport trunk tag 14-15,23-25
+	spanning-tree bpdu-guard enable
+	spanning-tree autoedge
+	no switchport trunk tag 15,23-24
+int ge1/3, ge1/4
+	speed 10G 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	storm-control multicast level 85
+	switchport mode trunk
+	switchport trunk tag 11-15,23-25
+	spanning-tree edgeport
+	no switchport trunk tag 12-15,24
+	switchport trunk untag 25
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_22
+bridge 1 protocol mstp
+	bridge 1 max-hops 8
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state disable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+vlan 16 bridge 1 type customer state enable
+spanning-tree bridge 1 mstp instance 3 vlan 16
+spanning-tree bridge 1 mstp instance 4 vlan 10-12
+spanning-tree bridge 1 mstp instance 5 vlan 13-15
+int gpon-olt1/1, gpon-olt1/3, gpon-olt1/5 
+	max-frame 2250 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	spanning-tree mstp instance 5
+	switchport mode access
+	switchport access 13
+int gpon-olt1/7, gpon-olt1/9, gpon-olt1/11
+	max-frame 1910 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	spanning-tree mstp instance 4
+	switchport mode access
+	switchport access 12  
+int gpon-olt1/13, gpon-olt1/14
+	max-frame 2580 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	spanning-tree mstp instance 3
+	switchport mode access
+	switchport access 16  
+int ge1/1 and ge1/2 and ge1/3
+	speed 10G 
+	max-frame 2180 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	spanning-tree mstp instance 5
+	switchport mode access
+	switchport access 15
+	spanning-tree bpdu-guard enable
+	spanning-tree bpdu-filter enable
+		
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_23
+bridge 1 protocol provider-rstp-edge
+vlan 10 bridge 1 type customer state disable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+vlan 20 bridge 1 type service-point-point state disable
+vlan 21 bridge 1 type service-point-point state enable
+vlan 22 bridge 1 type service-point-point state enable
+vlan 23 bridge 1 type service-multipoint-multipoint state enable
+vlan 24 bridge 1 type service-rooted-multipoint state enable
+vlan 25 bridge 1 type service-rooted-multipoint state enable
+registration table reg1 bridge 1 cvlan 11,12 svlan 21,22
+registration table reg2 bridge 1 cvlan 14 svlan 24
+registration table reg3 bridge 1 cvlan 13,15 svlan 23,25
+registration table reg4 bridge 1 cvlan 13,14,15 svlan 23,24,25
+no registration table reg4 bridge 1
+int gpon-olt1/2, gpon-olt1/4
+	duplex full
+	max-frame 2340 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable 
+	storm-control dlf level	45.3
+	switchport mode customer-edge-trunk 
+	switchport QinQ trunk mode C-tagged tag 11-13 egresstag enable
+	switchport QinQ registration reg1
+int gpon-olt1/6, gpon-olt1/8 
+	duplex full
+	flowctrl rx
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode customer-edge-hybrid 
+	switchport QinQ trunk mode C-tagged tag 114-15 egresstag enable
+	switchport QinQ registration reg2
+	storm-control multicast level 75.6
+int gpon-olt1/10, gpon-olt1/12 
+	flowctrl tx
+	max-frame 2760 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode customer-edge-hybrid 
+	switchport QinQ trunk mode C-tagged tag 13-15 egresstag enable
+	switchport QinQ registration reg3
+int ge1/2, ge1/4
+	speed 10G 
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 22-25
+	no switchport QinQ trunk tag 24
+	storm-control broadcast level 55.2
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_24
+bridge 1 protocol provider-mstp-edge
+	bridge 1 max-hops 8
+vlan 10 bridge 1 type customer state disable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+vlan 20 bridge 1 type service-point-point state disable
+vlan 21 bridge 1 type service-point-point state enable
+vlan 22 bridge 1 type service-point-point state enable
+vlan 23 bridge 1 type service-multipoint-multipoint state enable
+vlan 24 bridge 1 type service-rooted-multipoint state enable
+vlan 25 bridge 1 type service-rooted-multipoint state enable
+spanning-tree bridge 1 mstp instance 2 vlan 11-12,14
+spanning-tree bridge 1 mstp instance 3 vlan 13,15
+registration table reg1 bridge 1 cvlan 11 svlan 21
+registration table reg1 bridge 1 cvlan 12 svlan 22
+no registration table reg1 bridge 1 cvlan 12
+int gpon-olt1/4, gpon-olt1/9, gpon-olt1/14
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	storm-control dlf level 15.3
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 22-25
+	max-frame 1970 
+	description
+	no storm-control dlf
+	storm-control broadcast level 95.2
+int ge1/2, ge1/4
+	speed 1G 
+	duplex full
+	max-frame 1850 
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode customer-edge-trunk 
+	switchport QinQ trunk mode C-tagged tag 11-15 egresstag enable
+	switchport QinQ registration reg1
+	spanning-tree mstp instance 2
+int ge1/1, ge1/3
+	speed 10G 
+	duplex full
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	spanning-tree mstp instance 3
+	switchport mode provider-network 
+	switchport QinQ trunk mode S-tagged tag 23,25
+	max-frame 2220 
+	description
+	storm-control broadcast level 45
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_25
+bridge 1 protocol rstp-vlan-bridge
+	spanning-tree bridge 1 pathcost method short 
+	spanning-tree bridge 1 portfast bpdu-guard
+vlan 10 bridge 1 type customer state disable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 13 bridge 1 type customer state enable
+vlan 14 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+vlan 16 bridge 1 type customer state enable
+vlan 17 bridge 1 type customer state enable
+vlan 18 bridge 1 type customer state enable
+vlan 19 bridge 1 type customer state enable
+vlan 20 bridge 1 type customer state enable
+vlan 21 bridge 1 type customer state disable
+qos enable 
+class-map class1 match vlan 11-15
+class-map class2 match vlan 16-19
+policy-map police1 class class1 avg 1000 burst 100 exceed-burst 10 exceed-action drop bucket full
+policy-map police1 class class2 avg 2000 burst 200 exceed-burst 20 exceed-action drop bucket full
+policy-map police2 class class1 avg 3000 burst 300 exceed-burst 30 exceed-action drop bucket full
+int gpon-olt1/2, gpon-olt3, gpon-olt4
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 13-15,18  
+	no switchport trunk tag 14
+	service-policy input police1
+int gpon-olt1/10, gpon-olt11, gpon-olt12
+	max-frame 2360 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 12-17,19 
+	service-policy input police2
+int ge1/1, ge1/2, ge1/3
+	speed 1G 
+	max-frame 1850 
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 11-14,17  
+	service-policy input police1
+	no switchport trunk tag 11,17
+int ge1/4, ge1/5
+	description
+	switchport 
+	bridge-group 1 spanning-tree enable  
+	switchport mode trunk
+	switchport trunk tag 14-18  
+	no switchport trunk tag 15-17
+	service-policy input police2
+
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_26
+bridge 1 protocol rstp-vlan-bridge
+lacp priority 50
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+int ge1/1
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12
+	channel-group 5 mode active
+	lacp timeout short
+	lacp priority 125
+int ge1/2
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12
+	storm-control broadcast level 55.2
+	channel-group 5 mode active
+	lacp timeout short
+	lacp priority 125
+	no storm-control broadcast
+int ge1/3
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12
+	storm-control dlf level 45.3
+	channel-group 5 mode active
+	lacp timeout short
+	lacp priority 125
+int po1/5
+	bridge-group 1 spanning-tree enable
+	load balance des-mac
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_27
+bridge 1 protocol iee-vlan-bridge
+lacp priority 50
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+vlan 15 bridge 1 type customer state enable
+int ge1/1
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10,12,15
+	channel-group 5 mode active
+	lacp timeout long
+	lacp priority 68
+int ge1/2
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12,15
+	storm-control broadcast level 65.8
+	no switchport trunk tag 11
+	channel-group 5 mode active
+	lacp timeout long
+	lacp priority 68
+	no storm-control broadcast
+int ge1/3
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12,15
+	storm-control dlf level 45.3
+	channel-group 5 mode active
+	lacp timeout long
+	lacp priority 68
+int ge1/4
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12,15
+	storm-control broadcast level 65.8
+	no switchport trunk tag 11
+	channel-group 7 mode active
+	lacp timeout long
+	lacp priority 68
+	no storm-control broadcast
+int ge1/5
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12,15
+	storm-control dlf level 45.3
+	channel-group 7 mode active
+	lacp timeout long
+	lacp priority 68
+int po1/5
+	bridge-group 1 spanning-tree enable
+	load balance src-mac
+int po1/7
+	bridge-group 1 spanning-tree enable
+	load balance src-dst-mac
+	
+////////////////////////////////////////////////////////////////////////////////////////
+#sp5100_switch_test_scenario_28
+bridge 1 protocol rstp-vlan-bridge
+lacp priority 10
+vlan 10 bridge 1 type customer state enable
+vlan 11 bridge 1 type customer state enable
+vlan 12 bridge 1 type customer state enable
+int gpon-olt1/1
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12
+	channel-group 10 mode active
+	lacp timeout short
+	lacp priority 125
+int gpon-olt1/2
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12
+	storm-control broadcast level 65.9
+	channel-group 10 mode active
+	lacp timeout short
+	lacp priority 125
+	no storm-control broadcast
+int gpon-olt1/3
+	description
+	switchport
+	bridge-group 1 spanning-tree enable
+	switchport mode trunk
+	switchport trunk tag 10-12
+	storm-control dlf level 35.3
+	channel-group 10 mode active
+	lacp timeout short
+	lacp priority 125
+int po1/5
+	bridge-group 1 spanning-tree enable
+	load balance des-mac
+
+////////////////////////////////////////////////////////////////////////////////////////
