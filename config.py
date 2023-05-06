@@ -1,53 +1,36 @@
 config_Senario_1 = {'total':["bridge 1 protocol ieee"],
-                    'gponolt1':
+                    'gpon-olt1/1':
                     ["max-frame 1850",
                     "flowctrl tx",
                     "description",
                     "switchport",
                     "bridge-group 1 spanning-tree enable"
                     ],
-                    'gponolt2':[
+                    'gpon-olt1/2':[
                     "max-frame 1950", 
                     "flowctrl rx",
                     "description",
                     "switchport",
                     "bridge-group 1 spanning-tree disable"],
-                    'gponolt3':
+                    'gpon-olt1/3':
                     ["max-frame 2550", 
                     "switchport", 
                     "bridge-group 1 spanning-tree enable stp"]}
-Unconfig_Senario_1 = {'total':["no bridge 1 protocol ieee"],
-                    'gponolt1':
-                    ["no bridge-group 1 spanning-tree enable",
-                     "no switchport",
-                     "no description",
-                     "no flowctrl tx",
-                     "no max-frame 1850"],
-                    'gponolt2':
-                    ["no bridge-group 1 spanning-tree disable",
-                    "no switchport",
-                    "no description",
-                    "no flowctrl rx",
-                    "no max-frame 1950"],
-                    'gponolt3':
-                    ["no bridge-group 1 spanning-tree enable stp",
-                    "no switchport", 
-                    "no max-frame 2550"]}                    
 
 config_check_Senario_1 = {'total':["bridge 1 protocol ieee"],
-                            'gponolt1':
+                            'gpon-olt1/1':
                             ["max-frame 1850",
                             "flowctrl TX",
                             "description",
                             "switchport",
                             "bridge-group 1 spanning-tree enable"],
-                            'gponolt2':[
+                            'gpon-olt1/2':[
                             "max-frame 1950", 
                             "flowctrl RX",
                             "description",
                             "switchport",
                             "bridge-group 1 spanning-tree disable"],
-                            'gponolt3':
+                            'gpon-olt1/3':
                             ["max-frame 2550", 
                             "switchport", 
                             "bridge-group 1 spanning-tree enable stp"]}
@@ -185,3 +168,85 @@ config_Senario_3 = {'total':["bridge 1 protocol ieee-vlan-bridge",
                         "storm-control broadcast level 65",
                         "storm-control multicast level 45",
                         "no storm-control multicast"]}
+#**************************************************************************
+
+config_Senario_4 = {'total':["bridge 1 protocol rstp"],
+                    'gpon-olt1/1':
+                        ["max-frame 1850",
+                        "flowctrl rx",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable",
+                        "description",
+                        "storm-control dlf level 38"
+                        ],
+                    'gpon-olt1/2':[
+                        "max-frame 1950",
+                        "description",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable"
+                        "storm-control broadcast level 48",
+                        "storm-control broadcast level 55"],
+                    'gpon-olt1/3':
+                        ["max-frame 2550", 
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable",
+                        "flowctrl tx",
+                        "storm-control multicast level 45",
+                        "mirror egress destination interface gpon-olt1/5",
+                        "no mirror egress"]}
+config_check_Senario_4 = {'total':["bridge 1 protocol rstp"],
+                    'gpon-olt1/1':
+                        ["max-frame 1850",
+                        "flowctrl RX",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable",
+                        "description",
+                        "storm-control dlf level 38"
+                        ],
+                    'gpon-olt1/2':[
+                        "max-frame 1950",
+                        "description",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable"
+                        "storm-control broadcast level 48",
+                        "storm-control broadcast level 55"],
+                    'gpon-olt1/3':
+                        ["max-frame 2550", 
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable",
+                        "flowctrl tx",
+                        "storm-control multicast level 45",
+                        "mirror egress destination interface gpon-olt1/5",
+                        "no mirror egress"]}
+#**************************************************************************
+config_Senario_5 = {'total':["bridge 1 protocol rstp",
+                     "spanning-tree bridge 1 pathcost method short",
+                     "spanning-tree bridge 1 portfast bpdu-guard"],
+                    'ge1/3':
+                        ["speed 10G",
+                        "max-frame 1850",
+                        "description",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable",
+                        "spanning-tree edgeport",
+                        "spanning-tree bpdu-guard enable",
+                        "mirror both destination interface gpon-olt1/1",
+                        "no mirror both"
+                        ],
+                    'ge1/4':[
+                        "speed 1G"
+                        "max-frame 1650",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable"
+                        "spanning-tree bpdu-filter disable",
+                        "spanning-tree bpdu-guard enable",
+                        "spanning-tree autoedge"],
+                    'ge1/5':
+                        ["speed 10G",
+                        "max-frame 2050", 
+                        "description",
+                        "switchport",
+                        "bridge-group 1 spanning-tree enable",
+                        "spanning-tree edgeport",
+                        "spanning-tree bpdu-guard enable",
+                        "no bridge-group 1"]}

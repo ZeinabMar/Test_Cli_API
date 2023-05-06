@@ -19,44 +19,46 @@ def set_and_check_config_interface(cli_interface_module,config_array, check_arra
     command = "interface "+index_port
     cli_interface_module.exec(command)
     for i in range(0,len(config_array)):
+        # result_1 = str(cli_interface_module.exec(f"show running-config interface | grep {check_array[i]}"))
+        # check.is_not_in(check_array[i], result_1, msg= f"EXIST THIS CONFIG {check_array[i]} IN INTERFACE BEFORE SET {index_port}")
         cli_interface_module.exec(f"{config_array[i]}")
-        result = str(cli_interface_module.exec(f"show running-config interface | grep {check_array[i]}"))
-        check.is_in(check_array[i], result, msg= f"NOT EXIST THIS CONFIG {check_array[i]} IN INTERFACE {index_port}")
+        logger.info(f"pass interface set step with {config_array[i]}")
+        result_2 = str(cli_interface_module.exec(f"show running-config interface | grep {check_array[i]}"))
+        check.is_in(check_array[i], result_2, msg= f"NOT EXIST THIS CONFIG {check_array[i]} IN INTERFACE AFTER SET {index_port}")
 
 def set_and_check_config_total(cli_interface_module,config_array, check_array):
     for i in range(0,len(config_array)):
         cli_interface_module.exec(f"{config_array[i]}")
+        logger.info(f"pass total set step with {config_array[i]}")
         result = str(cli_interface_module.exec(f"show running-config | grep {config_array[i]}"))
         check.is_in(check_array[i], result, msg= f"not exist this config {check_array[i]} in interface total config")
 
-def Unconfig_interface(cli_interface_module,Unconfig_array, index_port):
-    command = "interface "+index_port
-    cli_interface_module.exec(command)
-    for i in range(0,len(Unconfig_array)):
-        cli_interface_module.exec(f"{Unconfig_array[i]}")
-
-def Unconfig_total(cli_interface_module,Unconfig_array):
+def Unconfig_function(cli_interface_module,Unconfig_array, index_port):
+    if index_port != None:
+        command = "interface "+index_port
+        cli_interface_module.exec(command)
     lenght = len(Unconfig_array)
     for i in range(0,lenght):
-        if Unconfig_array[lenght-i].find("no ")!=-1 or Unconfig_array[lenght-i].find("disable")!=-1:
-            Unconfig_array[lenght-i].replace("no ", "")
-            Unconfig_array[lenght-i].replace("disable", "enable")
-            cli_interface_module.exec(f"{Unconfig_array[lenght-i]}")
+        if Unconfig_array[lenght-i-1].find("no ")!=-1 or Unconfig_array[lenght-i-1].find("disable")!=-1:
+            Unconfig_array[lenght-i-1].replace("no ", "")
+            Unconfig_array[lenght-i-1].replace("disable", "enable")
+            logger.info(f"CHANGE CONGIH --  -->  ++  IN   {Unconfig_array[lenght-i-1]}")
+            cli_interface_module.exec(f"{Unconfig_array[lenght-i-1]}")
         else :
-            cli_interface_module.exec(f"no {Unconfig_array[lenght-i]}")
+            cli_interface_module.exec(f"no {Unconfig_array[lenght-i-1]}")
 
 
-def Senario_1(cli_interface_module, data_conf=config_Senario_1, data_check=config_check_Senario_1, data_unconfig=Unconfig_Senario_1):
+def Senario_1(cli_interface_module, data_conf=config_Senario_1, data_check=config_check_Senario_1):
     cli_interface_module.change_to_config()   
-    set_and_check_config_total(cli_interface_module, data_conf['total'], data_check['total'])
-    set_and_check_config_interface(cli_interface_module, data_conf['gponolt1'], data_check['gponolt1'], "gpon-olt1/1") 
-    set_and_check_config_interface(cli_interface_module, data_conf['gponolt2'], data_check['gponolt2'], "gpon-olt1/2")    
-    set_and_check_config_interface(cli_interface_module, data_conf['gponolt3'], data_check['gponolt3'], "gpon-olt1/3")  
-    cli_interface_module.exec("exit")
-    Unconfig_interface(cli_interface_module, data_conf['gponolt3'], "gpon-olt1/3")
-    Unconfig_interface(cli_interface_module, data_conf['gponolt2'], "gpon-olt1/2")
-    Unconfig_interface(cli_interface_module, data_conf['gponolt1'], "gpon-olt1/1")
-    Unconfig_total(cli_interface_module, data_unconfig['total'])
+    # set_and_check_config_total(cli_interface_module, data_conf['total'], data_check['total'])
+    # set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt1/1'], data_check['gpon-olt1/1'], "gpon-olt1/1") 
+    # set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt1/2'], data_check['gpon-olt1/2'], "gpon-olt1/2")    
+    # set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt1/3'], data_check['gpon-olt1/3'], "gpon-olt1/3")  
+    # cli_interface_module.exec("exit")
+    Unconfig_function(cli_interface_module, data_conf['gpon-olt1/3'], "gpon-olt1/3")
+    Unconfig_function(cli_interface_module, data_conf['gpon-olt1/2'], "gpon-olt1/2")
+    Unconfig_function(cli_interface_module, data_conf['gpon-olt1/1'], "gpon-olt1/1")
+    Unconfig_function(cli_interface_module, data_conf['total'], None)
 
 
 def Senario_2(cli_interface_module, data_conf=config_Senario_2, data_check=config_check_Senario_2):
@@ -87,5 +89,5 @@ def Senario_2(cli_interface_module, data_conf=config_Senario_2, data_check=confi
 
 # @pytest.mark.parametrize('data', BRIDGE_DATA)
 def test_Senario(cli_interface_module):
-    Senario_1(cli_interface_module, config_Senario_1, config_check_Senario_1, Unconfig_Senario_1)
+    Senario_1(cli_interface_module, config_Senario_1, config_check_Senario_1)
     # Senario_2(cli_interface_module, config_Senario_2, config_check_Senario_2, Unconfig_Senario_2)
