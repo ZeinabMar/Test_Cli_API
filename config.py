@@ -17,13 +17,14 @@ config_Senario_1 = {'total':["bridge 1 protocol ieee"],
                     "switchport", 
                     "bridge-group 1 spanning-tree enable stp"]}
 
-config_check_Senario_1 = {'total':["bridge 1 protocol ieee"],
+unconfig_check_Senario_1 = {'total':[True],
                             'gpon-olt1/1':
-                            ["max-frame 1850",
-                            "flowctrl TX",
-                            "description",
-                            "switchport",
-                            "bridge-group 1 spanning-tree enable"],
+                            ["max-frame 1500",
+                            "no flowctrl",
+                            "no description",
+                            "no switchport",
+                            True
+                            ],
                             'gpon-olt1/2':[
                             "max-frame 1950", 
                             "flowctrl RX",
@@ -33,7 +34,7 @@ config_check_Senario_1 = {'total':["bridge 1 protocol ieee"],
                             'gpon-olt1/3':
                             ["max-frame 2550", 
                             "switchport", 
-                            "bridge-group 1 spanning-tree enable stp"]}
+                            "bridge-group 1 spanning-tree enable stp"]}                    
 
 #**************************************************************************************
 config_Senario_2 = {'total':["bridge 1 protocol ieee", 
@@ -65,34 +66,6 @@ config_Senario_2 = {'total':["bridge 1 protocol ieee",
                         "spanning-tree bpdu-guard enable",
                         "mirror both destination interface ge1/4"]}
 
-Unconfig_Senario_2 = {'total':["no spanning-tree bridge 1 portfast bpdu-guard",
-                        "no spanning-tree bridge 1 portfast bpdu-filter",
-                        "no bridge 1 protocol ieee"],
-                    'ge1/1':
-                    [   "no spanning-tree bpdu-guard disable",
-                        "no spanning-tree bpdu-filter enable",
-                        "no bridge-group 1 spanning-tree enable",
-                        "no switchport",
-                        "no max-frame 1600",
-                        "nospeed 1G"],
-                    'ge1/2':[
-                        "no spanning-tree bpdu-guard enable",
-                        "no spanning-tree bpdu-filter disable",
-                        "no bridge-group 1 spanning-tree enable"
-                        "no switchport",
-                        "no description",
-                        "no max-frame 1700",
-                        "no speed 1G"],
-                    'ge1/3':
-                    [   "no mirror both destination interface ge1/4",
-                        "no spanning-tree bpdu-guard enable",
-                        "no spanning-tree bpdu-filter enable",
-                        "no bridge-group 1 spanning-tree disable",
-                        "no switchport",
-                        "no description",
-                        "no max-frame 1800", 
-                        "no speed 10G"]}
-
 config_check_Senario_2 = {'total':["bridge 1 protocol ieee", 
                         "spanning-tree bridge 1 portfast bpdu-filter",
                         "spanning-tree bridge 1 portfast bpdu-guard"],
@@ -120,7 +93,7 @@ config_check_Senario_2 = {'total':["bridge 1 protocol ieee",
                         "bridge-group 1 spanning-tree disable",
                         "spanning-tree bpdu-filter enable",
                         "spanning-tree bpdu-guard enable",
-                        "mirror both destination interface ge1/4"]}                            
+                        "mirror both destination ge1/4"]}                            
 #**************************************************************************************
 config_Senario_3 = {'total':["bridge 1 protocol ieee-vlan-bridge", 
                         "spanning-tree bridge 1 portfast bpdu-filter",
@@ -169,7 +142,6 @@ config_Senario_3 = {'total':["bridge 1 protocol ieee-vlan-bridge",
                         "storm-control multicast level 45",
                         "no storm-control multicast"]}
 #**************************************************************************
-
 config_Senario_4 = {'total':["bridge 1 protocol rstp"],
                     'gpon-olt1/1':
                         ["max-frame 1850",
@@ -193,7 +165,7 @@ config_Senario_4 = {'total':["bridge 1 protocol rstp"],
                         "flowctrl tx",
                         "storm-control multicast level 45",
                         "mirror egress destination interface gpon-olt1/5",
-                        "no mirror egress"]}
+                        "no mirror egress"]} 
 config_check_Senario_4 = {'total':["bridge 1 protocol rstp"],
                     'gpon-olt1/1':
                         ["max-frame 1850",
@@ -201,23 +173,23 @@ config_check_Senario_4 = {'total':["bridge 1 protocol rstp"],
                         "switchport",
                         "bridge-group 1 spanning-tree enable",
                         "description",
-                        "storm-control dlf level 38"
+                        "storm-control dlf level 38.000000"
                         ],
                     'gpon-olt1/2':[
                         "max-frame 1950",
                         "description",
                         "switchport",
                         "bridge-group 1 spanning-tree enable"
-                        "storm-control broadcast level 48",
-                        "storm-control broadcast level 55"],
+                        "storm-control broadcast level 48.000000",
+                        "storm-control broadcast level 55.000000"],
                     'gpon-olt1/3':
                         ["max-frame 2550", 
                         "switchport",
                         "bridge-group 1 spanning-tree enable",
-                        "flowctrl tx",
-                        "storm-control multicast level 45",
-                        "mirror egress destination interface gpon-olt1/5",
-                        "no mirror egress"]}
+                        "flowctrl TX",
+                        "storm-control multicast level 45.000000",
+                        "mirror egress destination gpon-olt1/5",
+                        "no mirror egress"]} 
 #**************************************************************************
 config_Senario_5 = {'total':["bridge 1 protocol rstp",
                      "spanning-tree bridge 1 pathcost method short",
@@ -231,8 +203,7 @@ config_Senario_5 = {'total':["bridge 1 protocol rstp",
                         "spanning-tree edgeport",
                         "spanning-tree bpdu-guard enable",
                         "mirror both destination interface gpon-olt1/1",
-                        "no mirror both"
-                        ],
+                        "no mirror both"], 
                     'ge1/4':[
                         "speed 1G"
                         "max-frame 1650",
