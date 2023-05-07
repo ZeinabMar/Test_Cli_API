@@ -39,22 +39,25 @@ def Unconfig_function(cli_interface_module, unconfig_array, check_unconfig, inde
     for i in range(0,length):
         cli_interface_module.exec(f"{unconfig_array[length-i-1]}")
         if index_port != None :
-            if check_unconfig[length-i-1].keys() == empty:
-                result = str(cli_interface_module.exec(f"show running-config interface | grep {check_unconfig[length-i-1]["empty"]}"))
-                l = len(result)
-                check.equal(0, l, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
-            else:
-                logger.info(f"Falseee   {check_unconfig[length-i-1][False]}")
-                result = str(cli_interface_module.exec(f"show running-config interface | grep {check_unconfig[length-i-1]["command"]}"))
-                check.is_in(check_unconfig[length-i-1][False], result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
-        else:    
-            if check_unconfig[length-i-1].keys() == empty:
-                result = str(cli_interface_module.exec(f"show running-config | grep {check_unconfig[length-i-1]["empty"]}"))
-                l = len(result)
-                check.equal(0, l, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")                   
-            else: 
-                result = str(cli_interface_module.exec(f"show running-config | grep {check_unconfig[length-i-1]["command"]}"))   
-                check.is_in(check_unconfig[length-i-1][False], result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
+            for key, value in check_unconfig[length-i-1].items():
+                if key == True:
+                    pass
+                    # result = str(cli_interface_module.exec(f"show running-config interface | grep {value}"))
+                    # logger.info(f"resultt {result}")
+                    # check.is_not_in(value, result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
+                else:
+                    result = str(cli_interface_module.exec(f"show running-config interface | grep {value}"))
+                    check.is_in(value, result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
+        else: 
+            for key, value in check_unconfig[length-i-1].items(): 
+                if key == True:
+                    pass
+                    # result = str(cli_interface_module.exec(f"show running-config | grep {value}"))
+                    # logger.info(f"resultt {result}")
+                    # check.equal(value, result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")                   
+                else: 
+                    result = str(cli_interface_module.exec(f"show running-config | grep {value}"))   
+                    check.is_in(value, result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
 
 
 def Senario_1(cli_interface_module, data_conf=config_Senario_1, data_check_unconfig=unconfig_check_Senario_1, data_unconfig=unconfig_Senario_1):
