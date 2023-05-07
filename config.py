@@ -17,13 +17,32 @@ config_Senario_1 = {'total':["bridge 1 protocol ieee"],
                     "switchport", 
                     "bridge-group 1 spanning-tree enable stp"]}
 
-unconfig_check_Senario_1 = {'total':[True],
+unconfig_Senario_1 = {'total':["no bridge 1 protocol ieee"],
+                    'gpon-olt1/1':
+                    ["no max-frame",
+                    "no flowctrl tx",
+                    "no description",
+                    "no switchport",
+                    "no bridge-group 1 spanning-tree enable"
+                    ],
+                    'gpon-olt1/2':[
+                    "no max-frame 1950", 
+                    "no flowctrl rx",
+                    "no description",
+                    "no switchport",
+                    "no bridge-group 1 spanning-tree disable"],
+                    'gpon-olt1/3':
+                    ["no max-frame 2550", 
+                    "no switchport", 
+                    "no bridge-group 1 spanning-tree enable stp"]}
+
+unconfig_check_Senario_1 = {'total':[{"empty":"bridge"}],
                             'gpon-olt1/1':
-                            ["max-frame 1500",
-                            "no flowctrl",
-                            "no description",
-                            "no switchport",
-                            True
+                            [{"command":"max-frame 1500"},
+                            {"command":"no flowctrl"},
+                            {"command":"no description"},
+                            {"command":"no switchport"},
+                            {"empty":"bridge-group 1 spanning-tree"}
                             ],
                             'gpon-olt1/2':[
                             "max-frame 1950", 
