@@ -1,0 +1,38 @@
+config_Senario_1 = {'total':["bridge 1 protocol ieee", 
+                             "spanning-tree bridge 1 pathcost method short", 
+                             "spanning-tree bridge 1 portfast bpdu-guard",
+                             "vlan 111 bridge 1 type customer state enable",
+                             "vlan 112 bridge 1 type customer state enable",
+                             "vlan 113 bridge 1 type customer state enable",
+                             "vlan 114 bridge 1 type customer state enable",
+                             "vlan 115 bridge 1 type customer state enable",
+                             "vlan 116 bridge 1 type customer state enable",
+                             "vlan 117 bridge 1 type customer state enable",
+                             "vlan 118 bridge 1 type customer state enable",
+                             "vlan 119 bridge 1 type customer state enable",
+                             "vlan 120 bridge 1 type customer state enable",
+                             "vlan 121 bridge 1 type customer state enable",
+                             "vlan 122 bridge 1 type customer state enable"],
+                    'gpon-olt1/1':
+                            ["switchport",
+                            "bridge-group 1 spanning-tree enable",
+                            "storm-control broadcast level 85",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111-119,220-222"
+                            ],
+                    'gpon-olt1/2':
+                           ["switchport",
+                            "bridge-group 1 spanning-tree enable",
+                            "storm-control broadcast level 85",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111-119,220-222"
+                            ],
+                    'ge1/1':
+                            ["max-frame 1650", 
+                            "switchport",
+                            "bridge-group 1 spanning-tree enable", 
+                            "bridge-group 1 spanning-tree enable stp",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111-119,220-222",
+                            "spanning-tree bpdu-filter enable",
+                            "speed 1G"]}
