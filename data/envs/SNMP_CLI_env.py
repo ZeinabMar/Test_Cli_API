@@ -1,6 +1,6 @@
 DICT__SNMP__CLI = {
     "index": None,
-    "snmp_ip": "192.168.9.127",
+    "snmp_ip": "192.168.9.130",
     "snmp_community": "sina_private",
     "snmp_version": '2',
     "ssh_ip": "192.168.9.127",
