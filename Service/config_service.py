@@ -1,5 +1,9 @@
-config_Service_1 = {'gpon': ["profile bandwidth test maximum 100000"],
-                    'gpon-onu1': ["tcont 1 profile test",
+
+from collections import namedtuple
+gpon = namedtuple('gpon', ['name', 'fixed', 'assured', 'maximum'])
+
+#*********************************************************************************************************************
+config_Service_1 = {'gpon-onu': [ "tcont 1 profile test",
                                       "gemport 1 tcont 1",
                                       "service-port 1 gemport 1 user-vlan vlan transparent",
                                       "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
@@ -19,7 +23,7 @@ config_Service_1 = {'gpon': ["profile bandwidth test maximum 100000"],
                              "vlan 220 bridge 1 type customer state enable",
                              "vlan 221 bridge 1 type customer state enable",
                              "vlan 222 bridge 1 type customer state enable"],
-                    'gpon-olt1/1':
+                    'gpon-olt':
                             ["no shutdown",
                             "switchport",
                             "bridge-group 1 spanning-tree enable",
@@ -27,29 +31,19 @@ config_Service_1 = {'gpon': ["profile bandwidth test maximum 100000"],
                             "switchport mode trunk",
                             "switchport trunk tag 111-119,220-222"
                             ],
-                #     'gpon-olt1/2':
-                #            ["no shutdown",
-                #             "switchport",
-                #             "bridge-group 1 spanning-tree enable",
-                #             "storm-control broadcast level 85",
-                #             "switchport mode trunk",
-                #             "switchport trunk tag 111-119,220-222"
-                #             ],
-                    'ge1/1':
+                    'ge':
                             ["max-frame 1650", 
                             "switchport",
                             "bridge-group 1 spanning-tree enable", 
-                            "bridge-group 1 spanning-tree enable stp",
+                            "storm-control broadcast level 85",
                             "switchport mode trunk",
                             "switchport trunk tag 111-119,220-222",
                             "spanning-tree bpdu-filter enable",
                             "speed 1G"]}
-
 #*******************************************************************************   
-config_Service_2 = {'gpon': ["profile bandwidth test maximum 100000"],
-                    'gpon-onu1': ["tcont 1 profile test",
-                                      "gemport 1 tcont 1"],
-                    'gpon-onu1_repeat': ["service-port 1 gemport 1 user-vlan vlan transparent",
+config_Service_2 = {'gpon-onu': ["tcont 1 profile test",
+                                      "gemport 1 tcont 1",
+                                      "service-port 1 gemport 1 user-vlan vlan transparent",
                                       "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
                     'total':["bridge 1 protocol rstp-vlan-bridge", 
                              "spanning-tree bridge 1 pathcost method short", 
@@ -66,7 +60,7 @@ config_Service_2 = {'gpon': ["profile bandwidth test maximum 100000"],
                              "vlan 220 bridge 1 type customer state enable",
                              "vlan 221 bridge 1 type customer state enable",
                              "vlan 222 bridge 1 type customer state enable"],
-                    'gpon-olt1':
+                    'gpon-olt':
                             ["no shutdown",
                             "switchport",
                             "bridge-group 1 spanning-tree enable",
@@ -78,11 +72,10 @@ config_Service_2 = {'gpon': ["profile bandwidth test maximum 100000"],
                             ["max-frame 1650", 
                             "switchport",
                             "bridge-group 1 spanning-tree enable", 
-                            "bridge-group 1 spanning-tree enable stp",
+                            "storm-control broadcast level 85",
                             "switchport mode trunk",
-                            "switchport trunk tag 111-119,220-222",
-                            "spanning-tree bpdu-filter enable",
-                            "speed 1G"],
+                            "switchport trunk tag 111-116",
+                            "spanning-tree bpdu-filter enable"],
                     "ge1/2" :[
                             "speed 1G",
                             "max-frame 1650",
@@ -93,10 +86,9 @@ config_Service_2 = {'gpon': ["profile bandwidth test maximum 100000"],
                             "switchport trunk tag 117-119,220-222",
                             "spanning-tree bpdu-guard enable"]}        
 #****************************************************************************************************
-config_Service_3 = {'gpon': ["profile bandwidth test maximum 100000"],
-                    'gpon-onu1': ["tcont 1 profile test",
-                                      "gemport 1 tcont 1"],
-                    'gpon-onu1_repeat': ["service-port 1 gemport 1 user-vlan vlan transparent",
+config_Service_3 = {'gpon-onu': ["tcont 1 profile test",
+                                      "gemport 1 tcont 1",
+                                      "service-port 1 gemport 1 user-vlan vlan transparent",
                                       "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
                     'total':["bridge 1 protocol rstp-vlan-bridge", 
                              "spanning-tree bridge 1 pathcost method short", 
@@ -112,7 +104,7 @@ config_Service_3 = {'gpon': ["profile bandwidth test maximum 100000"],
                              "vlan 14 bridge 1 type service-point-point state enable",
                              "vlan 15 bridge 1 type service-point-point state enable",
                              "registration table reg1 bridge 1 cvlan 111,112,113,114,115 svlan 11,12,13,14,15"],
-                    'gpon-olt1/1':
+                    'gpon-olt':
                             ["no shutdown",
                             "switchport",
                             "bridge-group 1 spanning-tree enable"
@@ -120,9 +112,70 @@ config_Service_3 = {'gpon': ["profile bandwidth test maximum 100000"],
                             "switchport QinQ trunk mode C-tagged tag 111-115 egresstag enable",
                             "switchport QinQ registration reg1"
                             ],
-                    'ge1/1':
+                    'ge':
                             ["switchport",
                             "bridge-group 1 spanning-tree enable", 
                             "switchport mode customer-network",
                             "switchport QinQ trunk mode S-tagged tag 11-15",
-                            "speed 1G"]}                                                                      
+                            "speed 1G"]}   
+#**********************************************************************************************************
+config_Service_4 = {'gpon-onu': ["tcont 1 profile test",
+                                      "gemport 1 tcont 1",
+                                      "service-port 1 gemport 1 user-vlan vlan transparent",
+                                      "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
+                    'total':["bridge 1 protocol provider-rstp-edge", 
+                             "vlan 111 bridge 1 type customer state enable",
+                             "vlan 112 bridge 1 type customer state enable",
+                             "vlan 113 bridge 1 type customer state enable",
+                             "vlan 114 bridge 1 type customer state enable",
+                             "vlan 115 bridge 1 type customer state enable",
+                             "vlan 11 bridge 1 type service-point-point state enable",
+                             "vlan 12 bridge 1 type service-point-point state enable",
+                             "vlan 13 bridge 1 type service-point-point state enable",
+                             "vlan 14 bridge 1 type service-point-point state enable",
+                             "vlan 15 bridge 1 type service-point-point state enable",
+                             "vlan 16 bridge 1 type service-point-point state enable",
+                             "vlan 17 bridge 1 type service-point-point state enable",
+                             "vlan 18 bridge 1 type service-point-point state enable",
+                             "vlan 19 bridge 1 type service-point-point state enable",
+                             "vlan 20 bridge 1 type service-point-point state enable",
+                             "registration table reg1 bridge 1 cvlan 111,112,113,114,115 svlan 11,12,13,14,15"],
+                    'gpon-olt':
+                            ["no shutdown",
+                            "switchport",
+                            "bridge-group 1 spanning-tree enable"
+                            "switchport mode customer-edge-trunk",
+                            "switchport QinQ trunk mode C-tagged tag 111-115 egresstag enable",
+                            "switchport QinQ registration reg1"
+                            ],
+                    'ge':
+                            ["speed 1G",
+                            "switchport",
+                            "bridge-group 1 spanning-tree enable", 
+                            "switchport mode customer-network",
+                            "switchport QinQ trunk mode S-tagged tag 11-15",
+                            "switchport QinQ trunk translation svlan-src 16,17,18,19,20 svlan-des 11,12,13,14,15"]}   
+#***************************************************************************************************************************    
+config_Service_5 = {'gpon-onu': ["tcont 1 profile HSI",
+	                         "gemport 1 tcont 1",
+	                         "service-port 1 gemport 1 user-vlan 111 transparent",
+	                         "remote service 1 gem 1 uni veip vlan-mode access pvlan 111 priority 7",
+	                         "tcont 2 profile VOIP",
+	                         "gemport 2 tcont 2",
+	                         "service-port 2 gemport 2 user-vlan 112 transparent",
+	                         "remote service 2 gem 2 uni veip vlan-mode access pvlan 121 priority 7"],
+                    'total':["bridge 1 protocol provider-rstp-edge", 
+                             "vlan 111 bridge 1 type customer state enable",
+                             "vlan 121 bridge 1 type customer state enable"],
+                    'gpon-olt':
+                            ["no shutdown",
+                            "switchport",
+                            "bridge-group 1 spanning-tree enable",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111,121"],
+                    'ge':
+                           ["switchport",
+                            "bridge-group 1 spanning-tree enable", 
+                            "speed 1G",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111,121"]}                                                                                                                                                                                             
