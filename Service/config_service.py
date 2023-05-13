@@ -1,6 +1,7 @@
 
 from collections import namedtuple
 gpon = namedtuple('gpon', ['name', 'fixed', 'assured', 'maximum'])
+gpon.__new__.__defaults__ = ("test", 0, 0, 0)
 
 #*********************************************************************************************************************
 config_Service_1 = {'gpon-onu': [ "tcont 1 profile test",
@@ -90,7 +91,7 @@ config_Service_3 = {'gpon-onu': ["tcont 1 profile test",
                                       "gemport 1 tcont 1",
                                       "service-port 1 gemport 1 user-vlan vlan transparent",
                                       "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
-                    'total':["bridge 1 protocol rstp-vlan-bridge", 
+                    'total':["bridge 1 protocol provider-rstp-edge", 
                              "spanning-tree bridge 1 pathcost method short", 
                              "spanning-tree bridge 1 portfast bpdu-guard",
                              "vlan 111 bridge 1 type customer state enable",
@@ -162,7 +163,7 @@ config_Service_5 = {'gpon-onu': ["tcont 1 profile HSI",
 	                         "remote service 1 gem 1 uni veip vlan-mode access pvlan 111 priority 7",
 	                         "tcont 2 profile VOIP",
 	                         "gemport 2 tcont 2",
-	                         "service-port 2 gemport 2 user-vlan 112 transparent",
+	                         "service-port 2 gemport 2 user-vlan 121 transparent",
 	                         "remote service 2 gem 2 uni veip vlan-mode access pvlan 121 priority 7"],
                     'total':["bridge 1 protocol provider-rstp-edge", 
                              "vlan 111 bridge 1 type customer state enable",
@@ -179,3 +180,59 @@ config_Service_5 = {'gpon-onu': ["tcont 1 profile HSI",
                             "speed 1G",
                             "switchport mode trunk",
                             "switchport trunk tag 111,121"]}                                                                                                                                                                                             
+#****************************************************************************************************************************
+config_Service_6 = {'gpon-onu': ["tcont 1 profile HSI",
+	                         "gemport 1 tcont 1",
+	                         "service-port 1 gemport 1 user-vlan 111 transparent",
+	                         "remote service 1 gem 1 uni veip vlan-mode access pvlan 111 priority 7"],
+                    'total':["bridge 1 protocol rstp-vlan-bridge", 
+                             "lacp priority 50",
+                             "vlan 111 bridge 1 type customer state enable"],
+                    'gpon-olt':
+                            ["no shutdown",
+                            "switchport",
+                            "bridge-group 1 spanning-tree enable",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111"],
+                    'ge':
+                           ["switchport",
+                            "bridge-group 1 spanning-tree enable", 
+                            "speed 1G",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111",
+                            "channel-group 5 mode active"]}   
+#****************************************************************************************************************************
+config_Service_8 = {'gpon-onu': [
+                                "onu-srvprofile profile-id id onu-type STG-402",
+	                        "tcont 1 profile test",
+	                        "gemport 1 tcont 1",
+	                        "service-port 1 gemport 1 user-vlan vlan transparent",
+	                        "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
+                    'total':["bridge 1 protocol rstp-vlan-bridge", 
+                             "lacp priority 50",
+                             "vlan 111 bridge 1 type customer state enable",
+                             "vlan 112 bridge 1 type customer state enable",
+                             "vlan 113 bridge 1 type customer state enable",
+                             "vlan 114 bridge 1 type customer state enable",
+                             "vlan 115 bridge 1 type customer state enable",
+                             "vlan 116 bridge 1 type customer state enable",
+                             "vlan 117 bridge 1 type customer state enable",
+                             "vlan 118 bridge 1 type customer state enable",
+                             "vlan 119 bridge 1 type customer state enable",
+                             "vlan 220 bridge 1 type customer state enable",
+                             "vlan 221 bridge 1 type customer state enable",
+                             "vlan 222 bridge 1 type customer state enable"],
+                    'gpon-olt':
+                            ["no shutdown",
+                            "multi-onusrv-cfg onu-srvprofile id onu 1-6"
+                            "switchport",
+                            "bridge-group 1 spanning-tree enable",
+                            "switchport mode trunk",
+                            "switchport trunk tag 111-119,220-222"],
+                    'ge':
+                           ["speed 1G",
+	                    "max-frame 1650", 
+	                    "switchport", 
+	                    "bridge-group 1 spanning-tree enable", 
+	                    "switchport mode trunk",
+	                    "switchport trunk tag 111-119,220-222"]} 
