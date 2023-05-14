@@ -7,6 +7,8 @@ from collections import namedtuple
 import pytest_check as check
 from schema import Use
 from config_service import *
+import time
+
 
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("snmp_cli")]
@@ -33,6 +35,51 @@ def replacement(cli_interface_module, config=None, parameter=None, value_param=N
     result = '\n'.join(result.split('\n')[1:-1])
     check.is_in(config, result, msg= f"NOT EXIST THIS CONFIG {config} IN INTERFACE AFTER SET")
 
+def set_reg(cli_interface_module, reg=reg):
+    string_check_1 = f"registration table {reg.name} bridge 1 cvlan "
+    string_check_2 = " svlan"
+    for i in range(0,len(reg.cvlan)):
+        string_check_1 = string_check_1+f"{reg.cvlan[i]}, "
+        string_check_2 = string_check_2+f" {reg.svlan[i]},"
+
+    string_config_1 = f"registration table {reg.name} bridge 1 cvlan "
+    string_config_2 = " svlan "    
+    for i in range(0,len(reg.cvlan)):    
+        string_config_1 = string_config_1+f"{reg.cvlan[i]},"
+        string_config_2 = string_config_2+f"{reg.svlan[i]},"  
+
+    string_check= string_check_1+string_check_2    
+    string_config= string_config_1+string_config_2    
+    logger.info(f"checkingg : {string_check}")  
+    logger.info(f"confff : {string_config}")  
+
+    cli_interface_module.exec(string_config)
+    result = str(cli_interface_module.exec(f"show running-config | grep registration"))
+    result = '\n'.join(result.split('\n')[1:-1])
+    assert (result.find(string_check)!=-1),f"NOT EXIST THIS CONFIG reg  AFTER SET "
+
+def set_trans(cli_interface_module, trans=trans):
+    string_check_1 = f"switchport QinQ trunk translation svlan-src "
+    string_check_2 = " svlan-des"
+    for i in range(0,len(trans.svlansrc)):
+        string_check_1 = string_check_1+f"{trans.svlansrc[i]}, "
+        string_check_2 = string_check_2+f" {trans.svlandes[i]},"
+
+    string_config_1 = f"switchport QinQ trunk translation svlan-src "
+    string_config_2 = " svlan-des "    
+    for i in range(0,len(trans.svlansrc)):    
+        string_config_1 = string_config_1+f"{trans.svlansrc[i]},"
+        string_config_2 = string_config_2+f"{trans.svlandes[i]},"  
+
+    string_check= string_check_1+string_check_2    
+    string_config= string_config_1+string_config_2    
+    logger.info(f"checkingg : {string_check}")  
+    logger.info(f"confff : {string_config}")  
+
+    cli_interface_module.exec(string_config)
+    result = str(cli_interface_module.exec(f"show running-config | grep translation"))
+    result = '\n'.join(result.split('\n')[1:-1])
+    assert (result.find(string_check)!=-1),f"NOT EXIST THIS CONFIG reg  AFTER SET "
 
 def set_and_check_config_interface(cli_interface_module,config_array, index_port):
     command = "interface "+index_port
@@ -41,6 +88,7 @@ def set_and_check_config_interface(cli_interface_module,config_array, index_port
         cli_interface_module.exec(f"{config_array[i]}")
         logger.info(f"pass interface set step with {config_array[i]}")
         result = str(cli_interface_module.exec(f"show running-config interface | grep {config_array[i]}"))
+        logger.info(f"resullt {result}")
         result = '\n'.join(result.split('\n')[1:-1])
         assert (result.find(config_array[i])!=-1),f"NOT EXIST THIS CONFIG {config_array[i]} IN INTERFACE AFTER SET {index_port}"
         # check.is_in(config_array[i], result, msg= f"NOT EXIST THIS CONFIG {config_array[i]} IN INTERFACE AFTER SET {index_port}")
@@ -72,7 +120,6 @@ def Service_1(cli_interface_module, data_conf=config_Service_1):
     set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
     set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/2")
     cli_interface_module.exec("exit")
-    
     vlan_onu1_1 = [111, 112, 113, 114,115, 116]
     for i in range(0,6):
         set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/1:{i+1}")
@@ -117,18 +164,20 @@ def Service_2(cli_interface_module, data_conf=config_Service_2):
 
 def Service_3(cli_interface_module, data_conf=config_Service_3):
     cli_interface_module.change_to_config()   
-    # cli_interface_module.exec("gpon")
-    # set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
-    # cli_interface_module.exec("exit")
-    set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/3")
+    cli_interface_module.exec("gpon")
+    set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
+    cli_interface_module.exec("exit")
+    set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
     cli_interface_module.exec("exit")
     vlan_onu1_1 = [111, 112, 113, 114, 115]
     for i in range(0,5):
-        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/3:{i+1}")
+        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/1:{i+1}")
         replacement(cli_interface_module, data_conf['gpon-onu'][2], " vlan ", vlan_onu1_1[i])
         replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_1[i])
-    set_and_check_config_total(cli_interface_module, data_conf['total'])
-    set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/3")
+    cli_interface_module.exec("exit")
+    set_and_check_config_total(cli_interface_module, data_conf['total'][:11])
+    set_reg(cli_interface_module, reg("reg1", [112,111,114,113,115],[12,11,14,13,15]))
+    set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/1")
     set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/1")
 
 def Service_4(cli_interface_module, data_conf=config_Service_4):
@@ -143,19 +192,23 @@ def Service_4(cli_interface_module, data_conf=config_Service_4):
         set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/1:{i+1}")
         replacement(cli_interface_module, data_conf['gpon-onu'][2], " vlan ", vlan_onu1_1[i])
         replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_1[i])
-    set_and_check_config_total(cli_interface_module, data_conf['total'])
+    cli_interface_module.exec("exit")
+    set_and_check_config_total(cli_interface_module, data_conf['total'][:16])
+    set_reg(cli_interface_module, reg("reg1", [112,111,114,113,115],[12,11,14,13,15]))
     set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/1")
-    set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/1")
+    set_and_check_config_interface(cli_interface_module, data_conf['ge'][:5], "ge1/1")
+    set_trans(cli_interface_module, trans([17,16,19,18,20],[12,11,14,13,15]))
 
 def Service_5(cli_interface_module, data_conf=config_Service_5):
     cli_interface_module.change_to_config()   
     cli_interface_module.exec("gpon")
     set_and_check_config_total(cli_interface_module, gpon("HSI", 0, 250, 100000), True)
-    set_and_check_config_total(cli_interface_module, gpon("VOIP", 1000, gpon.fixed+250, gpon.maximum+250), True)
+    set_and_check_config_total(cli_interface_module, gpon("VOIP", 1000, 1250, 1500), True)
     cli_interface_module.exec("exit")
     set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
     cli_interface_module.exec("exit")
     set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'], f"gpon-onu1/1:1")
+    cli_interface_module.exec("exit")
     set_and_check_config_total(cli_interface_module, data_conf['total'])
     set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/1")
     set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/1")
@@ -166,11 +219,12 @@ def Service_6(cli_interface_module, data_conf=config_Service_6):
     cli_interface_module.exec("gpon")
     set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
     cli_interface_module.exec("exit")
-    set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
+    set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/2")
     cli_interface_module.exec("exit")
-    set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'], f"gpon-onu1/1:1")
+    set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'], f"gpon-onu1/2:1")
+    cli_interface_module.exec("exit")
     set_and_check_config_total(cli_interface_module, data_conf['total'])
-    set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/1")
+    set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/2")
     set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/2")
     set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/4")
 
@@ -178,26 +232,25 @@ def Service_8(cli_interface_module, data_conf=config_Service_8):
     cli_interface_module.change_to_config()   
     cli_interface_module.exec("gpon")
     set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
+    
+    vlan_onu1_1 = [111, 112, 113, 114, 115,116]
+    replacement(cli_interface_module, data_conf['gpon-onu'][0], " id ", 1)
+    set_and_check_config_total(cli_interface_module, data_conf['gpon-onu'][1:3])
+    for i in range(0,5):    
+        replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_1[i])
+        replacement(cli_interface_module, data_conf['gpon-onu'][4], " vlan ", vlan_onu1_1[i])
     cli_interface_module.exec("exit")
+    vlan_onu1_2 = [117, 118, 119, 220, 221, 222]
+    replacement(cli_interface_module, data_conf['gpon-onu'][0], " id ", 2)
+    for i in range(0,6):
+        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][1:3], f"gpon-onu1/2:{i+1}")
+        replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_2[i])
+        replacement(cli_interface_module, data_conf['gpon-onu'][4], " vlan ", vlan_onu1_2[i])
+
     for i in range(0,2):
         set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], f"gpon-olt1/{1+i}")
         replacement(cli_interface_module, data_conf['gpon-olt'][1], " id ", i+1 )
         cli_interface_module.exec("exit")
-    vlan_onu1_1 = [111, 112, 113, 114, 115,116]
-    for i in range(0,6):
-        cli_interface_module.exec(f"gpon-onu1/1:{i+1}")
-        replacement(cli_interface_module, data_conf['gpon-onu'][0], " id ", 1)
-        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][1:3], f"gpon-onu1/1:{i+1}")
-        replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_1[i])
-        replacement(cli_interface_module, data_conf['gpon-onu'][4], " vlan ", vlan_onu1_1[i])
-
-    vlan_onu1_2 = [117, 118, 119, 220, 221, 222]
-    for i in range(0,6):
-        cli_interface_module.exec(f"gpon-onu1/2:{i+1}")
-        replacement(cli_interface_module, data_conf['gpon-onu'][0], " id ", 2)
-        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][1:3], f"gpon-onu1/2:{i+1}")
-        replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_2[i])
-        replacement(cli_interface_module, data_conf['gpon-onu'][4], " vlan ", vlan_onu1_2[i])
 
     set_and_check_config_total(cli_interface_module, data_conf['total'])
     set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][2:], "gpon-olt1/1")
@@ -205,12 +258,30 @@ def Service_8(cli_interface_module, data_conf=config_Service_8):
     set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/1")
 
 
+def Service_9(cli_interface_module, data_conf=config_Service_9):
+    cli_interface_module.change_to_config()   
+    cli_interface_module.exec("gpon")
+    set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
+    set_and_check_config_total(cli_interface_module, data_conf['gpon'][1:])
+    set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
+
+    vlan_onu1_1 = [111, 112, 113, 114, 115]
+    set_and_check_config_total(cli_interface_module, data_conf['gpon-onu'][1:3])
+    for i in range(0,5):    
+        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/1:{i+1}")
+        replacement(cli_interface_module, data_conf['gpon-onu'][2], " vlan ", vlan_onu1_1[i])
+        replacement(cli_interface_module, data_conf['gpon-onu'][3], " vlan ", vlan_onu1_1[i])
+    cli_interface_module.exec("exit")
+    set_and_check_config_total(cli_interface_module, data_conf['total'])
+    set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][2:], "gpon-olt1/1")
+    set_and_check_config_interface(cli_interface_module, data_conf['ge'], "ge1/1")
+
 def test_Service(cli_interface_module):
     # Service_1(cli_interface_module, config_Service_1)
     # Service_2(cli_interface_module, config_Service_2)
-    Service_3(cli_interface_module, config_Service_3)
+    # Service_3(cli_interface_module, config_Service_3)
     # Service_4(cli_interface_module, config_Service_4)
-    # Service_5(cli_interface_module, config_Service_5)
+    Service_5(cli_interface_module, config_Service_5)
     
 
 
