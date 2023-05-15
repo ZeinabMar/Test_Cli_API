@@ -189,7 +189,7 @@ config_Service_5 = {'gpon-onu': ["tcont 1 profile HSI",
                             "switchport mode trunk",
                             "switchport trunk tag 111,121"]}                                                                                                                                                                                             
 #****************************************************************************************************************************
-config_Service_6 = {'gpon-onu': ["tcont 1 profile HSI",
+config_Service_6 = {'gpon-onu': ["tcont 1 profile test",
 	                         "gemport 1 tcont 1",
 	                         "service-port 1 gemport 1 user-vlan 111 transparent",
 	                         "remote service 1 gem 1 uni veip vlan-mode access pvlan 111 priority 7"],
