@@ -250,8 +250,7 @@ config_Service_8 = {'gpon-onu': [
 config_Service_9 = {'gpon': ["protectgroup 1 name test workpon gpon-olt1/1 protectpon gpon-olt1/2 typeB",
 	                     "protectgroup 1 state enable"],
                     'gpon-onu': [
-                                "onu-srvprofile profile-id id onu-type STG-402",
-	                        "tcont 1 profile test",
+                                "tcont 1 profile test",
 	                        "gemport 1 tcont 1",
 	                        "service-port 1 gemport 1 user-vlan vlan transparent",
 	                        "remote service 1 gem 1 uni veip vlan-mode access pvlan vlan priority 7"],
