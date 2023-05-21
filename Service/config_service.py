@@ -232,7 +232,7 @@ config_Service_8 = {'gpon-onu': [
                              "vlan 222 bridge 1 type customer state enable"],
                     'gpon-olt':
                             ["no shutdown",
-                            "multi-onusrv-cfg onu-srvprofile id onu 1-6",
+                            "multi-onusrv-cfg onu-srvprofile id onu 1-5",
                             "switchport",
                             "bridge-group 1 spanning-tree enable",
                             "switchport mode trunk",
