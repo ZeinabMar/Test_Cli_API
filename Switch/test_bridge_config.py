@@ -34,7 +34,7 @@ BRIDGE_DATA = [
 ]
 
 
-def bridge_cli(cli_interface_module, data=Bridge()):
+def bridge_cli(cli_interface_module, data=Bridge(), method="Post"):
 
     config_of_bridge = [f"bridge 1 protocol {data.bridgeProtocol}",
                         f"bridge 1 ageing-time {data.ageingTime}",
@@ -43,23 +43,28 @@ def bridge_cli(cli_interface_module, data=Bridge()):
                         f"bridge 1 max-age {data.maxAge}",
                         f"bridge 1 priority {data.priority}"]
 
-    cli_interface_module.change_to_config()   
-    cli_interface_module.exec(f"bridge 1 protocol {data.bridgeProtocol} ageing-time {data.ageingTime} forward-time {data.forwardTime} hello-time {data.helloTime} max-age {data.maxAge} priority {data.priority}") 
-    cli_interface_module.exec("show running-config")
-    result = str(cli_interface_module.exec("A"))  
-    for i in range(0,len(config_of_bridge)):
-        check.is_in(config_of_bridge[i], result, msg= f"not exist this config {config_of_bridge[i]}")
-
-    cli_interface_module.exec(f"no bridge 1 protocol {data.bridgeProtocol} ageing-time {data.ageingTime} forward-time {data.forwardTime} hello-time {data.helloTime} max-age {data.maxAge} priority {data.priority}") 
-    cli_interface_module.exec("show running-config")
-    result = str(cli_interface_module.exec("A"))    
-    for i in range(0,len(config_of_bridge)):
-        check.is_not_in(config_of_bridge[i], result, msg= f" exist this config {config_of_bridge[i]}")  
+    cli_interface_module.change_to_config()  
+    if method == "Post": 
+        cli_interface_module.exec(f"bridge 1 protocol {data.bridgeProtocol} ageing-time {data.ageingTime} forward-time {data.forwardTime} hello-time {data.helloTime} max-age {data.maxAge} priority {data.priority}") 
+        cli_interface_module.exec("show running-config")
+        result = str(cli_interface_module.exec(f"show running-config | grep bridge"))
+        result = '\n'.join(result.split('\n')[1:-1])
+        for i in range(0,len(config_of_bridge)):
+            assert (result.find(config_of_bridge[i])!=-1),f"NOT EXIST THIS CONFIG {config_of_bridge[i]}"
+            #check.is_in(config_of_bridge[i], result, msg= f"not exist this config {config_of_bridge[i]}")
+    elif method == "Delete":
+        cli_interface_module.exec(f"no bridge 1 protocol {data.bridgeProtocol} ageing-time {data.ageingTime} forward-time {data.forwardTime} hello-time {data.helloTime} max-age {data.maxAge} priority {data.priority}") 
+        cli_interface_module.exec("show running-config")
+        result = str(cli_interface_module.exec(f"show running-config | grep bridge 1"))
+        result = '\n'.join(result.split('\n')[1:-1])
+        assert (result.find("bridge 1")==-1),f"NOT EXIST THIS CONFIG Bridge"
+        #check.is_not_in(config_of_bridge[i], result, msg= f" exist this config {config_of_bridge[i]}")  
 
 # @pytest.mark.parametrize('data', BRIDGE_DATA)
 def test_bridge_cli(cli_interface_module):
     for data in BRIDGE_DATA:
-        bridge_cli(cli_interface_module, data)
+        bridge_cli(cli_interface_module, data, "Post")
+        # bridge_cli(cli_interface_module, data, "Delete")
 
 
     
