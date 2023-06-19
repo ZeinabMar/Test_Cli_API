@@ -5,3 +5,4 @@ import logging
 Test_Target = 'snmp_cli'
 # Data:{PS6x, PS4x}
 card_type = "sp5100"
+
