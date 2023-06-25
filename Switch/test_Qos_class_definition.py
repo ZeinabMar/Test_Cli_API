@@ -20,12 +20,12 @@ Qos_Class.__new__.__defaults__ = (None, "", [], [], [], "")
 
 
 Qos_Class_DATA = [
- Qos_Class(1, "class-map B match vlan 10-11", result_find=["class-map B match vlan 10-11"], grep="class-map"),
+ Qos_Class(1, "class-map B match vlan 10-11", result_find=["class-map B match vlan  10-11"], grep="class-map"),
  Qos_Class(2, "class-map B match vlan 10-11", result_error=["Error code: -1631"]),
- Qos_Class(3, "class-map C match vlan 10", result_find=["class-map C match vlan 10"], grep="class-map"),
- Qos_Class(4, "class-map C match vlan 11", result_find=["class-map C match vlan 10 11"], grep="class-map"),
- Qos_Class(5, "no class-map C match vlan single-vlan", result_find=["class-map C match vlan"], result_not_find=["class-map C match vlan 10 11"], grep="class-map"),
- Qos_Class(6, "no class-map B match vlan vlan-range", result_find=["class-map B match vlan"], result_not_find=["class-map B match vlan 10-11"], grep="class-map"),
+ Qos_Class(3, "class-map C match vlan 10", result_find=["class-map C match vlan  10"], grep="class-map"),
+ Qos_Class(4, "class-map C match vlan 11", result_find=["class-map C match vlan  10 11"], grep="class-map"),
+ Qos_Class(5, "no class-map C match vlan single-vlan", result_find=["class-map C match vlan"], result_not_find=["class-map C match vlan  10 11"], grep="class-map"),
+ Qos_Class(6, "no class-map B match vlan vlan-range", result_find=["class-map B match vlan"], result_not_find=["class-map B match vlan  10-11"], grep="class-map"),
  Qos_Class(7, "no class-map C", result_not_find=["class-map C match"], grep="class-map"),
  Qos_Class(8, "no class-map B", result_not_find=["class-map B match"], grep="class-map"),
 ]
@@ -39,14 +39,14 @@ def Qos_class_definition(cli_interface_module, data=Qos_Class()):
     detail_result = '\n'.join(detail_result.split('\n')[1:-1])  
     if len(result_find) != 0:
         for f in result_find:
-            result = get_result(cli_interface_module, f"{grep}")
+            result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(f)!=-1),f"NOT EXIST {f} in config"
     if len(result_error) != 0:
         for error in result_error:
             assert (detail_result.find(error)!=-1),f"APPLY ERROR DATA"
     if len(result_not_find) != 0:
         for nf in result_not_find:
-            result = get_result(cli_interface_module, f"{grep}")
+            result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
 def test_Qos_class_definition(cli_interface_module):
