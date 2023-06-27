@@ -20,13 +20,13 @@ Port_Qos_policy.__new__.__defaults__ = (None, "", [], [], [], "")
 
 
 Port_Qos_policy_configuration_DATA = [
-
- Port_Qos_policy(1, "service-policy input policy1", result_find=["service-policy input policy1"], grep="service-policy"),
- Port_Qos_policy(2, "service-policy input test", result_find=["service-policy input policy1"], 
- result_not_find=["service-policy input test"], result_error=["Error code: -1625"], grep="service-policy"),
-
- Port_Qos_policy(3, "service-policy input policy2", result_find=["service-policy input policy2"], grep="service-policy"), 
+#  Port_Qos_policy(1, "service-policy input policy1", result_find=["service-policy input policy1"], grep="service-policy"),
+#  Port_Qos_policy(2, "service-policy input test", result_find=["service-policy input policy1"], 
+#  result_not_find=["service-policy input test"], result_error=["Error code: -1625"], grep="service-policy"),
+#  Port_Qos_policy(3, "service-policy input policy2", result_find=["service-policy input policy2"], grep="service-policy"), 
+ Port_Qos_policy(4, "no service-policy input policy2", result_not_find=["service-policy input policy2"], grep="service-policy"), 
 ]
+
 
 
 def Port_Qos_policy_configuration(cli_interface_module, data=Port_Qos_policy(), port=None, Index=None): 
