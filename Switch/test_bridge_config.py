@@ -5,7 +5,7 @@ from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
-from schema import Use
+# from schema import Use
 from config import *
 import re
 
