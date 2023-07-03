@@ -8,8 +8,6 @@ import pytest_check as check
 from config import *
 import re
 
-Test_Target = 'snmp_cli'
-
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
 
 logging.basicConfig(level=logging.INFO)

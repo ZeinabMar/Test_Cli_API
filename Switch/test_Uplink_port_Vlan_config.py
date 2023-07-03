@@ -5,11 +5,9 @@ from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
-from schema import Use
 from config import *
 
 
-Test_Target = 'snmp_cli'
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
 

@@ -5,29 +5,9 @@ from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
-from schema import Use
-
-Test_Target = 'snmp_cli'
-
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
-
-import pytest
-import logging
-import paramiko
-from clilib import CliInterface
-import time
-from collections import namedtuple
-import pytest_check as check
-from schema import Use
 from config import *
 import re
 
-Test_Target = 'snmp_cli'
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
 
