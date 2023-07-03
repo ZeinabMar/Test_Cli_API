@@ -7,6 +7,8 @@ from collections import namedtuple
 import pytest_check as check
 from config import *
 import re
+from conftest import *
+
 
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]

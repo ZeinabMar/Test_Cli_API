@@ -6,6 +6,8 @@ import time
 from collections import namedtuple
 import pytest_check as check
 from config import *
+from conftest import *
+
 
 
 

@@ -1,4 +1,4 @@
-
+from pytest_sina_framework import SecretText
 DICT__SHELF = {
     'type': "Shelf_OLT",
     'node_id': None,
@@ -9,13 +9,14 @@ DICT__SHELF = {
     'snmp_community': "sina_private",
     'snmp_version': "2",
     'ssh_ip':"192.168.9.127",
-    'ssh_password': "sina",
+    'ssh_password': SecretText("sina"),
     'ssh_username': "root",
     'cli_exec_username': "admin",
-    "cli_exec_password": "admin",
-    'cli_enable_password': None,
-    'cli_config_password': None,
-    'cli_debug_password': None
+    "cli_exec_password": SecretText("admin"),
+    "cli_exec_password": SecretText("admin"),
+    'cli_enable_password': SecretText(""),
+    'cli_config_password': SecretText(""),
+    'cli_debug_password': SecretText("")
 }
 
 DICT__ENV = {
