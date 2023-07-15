@@ -67,7 +67,7 @@ bridge_definition_DELETE = [
 bridge_definition(1, "no bridge 1", 
 result_not_find=["bridge 1"],grep= "bridge")]
 
-def bridge_definition(cli_interface_module, data=bridge_definition()): 
+def Bridge_definition(cli_interface_module, data=bridge_definition()): 
     result_find = data.result_find
     result_error = data.result_error
     result_not_find = data.result_not_find
@@ -88,11 +88,11 @@ def bridge_definition(cli_interface_module, data=bridge_definition()):
             result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
-def test_bridge_definition(cli_interface_module):
+def test_Bridge_definition(cli_interface_module):
     cli_interface_module.change_to_config() 
     for bridge in bridge_definition_DATA:
-        bridge_definition(cli_interface_module, bridge)
-    bridge_definition(cli_interface_module, bridge_definition_DELETE[0])
+        Bridge_definition(cli_interface_module, bridge)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE[0])
 
 
 
