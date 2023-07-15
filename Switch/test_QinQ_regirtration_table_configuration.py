@@ -31,10 +31,10 @@ QinQ_Registration_DATA = [
 #  QinQ_Registration(2, "registration table reg1 bridge 1 cvlan 15 svlan 16", result_error=["Error code: -1633"], result_not_find=[" registration table reg1 bridge 1 cvlan  svlan"], grep="registration"),
 #  QinQ_Registration(3, "registration table reg1 bridge 1 cvlan 10 svlan 11", result_error=["Error code: -1633"], result_not_find=[" registration table reg1 bridge 1 cvlan  svlan"], grep="registration"),
  QinQ_Registration(4, "registration table reg1 bridge 1 cvlan 10-12 svlan 14-16", result_find=[" registration table reg1 bridge 1 cvlan 10,  svlan 14,"], grep="registration"),
-#  QinQ_Registration(5, "registration table reg2 bridge 1 cvlan 12 svlan 16", result_find=[" registration table reg2 bridge 1 cvlan 12,  svlan 16,"], grep="registration"),
-#  QinQ_Registration(6, "registration table reg2 bridge 1 cvlan 10 svlan 14", result_find=[" registration table reg2 bridge 1 cvlan 12, 10,  svlan 16, 14,"], grep="registration"),
-#  QinQ_Registration(7, "no registration table reg2 bridge 1 cvlan 10", result_find=[" registration table reg2 bridge 1 cvlan 12,  svlan 16,"], grep="registration"),
-#  QinQ_Registration(8, "no registration table reg2 bridge 1 cvlan 12", result_find=[" registration table reg2 bridge 1 cvlan  svlan"], grep="registration"),  
+ QinQ_Registration(5, "registration table reg2 bridge 1 cvlan 12 svlan 16", result_find=[" registration table reg2 bridge 1 cvlan 12,  svlan 16,"], grep="registration"),
+ QinQ_Registration(6, "registration table reg2 bridge 1 cvlan 10 svlan 14", result_find=[" registration table reg2 bridge 1 cvlan 12, 10,  svlan 16, 14,"], grep="registration"),
+ QinQ_Registration(7, "no registration table reg2 bridge 1 cvlan 10", result_find=[" registration table reg2 bridge 1 cvlan 12,  svlan 16,"], grep="registration"),
+ QinQ_Registration(8, "no registration table reg2 bridge 1 cvlan 12", result_find=[" registration table reg2 bridge 1 cvlan  svlan"], grep="registration"),  
 ]
 
 QinQ_Registration_Delete = [
@@ -42,14 +42,16 @@ QinQ_Registration_Delete = [
  QinQ_Registration(2, "no registration table reg2 bridge 1", result_not_find=[" registration table reg2"], grep="registration"),
 ]
 
-def QinQ_Registraion(cli_interface_module, data=QinQ_Registration(), method =None):   
-    logger.info(f"***************QINQ REGISTRATION CONFIGURATION*************************")
+def QinQ_Registraion(cli_interface_module, data=QinQ_Registration(), method =None): 
+    handler.setFormatter(colorlog.ColoredFormatter('%(green)s%(levelname)s:%(name)s:%(message)s'))    
+    logger.info(f"    ***************QINQ REGISTRATION CONFIGURATION*************************")
     if method == "SET":
         handler.setFormatter(colorlog.ColoredFormatter('%(red)s%(levelname)s:%(name)s:%(message)s'))
         logger.info(f"   ************SET   MODE********************   ")
     else:
         logger.info(f"   ************DELETE   MODE********************   ")
-    logger.info(f"IN DATE WITH INDEX {data.Index}")
+    handler.setFormatter(colorlog.ColoredFormatter('%(yellow)s%(levelname)s:%(name)s:%(message)s'))    
+    logger.info(f"       ************IN DATE WITH INDEX  {data.Index}  ************")
 
     result_find = data.result_find
     result_error = data.result_error
@@ -71,11 +73,11 @@ def QinQ_Registraion(cli_interface_module, data=QinQ_Registration(), method =Non
 
 def test_QinQ_Registraion(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # for vlan_service in Vlan_Service:  
-    #     vlan_management(cli_interface_module, vlan_service)
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    for vlan_service in Vlan_Service:  
+        vlan_management(cli_interface_module, vlan_service)
 
     for qinq_reg in QinQ_Registration_DATA:
         QinQ_Registraion(cli_interface_module, qinq_reg, "SET")
@@ -84,8 +86,8 @@ def test_QinQ_Registraion(cli_interface_module):
         QinQ_Registraion(cli_interface_module, qinq_reg_del, "DELETE")
 
 
-    # for vlan_custom_del in Vlan_Custom_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_custom_del)
-    # for vlan_service_del in Vlan_Service_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_service_del)
-    # Bridge_definition(cli_interface_module, bridge_definition_DELETE[0])
+    for vlan_custom_del in Vlan_Custom_DELETE:  
+        vlan_management(cli_interface_module, vlan_custom_del)
+    for vlan_service_del in Vlan_Service_DELETE:  
+        vlan_management(cli_interface_module, vlan_service_del)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE[0])
