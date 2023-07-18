@@ -23,7 +23,9 @@ Uplink_Vlan_DATA_ACCESS =(
 Uplink_Vlan(1,"switchport access 10", result_find=[f"switchport access 10"]),
 Uplink_Vlan(2, "switchport access 10-12", result_find=["switchport access 10"], result_error=["Problem"]),
 Uplink_Vlan(3, "switchport access tag 11", result_find=["switchport access 10"], result_error=["Problem"]),
-Uplink_Vlan(3, "switchport access -1", result_not_find=["switchport access 10"]),
+Uplink_Vlan(4, "switchport access -1", result_find=["switchport access 10"] ,result_error=["Invalid PVID"]),
+Uplink_Vlan(5, "no switchport access 10", result_not_find=["switchport access 10"]),
+Uplink_Vlan(6, "no switchport mode access", result_error=["Error code: -1013"])
 )
 
 
@@ -32,16 +34,17 @@ Uplink_Vlan(1, "switchport trunk tag 10-11", result_find=[f"switchport trunk tag
 Uplink_Vlan(2, "switchport trunk 12", result_find=["switchport trunk tag 10-11"], result_error=["Invalid argument"]),
 Uplink_Vlan(3, "switchport access tag 11", result_find=["switchport trunk tag 10-11"], result_error=["Problem"]),
 Uplink_Vlan(4, "no switchport trunk tag 10-11", result_not_find=["switchport trunk tag 10-11"]),
+Uplink_Vlan(5, "no switchport mode trunk", result_error=["Error code: -1013"]),
 )
 
 
 Uplink_Vlan_DATA_HYBRID =(    
-# Uplink_Vlan(1, "switchport trunk tag 11-12", result_find=[f"switchport trunk tag 11-12"]),
-# Uplink_Vlan(2, "switchport access 10", result_find=["switchport access 10"]),
-# Uplink_Vlan(3, "switchport trunk tag 10", result_find=["switchport trunk tag 11-12", "switchport access 10"]),
-# Uplink_Vlan(4, "switchport access 11", result_find=["switchport trunk tag 12", "switchport access 11"]),
+Uplink_Vlan(1, "switchport trunk tag 11-12", result_find=[f"switchport trunk tag 11-12"]),
+Uplink_Vlan(2, "switchport access 10", result_find=["switchport access 10"]),
+Uplink_Vlan(3, "switchport trunk tag 10", result_find=["switchport trunk tag 11-12", "switchport access 10"]),
+Uplink_Vlan(4, "switchport access 11", result_find=["switchport trunk tag 11-12", "switchport access 11"]),
 Uplink_Vlan(6, "no switchport access 11", result_not_find=["switchport access 11"]),
-Uplink_Vlan(7, "no switchport trunk tag 12", result_not_find=["switchport trunk tag 12"]),
+Uplink_Vlan(7, "no switchport trunk tag 12", result_not_find=["switchport trunk"]),
 )
 
 def set_mode_and_check(cli_interface_module, mode):
@@ -78,16 +81,16 @@ def test_Uplink_Vlan(cli_interface_module):
     cli_interface_module.change_to_config() 
     for port in range(1,2):
         for data_mode in [Uplink_Vlan_DATA_HYBRID]:#,Uplink_Vlan_DATA_TRUNK,Uplink_Vlan_DATA_HYBRID
-            # if data_mode == Uplink_Vlan_DATA_ACCESS:
-            #     if 1 <= port <=8 :
-            #         cli_interface_module.exec(f"interface ge1/{port}") 
-            #     else:    
-            #         cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
-            #     set_mode_and_check(cli_interface_module, "access")
-            #     logger.info(f"IN ACCESS MODE")
-            #     for data_access in Uplink_Vlan_DATA_ACCESS:
-            #         logger.info(f"IN INDEX {data_access.Index} DATA")
-            #         Uplink_Vlan(cli_interface_module, data_access)
+            if data_mode == Uplink_Vlan_DATA_ACCESS:
+                if 1 <= port <=8 :
+                    cli_interface_module.exec(f"interface ge1/{port}") 
+                else:    
+                    cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
+                set_mode_and_check(cli_interface_module, "access")
+                logger.info(f"IN ACCESS MODE")
+                for data_access in Uplink_Vlan_DATA_ACCESS:
+                    logger.info(f"IN INDEX {data_access.Index} DATA")
+                    Uplink_Vlan(cli_interface_module, data_access)
 #*********************************************************************************
             if data_mode == Uplink_Vlan_DATA_TRUNK:
                 cli_interface_module.change_to_config()  

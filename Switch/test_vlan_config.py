@@ -36,7 +36,7 @@ Vlan(5, "vlan 111 bridge 1 type customer state enable",
 result_find=["vlan 111 bridge 1 type customer state enable"],grep="vlan"),
 
 Vlan(5, "vlan 111 bridge 1 type customer state disable", 
-result_find=["vlan 111 bridge 1 customer state disable"],grep="vlan"),
+result_find=["vlan 111 bridge 1 type customer state disable"],grep="vlan"),
 
 ]
 

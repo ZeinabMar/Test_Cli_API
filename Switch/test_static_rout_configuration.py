@@ -58,8 +58,8 @@ def Static_Rout_configuration(cli_interface_module, data=Static_Rout()):
 
 def test_Static_Rout_configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # for staticrout in Static_Rout_DATA:
-    #     Static_Rout_configuration(cli_interface_module, staticrout)
+    for staticrout in Static_Rout_DATA:
+        Static_Rout_configuration(cli_interface_module, staticrout)
     for staticroutdel in Static_Ruote_DATA_DELETE:
         Static_Rout_configuration(cli_interface_module, staticroutdel)
             
