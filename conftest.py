@@ -75,5 +75,27 @@ result_not_find=["vlan 16 bridge 1 type service-point-point state enable"],grep=
 data_config(4, "no vlan 17 bridge 1 type service-rooted-multipoint", 
 result_not_find=["vlan 17 bridge 1 type service-rooted-multipoint state enable"],grep= "vlan"),
 ]
-
 #*************************************************************************************************************************************
+Switch_Enable = [Switch(1, "switchport", result_find=["switchport"], grep="switchport"),
+                 Switch(1, "bridge-group 1 spanning-tree enable", result_find=["bridge-group 1 spanning-tree enable"], grep="bridge-group")]
+Switch_Disable = [Switch(1, "no bridge-group 1 spanning-tree disable", result_not_find=["bridge-group 1 spanning-tree"], grep="bridge-group"),
+                  Switch(1, "no switchport", result_find=["no switchport"], grep="switchport")]
+#*************************************************************************************************************************************
+#*************************************************************************************************************************************
+QinQ_Registration_Table = [
+QinQ_Registration(1, "registration table reg1 bridge 1 cvlan 10 svlan 14", result_find=["registration table reg1 bridge 1 cvlan 10,  svlan 14,"], grep="registration"),
+QinQ_Registration(2, "registration table reg2 bridge 1 cvlan 10,12 svlan 14,16", result_find=["registration table reg2 bridge 1 cvlan 10, 12,  svlan 14, 16,"], grep="registration"),
+QinQ_Registration(3, "registration table reg3 bridge 1 cvlan 10 svlan 14", result_find=["registration table reg3 bridge 1 cvlan 10,  svlan 14,"], grep="registration"),
+QinQ_Registration(4, "registration table reg4 bridge 1 cvlan 10,12 svlan 14,16", result_find=["registration table reg4 bridge 1 cvlan 10, 12,  svlan 14, 16,"], grep="registration"),
+QinQ_Registration(5, "registration table reg5 bridge 1 cvlan 11 svlan 15", result_find=["registration table reg5 bridge 1 cvlan 10, 12,  svlan 14, 16,"], grep="registration"),
+]
+
+QinQ_Registration_Table_Delete = [
+QinQ_Registration(1, "no registration table reg1 bridge 1", result_not_find=[" registration table reg1"], grep="registration"),
+QinQ_Registration(2, "no registration table reg2 bridge 1", result_not_find=[" registration table reg2"], grep="registration"),
+QinQ_Registration(3, "no registration table reg3 bridge 1", result_not_find=[" registration table reg3"], grep="registration"),
+QinQ_Registration(4, "no registration table reg4 bridge 1", result_not_find=[" registration table reg4"], grep="registration"),
+QinQ_Registration(5, "no registration table reg5 bridge 1", result_not_find=[" registration table reg5"], grep="registration"),
+]
+#*************************************************************************************************************************************
+
