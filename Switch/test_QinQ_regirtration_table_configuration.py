@@ -90,4 +90,4 @@ def test_QinQ_Registraion(cli_interface_module):
         vlan_management(cli_interface_module, vlan_custom_del)
     for vlan_service_del in Vlan_Service_DELETE:  
         vlan_management(cli_interface_module, vlan_service_del)
-    Bridge_definition(cli_interface_module, bridge_definition_DELETE[0])
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)

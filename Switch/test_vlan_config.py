@@ -77,7 +77,9 @@ def vlan_management(cli_interface_module, data=Vlan()):
 
 def test_vlan_management(cli_interface_module):
     cli_interface_module.change_to_config() 
+    Bridge_definition(cli_interface_module, bridge_custom[0])
     # for vlan in Vlan_DATA:
     #     vlan_management(cli_interface_module, vlan)
     for vlan in Vlan_DELETE:  
         vlan_management(cli_interface_module, vlan)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)    

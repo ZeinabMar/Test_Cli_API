@@ -79,7 +79,12 @@ def Uplink_Vlan(cli_interface_module, data=Uplink_Vlan()):
 def test_Uplink_Vlan(cli_interface_module):
 
     cli_interface_module.change_to_config() 
+    Bridge_definition(cli_interface_module, bridge_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+
     for port in range(1,2):
+        Switch_config(cli_interface_module, Switch_Enable)
         for data_mode in [Uplink_Vlan_DATA_HYBRID]:#,Uplink_Vlan_DATA_TRUNK,Uplink_Vlan_DATA_HYBRID
             if data_mode == Uplink_Vlan_DATA_ACCESS:
                 if 1 <= port <=8 :
@@ -111,5 +116,7 @@ def test_Uplink_Vlan(cli_interface_module):
                 set_mode_and_check(cli_interface_module, "hybrid")
                 for data_hybrid in Uplink_Vlan_DATA_HYBRID:
                     Uplink_Vlan(cli_interface_module, data_hybrid)     
-
-              
+        Switch_config(cli_interface_module, Switch_Disable)
+    for vlan_custom_del in Vlan_Custom_DELETE:  
+        vlan_management(cli_interface_module, vlan_custom_del)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)          

@@ -49,7 +49,19 @@ def Qos_class_definition(cli_interface_module, data=Qos_Class()):
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
 def test_Qos_class_definition(cli_interface_module):
+
     cli_interface_module.change_to_config() 
+    Bridge_definition(cli_interface_module, bridge_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    Qos_Management(cli_interface_module, Qos_Enable)    
+
+
     for qos_class in Qos_Class_DATA:
         Qos_class_definition(cli_interface_module, qos_class)
-        
+
+    Qos_Management(cli_interface_module, Qos_Disable)    
+    for vlan_custom in Vlan_Custom_DELETE:
+        vlan_management(cli_interface_module, vlan_custom)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
+    

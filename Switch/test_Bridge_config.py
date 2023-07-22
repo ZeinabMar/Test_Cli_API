@@ -61,11 +61,37 @@ result_find=["bridge 1 protocol ieee-vlan-bridge" ,
  "bridge 1 max-age 7",
  "bridge 1 max-hops 20",
  "bridge 1 priority 8192"],result_error =["Problem"],grep="bridge"),
+
+bridge_definition(4, "bridge 1 protocol provider-mstp-edge ageing-time 100 forward-time 30 hello-time 1 max-age 6 max-hops 20 priority 8192", 
+result_find=["bridge 1 protocol ieee-vlan-bridge" ,
+ "bridge 1 ageing-time 100",
+ "bridge 1 forward-time 30",
+ "bridge 1 hello-time 2",
+ "bridge 1 max-age 6",
+ "bridge 1 max-hops 20",
+ "bridge 1 priority 8192"],result_error =["Error code: -1624"],grep="bridge"),
+
+bridge_definition(5, "bridge 1 protocol rstp ageing-time 100 forward-time 30 hello-time 1 max-age 6 max-hops 30 priority 8192", 
+result_find=["bridge 1 protocol ieee-vlan-bridge" ,
+ "bridge 1 ageing-time 100",
+ "bridge 1 forward-time 30",
+ "bridge 1 hello-time 1",
+ "bridge 1 max-age 6",
+ "bridge 1 max-hops 20",
+ "bridge 1 priority 8192"],result_error =["Error code: -1624"],grep="bridge"),
+
+ bridge_definition(5, "bridge 1 protocol rstp ageing-time 100 forward-time 30 hello-time 1 max-age 6 max-hops 20 priority 8192", 
+result_find=["bridge 1 protocol ieee-vlan-bridge" ,
+ "bridge 1 ageing-time 100",
+ "bridge 1 forward-time 20",
+ "bridge 1 hello-time 1",
+ "bridge 1 max-age 6",
+ "bridge 1 max-hops 20",
+ "bridge 1 priority 8192"],grep="bridge"),
  ]
 
-bridge_definition_DELETE = [
-bridge_definition(1, "no bridge 1", 
-result_not_find=["bridge 1"],grep= "bridge")]
+bridge_definition_DELETE = bridge_definition(1, "no bridge 1", 
+result_not_find=["bridge 1"],grep= "bridge")
 
 def Bridge_definition(cli_interface_module, data=bridge_definition()): 
     result_find = data.result_find
@@ -92,7 +118,7 @@ def test_Bridge_definition(cli_interface_module):
     cli_interface_module.change_to_config() 
     for bridge in bridge_definition_DATA:
         Bridge_definition(cli_interface_module, bridge)
-    Bridge_definition(cli_interface_module, bridge_definition_DELETE[0])
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)
 
 
 

@@ -56,6 +56,7 @@ def Switch_config(cli_interface_module, DATA=[Switch(),Switch()]):
 
 def test_Switch_config(cli_interface_module):
     cli_interface_module.change_to_config() 
+    Bridge_definition(cli_interface_module, bridge_custom[0])
     for port in range(1,2):
         if 1 <= port <=8 :
             cli_interface_module.exec(f"interface ge1/{port}") 
@@ -63,7 +64,8 @@ def test_Switch_config(cli_interface_module):
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
         for switch in Switch_DATA:
             Switch_config(cli_interface_module, switch)
-            
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)
+        
 
 
 
