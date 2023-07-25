@@ -78,6 +78,7 @@ def test_Uplink_Port_L2_configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
     for portl2 in Port_L2_DATA: 
         for port in range(1,2):
+            
             cli_interface_module.exec(f"interface ge1/{port}") 
             Uplink_Port_L2_configuration(cli_interface_module, portl2)
             cli_interface_module.exec(f"exit") 

@@ -84,7 +84,7 @@ result_find=["vlan 15 bridge 1 type service-rooted-multipoint state enable"],gre
 data_config(3, "vlan 16 bridge 1 type service-point-point state enable", 
 result_find=["vlan 16 bridge 1 type service-point-point state enable"],grep="vlan"),
 data_config(4, "vlan 17 bridge 1 type service-rooted-multipoint state enable", 
-result_find=["vlan 17 bridge 1 service-rooted-multipoint state disable"],grep="vlan"),
+result_find=["vlan 17 bridge 1 service-rooted-multipoint state enable"],grep="vlan"),
 ]
 
 Vlan_Service_DELETE = [
@@ -123,7 +123,8 @@ data_config(1, "registration table reg1 bridge 1 cvlan 10 svlan 14", result_find
 data_config(2, "registration table reg2 bridge 1 cvlan 10,12 svlan 14,16", result_find=["registration table reg2 bridge 1 cvlan 10, 12,  svlan 14, 16,"], grep="registration"),
 data_config(3, "registration table reg3 bridge 1 cvlan 10 svlan 14", result_find=["registration table reg3 bridge 1 cvlan 10,  svlan 14,"], grep="registration"),
 data_config(4, "registration table reg4 bridge 1 cvlan 10,12 svlan 14,16", result_find=["registration table reg4 bridge 1 cvlan 10, 12,  svlan 14, 16,"], grep="registration"),
-data_config(5, "registration table reg5 bridge 1 cvlan 11 svlan 15", result_find=["registration table reg5 bridge 1 cvlan 10, 12,  svlan 14, 16,"], grep="registration"),
+data_config(5, "registration table reg5 bridge 1 cvlan 11 svlan 15", result_find=["registration table reg5 bridge 1 cvlan 11,  svlan 15,"], grep="registration"),
+data_config(6, "registration table reg5 bridge 1 cvlan 10,11 svlan 14,15", result_find=["registration table reg5 bridge 1 cvlan 10,11,  svlan 14,15"], grep="registration"),
 ]
 
 QinQ_Registration_Table_Delete = [
@@ -132,6 +133,8 @@ data_config(2, "no registration table reg2 bridge 1", result_not_find=[" registr
 data_config(3, "no registration table reg3 bridge 1", result_not_find=[" registration table reg3"], grep="registration"),
 data_config(4, "no registration table reg4 bridge 1", result_not_find=[" registration table reg4"], grep="registration"),
 data_config(5, "no registration table reg5 bridge 1", result_not_find=[" registration table reg5"], grep="registration"),
+data_config(6, "no registration table reg6 bridge 1", result_not_find=[" registration table reg6"], grep="registration"),
+
 ]
 #*************************************************************************************************************************************
 

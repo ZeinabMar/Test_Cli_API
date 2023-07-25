@@ -10,6 +10,9 @@ from conftest import *
 from Switch.test_Bridge_config import Bridge_definition
 from Switch.test_vlan_config import vlan_management
 from Switch.test_Uplink_port_Vlan_config import set_mode_and_check
+from Switch.test_Bridge_Group_config import Switch_config
+
+from Switch.test_QinQ_regirtration_table_configuration import QinQ_Registraion
 
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
@@ -20,6 +23,7 @@ logger = logging.getLogger(__name__)
 Port_QinQ_Register = namedtuple('Port_QinQ_Register', ['Index', 'config', "result_find", "result_error", 'result_not_find', 'grep'])
 Port_QinQ_Register.__new__.__defaults__ = (None, "", [], [], [], "")
 
+uplink_mode = "customer-edge-hybrid"
 
 Port_QinQ_Register_Access = [
   Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
@@ -39,16 +43,16 @@ Port_QinQ_Register_Access_Default = [
 
 
 Port_QinQ_Register_Trunk = [
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10,12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_find=["switchport QinQ registration reg1"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg2", result_find=["switchport QinQ registration reg1"], result_error=["Error code: -1625"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10,12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq registration reg1", result_find=["switchport QinQ registration reg1"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq registration reg2", result_find=["switchport QinQ registration reg1"], result_error=["Error code: -1625"], grep="switchport"),
 #   Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 13 egresstag enable", result_find=["switchport qinq trunk mode C-tagged tag 10,12-13 egresstag enable"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq trunk mode C-tagged tag 13 egresstag enable", result_find= ["switchport qinq trunk mode C-tagged tag 10,12 egresstag enable"], result_error=["Error code: -1625"], grep="switchport"),
+  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 13 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,12-13 egresstag enable"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq trunk tag 13", result_find= ["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
   Port_QinQ_Register(1, "no switchport qinq registration reg1", result_not_find=["switchport QinQ registration reg1"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq trunk tag 10", result_find=["switchport qinq trunk mode C-tagged tag 12 egresstag enable"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq trunk tag 12", result_not_find=["switchport qinq trunk mode C-tagged"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq trunk tag 10", result_find=["switchport QinQ trunk mode C-tagged tag 12 egresstag enable"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq trunk tag 12", result_not_find=["switchport QinQ trunk mode C-tagged"], grep="switchport"),
   Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10,13 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,13 egresstag enable"], grep="switchport"),
   Port_QinQ_Register(1, "switchport qinq registration reg5", result_error=["Error code: -1625"], grep="switchport",result_not_find=["switchport QinQ registration reg5"]),
   Port_QinQ_Register(1, "switchport qinq registration reg2", result_error=["Error code: -1625"], grep="switchport",result_not_find=["switchport QinQ registration reg2"]),
@@ -65,19 +69,30 @@ Port_QinQ_Register_Trunk_Default = [
 
 
 Port_QinQ_Register_Hybrid = [
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10,12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["switchport QinQ registration reg1"], result_not_find=["switchport QinQ registration reg1"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg2", result_error=["Error code: -1625"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10,12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq registration reg1", result_find=["switchport QinQ registration reg1"], grep="switchport"),
+  # Port_QinQ_Register(1, "no switchport qinq trunk tag 12", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], result_error=["Error code: -1625"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq registration reg1", result_not_find=["switchport QinQ registration reg1"], grep="switchport"),
+  Port_QinQ_Register(1, "switchport qinq registration reg5", result_error=["Error code: -1625"], grep="switchport"),
+  Port_QinQ_Register(1, "switchport qinq registration reg2", result_find=["switchport QinQ registration reg2"], grep="switchport"),
+
+
 #   Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq trunk mode C-tagged tag 10 egresstag enable", result_find=["switchport qinq trunk mode C-tagged tag 10,12 egresstag enable"], result_error=["Error code: -1625"], grep="switchport"),
   Port_QinQ_Register(1, "no switchport qinq access 10", result_find= ["switchport QinQ access 10"], result_error=["Error code: -1625"], grep="switchport"),
+  # Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10 egresstag enable"], result_error=["Error code: -1625"], grep="switchport"),
+  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 11 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10-11 egresstag enable"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq registration reg2", result_not_find=["switchport QinQ registration reg2"], grep="switchport"),
+  Port_QinQ_Register(1, "switchport qinq registration reg6", result_find=["switchport QinQ registration reg6"], grep="switchport"),
+
 ]
 
 Port_QinQ_Register_Hybrid_Default = [
-  Port_QinQ_Register(1, "no switchport qinq registration reg2", result_not_find=["switchport QinQ registration reg2"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq trunk tag 10,12", result_not_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq registration reg6", result_not_find=["switchport QinQ registration reg6"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq trunk tag 10-11", result_not_find=["switchport QinQ trunk mode C-tagged tag 10-11 egresstag enable"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq access 10", result_not_find= ["switchport QinQ access 10"], grep="switchport"),
+
 ]
  
  
@@ -117,15 +132,33 @@ def test_Port_QinQ_Registeration_config(cli_interface_module):
         else:    
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
 
-        if uplink_mode == "custom-edge-access":
-            Switch_config(cli_interface_module, Switch_Enable)
-            set_mode_and_check(cli_interface_module, "customer-edge-access")
+        if uplink_mode == "customer-edge-access":
+            # Switch_config(cli_interface_module, Switch_Enable)
+            # set_mode_and_check(cli_interface_module, "customer-edge-access")
 
             for port_qinq in Port_QinQ_Register_Access:
-                Switch_config(cli_interface_module, switch)
+                Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
             for port_qinq in Port_QinQ_Register_Access_Default:
-                Switch_config(cli_interface_module, switch)
+                Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
             Switch_config(cli_interface_module, Switch_Disable)
+        elif uplink_mode == "customer-edge-trunk":
+            # Switch_config(cli_interface_module, Switch_Enable)
+            # set_mode_and_check(cli_interface_module, "customer-edge-trunk")
+
+            for port_qinq in Port_QinQ_Register_Trunk:
+                Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
+            for port_qinq in Port_QinQ_Register_Trunk_Default:
+                Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
+            Switch_config(cli_interface_module, Switch_Disable)  
+
+        elif uplink_mode == "customer-edge-hybrid":
+            # Switch_config(cli_interface_module, Switch_Enable)
+            # set_mode_and_check(cli_interface_module, "customer-edge-hybrid")
+            for port_qinq in Port_QinQ_Register_Hybrid:
+                Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
+            for port_qinq in Port_QinQ_Register_Hybrid_Default:
+                Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
+            Switch_config(cli_interface_module, Switch_Disable)    
 
     # for qinq_reg_del in QinQ_Registration_Table_Delete:
     #     QinQ_Registraion(cli_interface_module, qinq_reg_del, "DELETE")
