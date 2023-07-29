@@ -69,22 +69,14 @@ Port_QinQ_Register_Trunk_Default = [
 
 
 Port_QinQ_Register_Hybrid = [
-  # Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
-  # Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10,12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
-  # Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  # Port_QinQ_Register(1, "switchport qinq registration reg1", result_find=["switchport QinQ registration reg1"], grep="switchport"),
-  # Port_QinQ_Register(1, "no switchport qinq trunk tag 12", result_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq registration reg1", result_not_find=["switchport QinQ registration reg1"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg5", result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg2", result_find=["switchport QinQ registration reg2"], grep="switchport"),
 
 
-#   Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq access 10", result_find= ["switchport QinQ access 10"], result_error=["Error code: -1625"], grep="switchport"),
-  # Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 12 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10 egresstag enable"], result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 11 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10-11 egresstag enable"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq registration reg2", result_not_find=["switchport QinQ registration reg2"], grep="switchport"),
+
+   Port_QinQ_Register(1, "switchport qinq registration reg6", result_error=["Error code: -1625"], result_not_find=["switchport QinQ registration reg6"], grep="switchport"),
+  Port_QinQ_Register(1, "switchport qinq trunk mode C-tagged tag 10 egresstag enable", result_find=["switchport QinQ trunk mode C-tagged tag 10-12 egresstag enable"], grep="switchport"),
   Port_QinQ_Register(1, "switchport qinq registration reg6", result_find=["switchport QinQ registration reg6"], grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq trunk tag 12", result_find=["switchport QinQ trunk mode C-tagged tag 10-11 egresstag enable"],grep="switchport"),
+  Port_QinQ_Register(1, "no switchport qinq trunk tag 10", result_find=["switchport QinQ trunk mode C-tagged tag 10-11 egresstag enable"], result_error=["Error code: -1625"],grep="switchport"),
 
 ]
 
