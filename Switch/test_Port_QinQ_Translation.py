@@ -10,6 +10,7 @@ from conftest import *
 from Switch.test_Bridge_config import Bridge_definition
 from Switch.test_vlan_config import vlan_management
 from Switch.test_Uplink_port_Vlan_config import set_mode_and_check
+from Switch.test_Bridge_Group_config import Switch_config
 
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
@@ -17,30 +18,35 @@ pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Tar
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-Port_QinQ_Translation = namedtuple('Port_QinQ_Translation', ['Index', 'config', "result_find", "result_error", 'result_not_find', 'grep'])
-Port_QinQ_Translation.__new__.__defaults__ = (None, "", [], [], [], "")
+Port_QinQ_Trans = namedtuple('Port_QinQ_Trans', ['Index', 'config', "result_find", "result_error", 'result_not_find', 'grep'])
+Port_QinQ_Trans.__new__.__defaults__ = (None, "", [], [], [], "")
 
+uplink_mode = "provider-network" #cusromer-network
 
-Port_QinQ_Translation = [
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq access 11", result_find=["switchport QinQ access 11"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_error=["Error code: -1625"], result_not_find=["switchport qinq registration reg1"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq access 10", result_find=["switchport QinQ access 10"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg1", result_find=["switchport QinQ registration reg1"], grep="switchport"),
-  Port_QinQ_Register(1, "switchport qinq registration reg2", result_find=["switchport QinQ registration reg1"], result_error=["Error code: -1625"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq access 10", result_find= ["switchport QinQ access 10"], result_error=["Error code: -1625"], grep="switchport"),
+Port_QinQ_Translation_Config = [
+  Port_QinQ_Trans(1, "switchport qinq trunk mode S-tagged tag 10", result_error=["Error code: -1625"], grep="switchport"),
+  Port_QinQ_Trans(2, "switchport qinq trunk mode S-tagged tag 14-17", result_find=["switchport QinQ trunk mode S-tagged tag 14-17 egresstag disable"], grep="switchport"),
+  Port_QinQ_Trans(3, "switchport qinq trunk translation svlan-src 14,16 svlan-des 15,17", result_find=["switchport QinQ trunk translation svlan-src 14, 16,  svlan-des 15, 17, "], grep="switchport"),
+  Port_QinQ_Trans(4, "switchport qinq trunk translation svlan-src 15 svlan-des 14", result_find=["switchport QinQ trunk translation svlan-src 15, 14, 16,  svlan-des 14, 15, 17, "], grep="switchport"),
+  Port_QinQ_Trans(5, "switchport qinq trunk translation svlan-src 18 svlan-des 19", result_error=["Error code: -1625"], grep="switchport"),
+  Port_QinQ_Trans(6, "switchport qinq trunk mode S-tagged tag 18-19", result_find=["switchport QinQ trunk mode S-tagged tag 14-19 egresstag disable"], grep="switchport"),
+  Port_QinQ_Trans(7, "switchport qinq trunk translation svlan-src 18,14 svlan-des 19,16", result_find=["switchport QinQ trunk translation svlan-src 16, 15, 14, 18,  svlan-des 17, 14, 16, 19, "], grep="switchport"),
+  Port_QinQ_Trans(8, "switchport qinq trunk translation svlan-src 14 svlan-des 17", result_find=["switchport QinQ trunk translation svlan-src 16, 15, 14, 18,  svlan-des 17, 14, 16, 19, "], grep="switchport"),
+
 ]
 
 
 Port_QinQ_Translation_Default = [
-  Port_QinQ_Register(1, "no switchport qinq registration reg2", result_not_find=["switchport QinQ registration reg2"], grep="switchport"),
-  Port_QinQ_Register(1, "no switchport qinq trunk tag 10,12", result_not_find=["switchport QinQ trunk mode C-tagged tag 10,12 egresstag enable"], grep="switchport"),
+  Port_QinQ_Trans(1, "no switchport qinq trunk translation svlan-src 15", result_find=["switchport QinQ trunk translation svlan-src 16, 14, 18,  svlan-des 17, 16, 19, "], grep="switchport"),
+  Port_QinQ_Trans(2, "no switchport qinq trunk translation svlan-src 16,14,18", result_not_find=["switchport QinQ trunk translation svlan-src"], grep="switchport"),
+  Port_QinQ_Trans(3, "no switchport qinq trunk tag 14-19", result_not_find=["switchport QinQ trunk mode S-tagged"], grep="switchport"),
+  
 ]
  
  
  
-def Port_QinQ_Translation(cli_interface_module, data=[]):   
+def Port_QinQ_Translation(cli_interface_module, data=Port_QinQ_Trans(), method="SET"):  
+    logger.info(f'PORT QINQ TRANSLATION TEST DATA ------- > {data.Index} IN METHODE {method}')
     result_find = data.result_find
     result_error = data.result_error
     result_not_find = data.result_not_find
@@ -61,11 +67,11 @@ def Port_QinQ_Translation(cli_interface_module, data=[]):
 
 def test_Port_QinQ_Translation(cli_interface_module):
     cli_interface_module.change_to_config() 
-    Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    for vlan_custom in Vlan_Custom:
-        vlan_management(cli_interface_module, vlan_custom)
-    for vlan_service in Vlan_Service:  
-        vlan_management(cli_interface_module, vlan_service)
+    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    # for vlan_custom in Vlan_Custom:
+    #     vlan_management(cli_interface_module, vlan_custom)
+    # for vlan_service in Vlan_Service:  
+    #     vlan_management(cli_interface_module, vlan_service)
 
     for port in range(1,2):
         if 1 <= port <=8 :
@@ -73,16 +79,18 @@ def test_Port_QinQ_Translation(cli_interface_module):
         else:    
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
 
-        if uplink_mode == "provider-network":
-            Switch_config(cli_interface_module, Switch_Enable)
-            set_mode_and_check(cli_interface_module, "provider-network")
-        else:
-            Switch_config(cli_interface_module, Switch_Enable)
-            set_mode_and_check(cli_interface_module, "customer-network")
+        # if uplink_mode == "provider-network":
+        #     Switch_config(cli_interface_module, Switch_Enable)
+        #     set_mode_and_check(cli_interface_module, "provider-network")
+        # else:
+        #     Switch_config(cli_interface_module, Switch_Enable)
+        #     set_mode_and_check(cli_interface_module, "customer-network")
 
-        for port_qinq in Port_QinQ_Translation:
-            Port_QinQ_Translation(cli_interface_module, switch)
-        Port_QinQ_Translation(cli_interface_module, Port_QinQ_Translation_Default)
+        for port_qinq in Port_QinQ_Translation_Config:
+            Port_QinQ_Translation(cli_interface_module, port_qinq, "SET")
+
+        for port_qinq in Port_QinQ_Translation_Default:
+            Port_QinQ_Translation(cli_interface_module, port_qinq, "DELETE")    
         
         Switch_config(cli_interface_module, Switch_Disable)
    
