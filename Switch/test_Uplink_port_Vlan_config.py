@@ -117,6 +117,8 @@ def test_Uplink_Vlan(cli_interface_module):
                 for data_hybrid in Uplink_Vlan_DATA_HYBRID:
                     Uplink_Vlan(cli_interface_module, data_hybrid)     
         Switch_config(cli_interface_module, Switch_Disable)
+
+    cli_interface_module.exec("exit") 
     for vlan_custom_del in Vlan_Custom_DELETE:  
         vlan_management(cli_interface_module, vlan_custom_del)
     Bridge_definition(cli_interface_module, bridge_definition_DELETE)          

@@ -69,7 +69,7 @@ def test_Port_Qos_policy_configuration(cli_interface_module):
     # for port in range(9,25):
     #     for port_qos_policy in Port_Qos_policy_configuration_DATA:
     #         Port_Qos_policy_configuration(cli_interface_module, port_qos_policy, "gpon-olt1", port)
-
+    cli_interface_module.exec("exit") 
     for qos_policy in Qos_policy_Config_Delete:
         Qos_Policy_configuration(cli_interface_module, qos_policy)
     for qos_class in Qos_Class_Config_Delete:

@@ -64,6 +64,7 @@ def test_Switch_config(cli_interface_module):
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
         for switch in Switch_DATA:
             Switch_config(cli_interface_module, switch)
+    cli_interface_module.exec("exit") 
     Bridge_definition(cli_interface_module, bridge_definition_DELETE)
         
 

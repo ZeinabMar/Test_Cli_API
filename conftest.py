@@ -18,7 +18,7 @@ bridge_service_custom = [
  "bridge 1 priority 4096"],grep="bridge"),
 
 
-data_config(2, "bridge 1 protocol provider-rstp-edge ageing-time 100 forward-time 120 hello-time 1 max-age 7 max-hops 20 priority 8192", 
+data_config(2, "bridge 1 protocol provider-rstp-edge ageing-time 100 forward-time 28 hello-time 1 max-age 7 max-hops 20 priority 8192", 
 result_find=["bridge 1 protocol provider-rstp-edge" ,
  "bridge 1 ageing-time 100",
  "bridge 1 forward-time 28",
@@ -30,7 +30,7 @@ result_find=["bridge 1 protocol provider-rstp-edge" ,
 
 
 bridge_custom = [
-data_config(1, "bridge 1 protocol ieee-vlan-bridge ageing-time 100 forward-time 120 hello-time 1 max-age 7 max-hops 20 priority 8192", 
+data_config(1, "bridge 1 protocol ieee-vlan-bridge ageing-time 100 forward-time 28 hello-time 1 max-age 7 max-hops 20 priority 8192", 
 result_find=["bridge 1 protocol ieee-vlan-bridge" ,
  "bridge 1 ageing-time 100",
  "bridge 1 forward-time 28",

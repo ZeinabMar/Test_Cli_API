@@ -93,7 +93,7 @@ def test_Port_QinQ_Translation(cli_interface_module):
             Port_QinQ_Translation(cli_interface_module, port_qinq, "DELETE")    
         
         Switch_config(cli_interface_module, Switch_Disable)
-   
+    cli_interface_module.exec("exit") 
     # for vlan_custom_del in Vlan_Custom_DELETE:  
     #     vlan_management(cli_interface_module, vlan_custom_del)
     # for vlan_service_del in Vlan_Service_DELETE:  

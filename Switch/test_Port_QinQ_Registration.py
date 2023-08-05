@@ -151,7 +151,7 @@ def test_Port_QinQ_Registeration_config(cli_interface_module):
             for port_qinq in Port_QinQ_Register_Hybrid_Default:
                 Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
             Switch_config(cli_interface_module, Switch_Disable)    
-
+    cli_interface_module.exec("exit") 
     # for qinq_reg_del in QinQ_Registration_Table_Delete:
     #     QinQ_Registraion(cli_interface_module, qinq_reg_del, "DELETE")
     # for vlan_custom_del in Vlan_Custom_DELETE:  
