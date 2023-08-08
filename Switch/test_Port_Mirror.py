@@ -16,35 +16,33 @@ Port_Mirror = namedtuple('Port_Mirror', ['Index', 'config', "result_find", "resu
 Port_Mirror.__new__.__defaults__ = (None, "", [], [], [], "")
 
 Port_Mirror_Config_First_Port = [
-#   Port_Mirror(1, f"mirror both destination interface ge1/1", result_error=["Error code: -1625"], grep="mirror"),
-#   Port_Mirror(2, f"mirror both destination interface ge1/3", result_find=[f"mirror both destination interface ge1/3"], grep="mirror"),
-#   Port_Mirror(3, f"mirror ingress destination interface ge1/3", result_error=["Error code: -1625"], grep="mirror"),
-#   Port_Mirror(4, f"mirror egress destination interface ge1/3", result_error=["Error code: -1625"], grep="mirror"),
-  Port_Mirror(5, f"mirror both destination interface ge1/2", result_find=[f"mirror both destination interface ge1/2"], grep="mirror"),
+  Port_Mirror(1, f"mirror both destination interface ge1/5", result_error=["Error code: -1625"], grep="mirror"),
+  Port_Mirror(2, f"mirror both destination interface ge1/4", result_find=[f"mirror both destination interface ge1/4"], grep="mirror"),
+  Port_Mirror(3, f"mirror ingress destination interface ge1/4", result_error=["Error code: -1625"], grep="mirror"),
+  Port_Mirror(4, f"mirror egress destination interface ge1/4", result_error=["Error code: -1625"], grep="mirror"),
+  Port_Mirror(5, f"mirror both destination interface ge1/6", result_find=[f"mirror both destination interface ge1/6"], grep="mirror"),
   Port_Mirror(6, f"no mirror both", result_not_find=["mirror both"], grep="mirror"),
-  Port_Mirror(7, f"mirror egress destination interface ge1/2", result_find=[f"mirror egress destination interface ge1/2"], grep="mirror"),
-  Port_Mirror(8, f"mirror both destination interface ge1/2", result_error=["Error code: -1625"], grep="mirror"),
-  Port_Mirror(9, f"mirror ingress destination interface ge1/2", result_error=["Error code: -1625"], grep="mirror"),
-  Port_Mirror(10, f"no mirror egress", result_not_find=["mirror both"], grep="mirror"),
-  Port_Mirror(11, f"mirror ingress destination interface ge1/2", result_find=[f"mirror ingress destination interface ge1/2"], grep="mirror"),
-  Port_Mirror(12, f"mirror both destination interface ge1/2", result_error=["Error code: -1625"], grep="mirror"),
-  Port_Mirror(13, f"mirror egress destination interface ge1/2", result_error=["Error code: -1625"], grep="mirror"),
+  Port_Mirror(7, f"mirror egress destination interface ge1/6", result_find=[f"mirror egress destination interface ge1/6"], grep="mirror"),
+  Port_Mirror(8, f"mirror both destination interface ge1/6", result_error=["Error code: -1625"], grep="mirror"),
+  Port_Mirror(9, f"mirror ingress destination interface ge1/6", result_find=[f"mirror ingress destination interface ge1/6", f"mirror egress destination interface ge1/6"], grep="mirror"),
+  Port_Mirror(10, f"mirror ingress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", f"mirror egress destination interface ge1/6"], grep="mirror"),
+  Port_Mirror(11, f"mirror both destination interface ge1/6", result_error=["Error code: -1625"], grep="mirror"),
+  Port_Mirror(12, f"mirror egress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", f"mirror egress destination interface ge1/4"], grep="mirror"),
 ] 
 
 Port_Mirror_Config_Second_Port = [
-#  Port_Mirror(1, f"mirror both destination interface ge1/2", result_error=["Error code: -1625"], grep="mirror"),
-#  Port_Mirror(2, f"mirror both destination interface ge1/3", result_find=[f"mirror both destination interface ge1/3"], grep="mirror"),
-#  Port_Mirror(3, f"mirror ingress destination interface ge1/3", result_error=["Error code: -1625"], grep="mirror"),
-#  Port_Mirror(4, f"mirror egress destination interface ge1/3", result_error=["Error code: -1625"], grep="mirror"),
- Port_Mirror(5, f"mirror both destination interface ge1/1", result_find=[f"mirror both destination interface ge1/1"], grep="mirror"),
+ Port_Mirror(1, f"mirror both destination interface ge1/6", result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(2, f"mirror both destination interface ge1/4", result_find=[f"mirror both destination interface ge1/4"], grep="mirror"),
+ Port_Mirror(3, f"mirror ingress destination interface ge1/4", result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(4, f"mirror egress destination interface ge1/4", result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(5, f"mirror both destination interface ge1/5", result_find=[f"mirror both destination interface ge1/5"], grep="mirror"),
  Port_Mirror(6, f"no mirror both", result_not_find=["mirror both"], grep="mirror"),
- Port_Mirror(7, f"mirror egress destination interface ge1/1", result_find=[f"mirror egress destination interface ge1/1"], grep="mirror"),
- Port_Mirror(8, f"mirror both destination interface ge1/1", result_error=["Error code: -1625"], grep="mirror"),
- Port_Mirror(9, f"mirror ingress destination interface ge1/1", result_error=["Error code: -1625"], grep="mirror"),
- Port_Mirror(10, f"no mirror egress ", result_not_find=["mirror both"], grep="mirror"),
- Port_Mirror(11, f"mirror ingress destination interface ge1/1", result_find=[f"mirror ingress destination interface ge1/1"], grep="mirror"),
- Port_Mirror(12, f"mirror both destination interface ge1/1", result_error=["Error code: -1625"], grep="mirror"),
- Port_Mirror(13, f"mirror egress destination interface ge1/1", result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(7, f"mirror egress destination interface ge1/5", result_find=[f"mirror egress destination interface ge1/5"], grep="mirror"),
+ Port_Mirror(8, f"mirror both destination interface ge1/5", result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(9, f"mirror ingress destination interface ge1/5", result_find=[f"mirror egress destination interface ge1/5", "mirror ingress destination interface ge1/5"], grep="mirror"),
+ Port_Mirror(10, f"mirror ingress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", "mirror egress destination interface ge1/5"], grep="mirror"),
+ Port_Mirror(11, f"mirror both destination interface ge1/5", result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(12, f"mirror egress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", "mirror egress destination interface ge1/4"], grep="mirror"),
 ]
 
 
@@ -77,20 +75,20 @@ def Port_Mirror_Configuration(cli_interface_module, data=[], method="SET"):
  
 def test_Port_Mirror_Configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
-    for port in range(1,2):
-        # for i in range(len(Port_Mirror_Config_Second_Port)):
-        #     if 1 <= port <=8 :
-        #         cli_interface_module.exec(f"interface ge1/{port}") 
-        #         Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_First_Port[i], "SET")
-        #         cli_interface_module.exec(f"interface ge1/{port+1}") 
-        #         Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_Second_Port[i], "SET")
+    for port in range(5,6):
+        for i in range(len(Port_Mirror_Config_Second_Port)):
+            if 1 <= port <=8 :
+                cli_interface_module.exec(f"interface ge1/{port}") 
+                Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_First_Port[i], "SET")
+                cli_interface_module.exec(f"interface ge1/{port+1}") 
+                Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_Second_Port[i], "SET")
 
-        #     else:    
-        #         cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
-        #         Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_First_Port[i], "SET")
-        #         cli_interface_module.exec(f"interface gpon-olt1/{port+1-8}") 
-        #         Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_Second_Port[i], "SET")
-        # cli_interface_module.exec("exit") 
+            else:    
+                cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
+                Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_First_Port[i], "SET")
+                cli_interface_module.exec(f"interface gpon-olt1/{port+1-8}") 
+                Port_Mirror_Configuration(cli_interface_module, Port_Mirror_Config_Second_Port[i], "SET")
+        cli_interface_module.exec("exit") 
         if 1 <= port <=8 :
                 cli_interface_module.exec(f"interface ge1/{port}") 
                 for mirror in Port_Mirror_Config_Default:
