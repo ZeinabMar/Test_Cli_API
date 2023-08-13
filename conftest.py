@@ -138,3 +138,12 @@ data_config(6, "no registration table reg6 bridge 1", result_not_find=[" registr
 ]
 #*************************************************************************************************************************************
 
+Bridge_Mstp_Instance_Config_Data = [
+data_config(1, "spanning-tree bridge 1 mstp instance 4 vlan 10,12", result_find=["spanning-tree bridge 1 mstp instance 4 vlan 10,12,"], grep="spanning-tree bridge"),
+data_config(2, "spanning-tree bridge 1 mstp instance 2 vlan 11,13" ,result_find=["spanning-tree bridge 1 mstp instance 2 vlan 11,13,"], grep="spanning-tree bridge"),
+]
+Bridge_Mstp_Instance_Config_Delete = [
+data_config(1, "no spanning-tree bridge 1 mstp instance 2", result_not_find=["spanning-tree bridge 1 mstp instance 2"], grep="spanning-tree bridge"),
+data_config(2, "no spanning-tree bridge 1 mstp instance 4", result_not_find=["spanning-tree bridge 1 mstp instance 4"], grep="spanning-tree bridge"),
+]
+#*************************************************************************************************************************************
