@@ -23,16 +23,16 @@ Port_Mstp.__new__.__defaults__ = (None, "", [], [], [], "")
 
 
 Port_Mstp_Data = [
-# Port_Mstp(1, "spanning-tree mstp instance 4", result_find=["spanning-tree mstp instance 4"], grep="spanning-tree mstp"),
-# Port_Mstp(2, "spanning-tree mstp instance 4 path-cost 1000", result_find=["spanning-tree mstp instance 4", "spanning-tree mstp instance 4 path-cost 1000"], grep="spanning-tree mstp"),
-# Port_Mstp(3, "spanning-tree mstp instance 4 port-priority 48", 
-# result_find=["spanning-tree mstp instance 4", "spanning-tree mstp instance 4 path-cost 1000", "spanning-tree mstp instance 4 port-priority 48"],
-# grep="spanning-tree mstp"),
+Port_Mstp(1, "spanning-tree mstp instance 4", result_find=["spanning-tree mstp instance 4"], grep="spanning-tree mstp"),
+Port_Mstp(2, "spanning-tree mstp instance 4 path-cost 1000", result_find=["spanning-tree mstp instance 4", "spanning-tree mstp instance 4 path-cost 1000"], grep="spanning-tree mstp"),
+Port_Mstp(3, "spanning-tree mstp instance 4 port-priority 48", 
+result_find=["spanning-tree mstp instance 4", "spanning-tree mstp instance 4 path-cost 1000", "spanning-tree mstp instance 4 port-priority 48"],
+grep="spanning-tree mstp"),
 # Port_Mstp(4, "spanning-tree mstp instance 4 port-priority 33", 
 # result_find=["spanning-tree mstp instance 4", "spanning-tree mstp instance 4 path-cost 1000", "spanning-tree mstp instance 4 port-priority 48"],
 # result_error=["Problem parsing"], grep="spanning-tree mstp"),
 Port_Mstp(5, "spanning-tree mstp instance 2", result_find=["spanning-tree mstp instance 2"], grep="spanning-tree mstp"),
-Port_Mstp(6, "spanning-tree mstp instance 2 path-cost 1000", result_find=["spanning-tree mstp instance 2", "spanning-tree bmstp instance 2 path-cost 1000"], grep="spanning-tree mstp"),
+Port_Mstp(6, "spanning-tree mstp instance 2 path-cost 1000", result_find=["spanning-tree mstp instance 2", "spanning-tree mstp instance 2 path-cost 1000"], grep="spanning-tree mstp"),
 Port_Mstp(7, "spanning-tree mstp instance 2 port-priority 48", 
 result_find=["spanning-tree mstp instance 2", "spanning-tree mstp instance 2 path-cost 1000", "spanning-tree mstp instance 2 port-priority 48"],
 grep="spanning-tree mstp"),
@@ -79,31 +79,31 @@ def Port_Mstp_Config(cli_interface_module, data=[], method="SET", interface=Fals
 
 def test_Port_Mstp_Config(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # for vlan_service in Vlan_Service:  
-    #     vlan_management(cli_interface_module, vlan_service)
-    # for bridge_mstp_instance in Bridge_Mstp_Instance_Config_Data:
-    #     Bridge_Mstp_Instance_Config(cli_interface_module, bridge_mstp_instance, "SET", False)
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    for vlan_service in Vlan_Service:  
+        vlan_management(cli_interface_module, vlan_service)
+    for bridge_mstp_instance in Bridge_Mstp_Instance_Config_Data:
+        Bridge_Mstp_Instance_Config(cli_interface_module, bridge_mstp_instance, "SET", False)
 
     for port in range(1,3):
         if 1 <= port <=8 :
             cli_interface_module.exec(f"interface ge1/{port}") 
         else:    
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
-        # Switch_config(cli_interface_module, Switch_Enable)  
+        Switch_config(cli_interface_module, Switch_Enable)  
         for port_mstp in Port_Mstp_Data:
             Bridge_Mstp_Instance_Config(cli_interface_module, port_mstp, "SET", True)
 
-    # for port in range(1,2):
-    #     if 1 <= port <=8 :
-    #         cli_interface_module.exec(f"interface ge1/{port}") 
-    #     else:    
-    #         cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
-    #     for port_mstp in Port_Mstp_Delete:
-    #         Bridge_Mstp_Instance_Config(cli_interface_module, port_mstp, "DELETE", False)
-    #     Switch_config(cli_interface_module, Switch_Disable) 
+    for port in range(1,2):
+        if 1 <= port <=8 :
+            cli_interface_module.exec(f"interface ge1/{port}") 
+        else:    
+            cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
+        for port_mstp in Port_Mstp_Delete:
+            Bridge_Mstp_Instance_Config(cli_interface_module, port_mstp, "DELETE", False)
+        Switch_config(cli_interface_module, Switch_Disable) 
 
     # for bridge_mstp_instance in Bridge_Mstp_Instance_Config_Delete:
     #     Bridge_Mstp_Instance_Config(cli_interface_module, bridge_mstp_instance, "DELETE", False)
