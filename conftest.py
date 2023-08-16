@@ -84,7 +84,7 @@ result_find=["vlan 15 bridge 1 type service-rooted-multipoint state enable"],gre
 data_config(3, "vlan 16 bridge 1 type service-point-point state enable", 
 result_find=["vlan 16 bridge 1 type service-point-point state enable"],grep="vlan"),
 data_config(4, "vlan 17 bridge 1 type service-rooted-multipoint state enable", 
-result_find=["vlan 17 bridge 1 service-rooted-multipoint state enable"],grep="vlan"),
+result_find=["vlan 17 bridge 1 type service-rooted-multipoint state enable"],grep="vlan"),
 ]
 
 Vlan_Service_DELETE = [
