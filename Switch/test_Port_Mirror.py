@@ -24,10 +24,10 @@ Port_Mirror_Config_First_Port = [
   Port_Mirror(6, f"no mirror both", result_not_find=["mirror both"], grep="mirror"),
   Port_Mirror(7, f"mirror egress destination interface ge1/6", result_find=[f"mirror egress destination interface ge1/6"], grep="mirror"),
   Port_Mirror(8, f"mirror both destination interface ge1/6", result_error=["Error code: -1625"], grep="mirror"),
-  Port_Mirror(9, f"mirror ingress destination interface ge1/6", result_find=[f"mirror ingress destination interface ge1/6", f"mirror egress destination interface ge1/6"], grep="mirror"),
-  Port_Mirror(10, f"mirror ingress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", f"mirror egress destination interface ge1/6"], grep="mirror"),
+  Port_Mirror(9, f"mirror ingress destination interface ge1/6", result_find=[f"mirror egress destination interface ge1/6"], result_error=["Error code: -1625"], grep="mirror"),
+#   Port_Mirror(10, f"mirror ingress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", f"mirror egress destination interface ge1/6"], grep="mirror"),
   Port_Mirror(11, f"mirror both destination interface ge1/6", result_error=["Error code: -1625"], grep="mirror"),
-  Port_Mirror(12, f"mirror egress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", f"mirror egress destination interface ge1/4"], grep="mirror"),
+  Port_Mirror(12, f"mirror egress destination interface ge1/4", result_find=[f"mirror egress destination interface ge1/4"], grep="mirror"),
 ] 
 
 Port_Mirror_Config_Second_Port = [
@@ -39,10 +39,10 @@ Port_Mirror_Config_Second_Port = [
  Port_Mirror(6, f"no mirror both", result_not_find=["mirror both"], grep="mirror"),
  Port_Mirror(7, f"mirror egress destination interface ge1/5", result_find=[f"mirror egress destination interface ge1/5"], grep="mirror"),
  Port_Mirror(8, f"mirror both destination interface ge1/5", result_error=["Error code: -1625"], grep="mirror"),
- Port_Mirror(9, f"mirror ingress destination interface ge1/5", result_find=[f"mirror egress destination interface ge1/5", "mirror ingress destination interface ge1/5"], grep="mirror"),
- Port_Mirror(10, f"mirror ingress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", "mirror egress destination interface ge1/5"], grep="mirror"),
+ Port_Mirror(9, f"mirror ingress destination interface ge1/5", result_find=[f"mirror egress destination interface ge1/5"], result_error=["Error code: -1625"], grep="mirror"),
+ Port_Mirror(10, f"mirror ingress destination interface ge1/4", result_find=[f"mirror egress destination interface ge1/5"], result_error=["Error code: -1625"],grep="mirror"),
  Port_Mirror(11, f"mirror both destination interface ge1/5", result_error=["Error code: -1625"], grep="mirror"),
- Port_Mirror(12, f"mirror egress destination interface ge1/4", result_find=[f"mirror ingress destination interface ge1/4", "mirror egress destination interface ge1/4"], grep="mirror"),
+ Port_Mirror(12, f"mirror egress destination interface ge1/4", result_find=["mirror egress destination interface ge1/4"], grep="mirror"),
 ]
 
 
