@@ -107,8 +107,8 @@ Qos_Enable = data_config(1, "qos enable", result_find=["qos enable"],grep="qos")
 Qos_Disable = data_config(1, "qos disable", result_find=["qos disable"],grep="qos")
 #*************************************************************************************************************************************
 Qos_Class_Config = [
- data_config(1, "class-map B match vlan 10-11", result_find=["class-map B match vlan  10-11"], grep="class-map"),
- data_config(3, "class-map C match vlan 10", result_find=["class-map C match vlan  10"], grep="class-map")]
+ data_config(1, "class-map B match vlan 10-11", result_find=["class-map B match vlan 10-11"], grep="class-map"),
+ data_config(3, "class-map C match vlan 10", result_find=["class-map C match vlan 10"], grep="class-map")]
 
 Qos_Class_Config_Delete = [
  data_config(7, "no class-map C", result_not_find=["class-map C match"], grep="class-map"),

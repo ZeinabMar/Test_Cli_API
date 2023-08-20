@@ -9,6 +9,7 @@ from conftest import *
 from config import *
 from Switch.test_Bridge_config import Bridge_definition
 from Switch.test_vlan_config import vlan_management
+from Switch.test_Qos_management import Qos_Management
 from Switch.test_Qos_class_definition import Qos_class_definition
 
 
@@ -24,20 +25,20 @@ Qos_policy.__new__.__defaults__ = (None, "", [], [], [], "")
 Qos_policy_DATA = [
 [
 Qos_policy(1, "policy-map policy class B mode allow", result_find=["policy-map policy class B mode allow"], grep="policy-map"),
- Qos_policy(1, "policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop", 
+ Qos_policy(2, "policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop", 
  result_find=["policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop"], grep="policy-map"),
- Qos_policy(1, "policy-map policy class B set cos 5", result_find=["policy-map policy class B set cos 5"], grep="policy-map"),
- Qos_policy(1, "no policy-map policy class B set cos 5", result_not_find=["policy-map policy class B set cos 5"], grep="policy-map"),
+ Qos_policy(3, "policy-map policy class B set cos 5", result_find=["policy-map policy class B set cos 5"], grep="policy-map"),
+ Qos_policy(4, "no policy-map policy class B set cos 5", result_not_find=["policy-map policy class B set cos 5"], grep="policy-map"),
 
- Qos_policy(1, "policy-map policy class B set ip-dscp 64", result_error=["Problem"], result_not_find=["policy-map policy class B set ip-dscp 64"], grep="policy-map"),
- Qos_policy(1, "policy-map policy class B set ip-precedence 8", result_error=["Problem"], result_not_find=["policy-map policy class B set ip-precedence 8"], grep="policy-map"),
-  Qos_policy(1, "policy-map policy class B set ip-precedence 26", result_error=["Problem"], result_not_find=["policy-map policy class B set ip-precedence 26"], grep="policy-map"),
+ Qos_policy(5, "policy-map policy class B set ip-dscp 64", result_error=["Problem"], result_not_find=["policy-map policy class B set ip-dscp 64"], grep="policy-map"),
+ Qos_policy(6, "policy-map policy class B set ip-precedence 8", result_error=["Problem"], result_not_find=["policy-map policy class B set ip-precedence 8"], grep="policy-map"),
+  Qos_policy(7, "policy-map policy class B set ip-precedence 26", result_error=["Problem"], result_not_find=["policy-map policy class B set ip-precedence 26"], grep="policy-map"),
 
- Qos_policy(1, "policy-map policy class B set mirror-to-port ge1/26", result_error=["Error code: -1632"], result_not_find=["policy-map policy class B set mirror-to-port"], grep="policy-map"),
- Qos_policy(1, "policy-map policy class B set vlan 4500", result_error=["Problem"], result_not_find=["policy-map policy class B set redirect-to-point"], grep="policy-map"),
- Qos_policy(1, "policy-map policy class B set vlan 1200", result_find=["policy-map policy class B set vlan 1200"], grep="policy-map"),
- Qos_policy(1, "no policy-map policy class B set vlan 1200", result_not_find=["policy-map policy class B set vlan"], grep="policy-map"),
- Qos_policy(1, "policy-map policy class B set redirect-to-port ge1/1", result_find=["policy-map policy class B set redirect-to-port ge1/1"], grep="policy-map"),
+ Qos_policy(8, "policy-map policy class B set mirror-to-port ge1/26", result_error=["Error code: -1632"], result_not_find=["policy-map policy class B set mirror-to-port"], grep="policy-map"),
+ Qos_policy(9, "policy-map policy class B set vlan 4500", result_error=["Problem"], result_not_find=["policy-map policy class B set redirect-to-point"], grep="policy-map"),
+ Qos_policy(10, "policy-map policy class B set vlan 1200", result_find=["policy-map policy class B set vlan 1200"], grep="policy-map"),
+ Qos_policy(11, "no policy-map policy class B set vlan 1200", result_not_find=["policy-map policy class B set vlan"], grep="policy-map"),
+ Qos_policy(12, "policy-map policy class B set redirect-to-port ge1/1", result_find=["policy-map policy class B set redirect-to-port ge1/1"], grep="policy-map"),
 ],
 
 [
@@ -50,7 +51,7 @@ Qos_policy(1, "policy-map policy class C mode deny", result_find=["policy-map po
  result_error=["Problem"], result_not_find=["policy-map policy1 class C count-type byte-based"], grep="policy-map"),
 
  Qos_policy(1, "policy-map policy class C count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop", 
- result_find=["policy-map policy1 class C count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop"], grep="policy-map"),
+ result_find=["policy-map policy class C count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop"], grep="policy-map"),
  
  Qos_policy(1, "policy-map policy class C set ip-dscp 12 priority 5", result_find=["policy-map policy class C set ip-dscp 12"], grep="policy-map"),
  Qos_policy(1, "no policy-map policy class C set ip-dscp 12", result_not_find=["policy-map policy class C set ip-dscp"], grep="policy-map"),
