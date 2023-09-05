@@ -37,6 +37,7 @@ Static_Rout(2, "no ip route 192.168.34.0 255.255.255.0 192.168.23.4",
 
 ]
 
+@pytest.mark.order(6)        
 def Static_Rout_configuration(cli_interface_module, data=Static_Rout()):   
     result_find = data.result_find
     result_error = data.result_error

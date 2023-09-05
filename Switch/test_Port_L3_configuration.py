@@ -66,6 +66,7 @@ def Port_L3_configuration(cli_interface_module, DATA=[Port_L3()]):
                 result = get_result(cli_interface_module, f"{grep}")
                 assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
+@pytest.mark.order(7)        
 def test_Port_L3_configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
     for port in range(1,2):

@@ -7,7 +7,11 @@ from collections import namedtuple
 import pytest_check as check
 from config import *
 from conftest import *
-
+from Switch.test_Bridge_config import Bridge_definition
+from Switch.test_vlan_config import vlan_management
+from Switch.test_Qos_management import Qos_Management
+from Switch.test_Qos_class_definition import Qos_class_definition
+from Switch.test_Qos_policy_configuration_new_featue import Qos_Policy_configuration
 
 pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
 
@@ -19,11 +23,11 @@ Port_Qos_policy.__new__.__defaults__ = (None, "", [], [], [], "")
 
 
 Port_Qos_policy_configuration_DATA = [
- Port_Qos_policy(1, "service-policy input policy1", result_find=["service-policy input policy1"], grep="service-policy"),
- Port_Qos_policy(2, "service-policy input test", result_find=["service-policy input policy1"], 
+ Port_Qos_policy(1, "service-policy input policy", result_find=["service-policy input policy"], grep="service-policy"),
+ Port_Qos_policy(2, "service-policy input test", result_find=["service-policy input policy"], 
  result_not_find=["service-policy input test"], result_error=["Error code: -1625"], grep="service-policy"),
- Port_Qos_policy(3, "service-policy input policy2", result_find=["service-policy input policy2"], grep="service-policy"), 
- Port_Qos_policy(4, "no service-policy input policy2", result_not_find=["service-policy input policy2"], grep="service-policy"), 
+ Port_Qos_policy(3, "service-policy input policy1", result_find=["service-policy input policy1"], grep="service-policy"), 
+ Port_Qos_policy(4, "no service-policy input policy1", result_not_find=["service-policy input policy1"], grep="service-policy"), 
 ]
 
 
@@ -51,6 +55,8 @@ def Port_Qos_policy_configuration(cli_interface_module, data=Port_Qos_policy(), 
             result = get_result(cli_interface_module, f"{grep}")
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
+
+@pytest.mark.order(10)        
 def test_Port_Qos_policy_configuration(cli_interface_module):
 
     cli_interface_module.change_to_config() 

@@ -42,12 +42,24 @@ result_find=["bridge 1 protocol ieee-vlan-bridge" ,
 
 
 bridge_service = [
-data_config(1, "bridge 1 protocol provider-rstp ageing-time 100 forward-time 120 hello-time 1 max-age 7 max-hops 20 priority 8192", 
-result_find=["bridge 1 protocol ieee-vlan-bridge" ,
+data_config(1, "bridge 1 protocol provider-rstp ageing-time 100 forward-time 28 hello-time 1 max-age 7 max-hops 20 priority 8192", 
+result_find=["bridge 1 protocol provider-rstp" ,
  "bridge 1 ageing-time 100",
  "bridge 1 forward-time 28",
  "bridge 1 hello-time 1",
  "bridge 1 max-age 7",
+ "bridge 1 max-hops 20",
+ "bridge 1 priority 8192"],grep="bridge"),
+]
+
+
+bridge_service_custom = [
+data_config(1, "bridge 1 protocol provider-mstp-edge ageing-time 100 forward-time 30 max-age 6 max-hops 20 priority 8192", 
+result_find=["bridge 1 protocol provider-mstp-edge" ,
+ "bridge 1 ageing-time 100",
+ "bridge 1 forward-time 30",
+ "bridge 1 hello-time 2",
+ "bridge 1 max-age 6",
  "bridge 1 max-hops 20",
  "bridge 1 priority 8192"],grep="bridge"),
 ]
@@ -115,8 +127,20 @@ Qos_Class_Config_Delete = [
  data_config(8, "no class-map B", result_not_find=["class-map B match"], grep="class-map"),
 ]
 #*************************************************************************************************************************************
-Qos_policy_Config = []
-Qos_policy_Config_Delete = []
+Qos_policy_Config = [
+[data_config(1, "policy-map policy class B mode allow", result_find=["policy-map policy class B mode allow"], grep="policy-map"),
+ data_config(2, "policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop", 
+ result_find=["policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop"],
+ grep="policy-map"),],
+[data_config(1, "policy-map policy1 class C mode deny", result_find=["policy-map policy1 class C mode deny"], grep="policy-map"),]]
+
+Qos_policy_Config_Delete = [
+[data_config(1, "no policy-map policy class B mode allow", 
+result_not_find=["policy-map policy class B mode allow"], grep="policy-map"),
+data_config(1, "no policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop",
+result_not_find=["policy-map policy class B count-type byte-based color aware rate-type two-rate peak 1000 avg 1000 burst 1000 exceed-burst 1000 act drop"], grep="policy-map")],
+[data_config(2, "no policy-map policy1 class C mode deny", result_not_find=["policy-map policy1 class C mode deny"], grep="policy-map")],
+]
 #*************************************************************************************************************************************
 QinQ_Registration_Table = [
 data_config(1, "registration table reg1 bridge 1 cvlan 10 svlan 14", result_find=["registration table reg1 bridge 1 cvlan 10,  svlan 14,"], grep="registration"),

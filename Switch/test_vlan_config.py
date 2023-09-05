@@ -8,6 +8,7 @@ import pytest_check as check
 from config import *
 import re
 from conftest import *
+from Switch.test_Bridge_config import Bridge_definition
 
 
 
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 Vlan = namedtuple('Vlan', ['Index', 'config', "result_find", "result_error", 'result_not_find', 'grep'])
 Vlan.__new__.__defaults__ = (None, "", [], [], [], "")
 
-Vlan_DATA = [
+Vlan_DATA_Custom = [
 Vlan(1, "vlan 10 bridge 1 type customer state enable", 
 result_find=["vlan 10 bridge 1 type customer state enable"],grep="vlan"),
 
@@ -27,31 +28,41 @@ Vlan(2, "vlan 11 bridge 1 type customer state enable",
 result_find=["vlan 11 bridge 1 type customer state enable"],grep="vlan"),
 
 Vlan(3, "vlan 110 bridge 1 type service-point-point state enable", 
-result_find=["vlan 110 bridge 1 type service-point-point state enable"],grep="vlan"),
+result_error=["Error code: -1635"], result_not_find=["vlan 110 bridge 1 type service-point-point state enable"], grep="vlan"),
 
-Vlan(4, "vlan 111 bridge 1 type service-rooted-multipoint state enable", 
-result_find=["vlan 111 bridge 1 type service-rooted-multipoint state enable"],grep="vlan"),
+Vlan(4, "vlan 10 bridge 1 type customer state disable", 
+result_find=["vlan 10 bridge 1 type customer state disable"],grep="vlan"),
+]
 
-Vlan(5, "vlan 111 bridge 1 type customer state enable", 
-result_find=["vlan 111 bridge 1 type customer state enable"],grep="vlan"),
+Vlan_DATA_Service = [
+Vlan(5, "vlan 12 bridge 1 type service-rooted-multipoint state enable", 
+result_find=["vlan 12 bridge 1 type service-rooted-multipoint state enable"],grep="vlan"),
+Vlan(6, "vlan 13 bridge 1 type customer state enable", 
+result_error=["Error code: -1635"], result_not_find=["vlan 13 bridge 1 type customer state enable"],grep="vlan"),
+]
 
-Vlan(5, "vlan 111 bridge 1 type customer state disable", 
-result_find=["vlan 111 bridge 1 type customer state disable"],grep="vlan"),
+Vlan_DATA_Service_Custom = [
+Vlan(1, "vlan 10 bridge 1 type customer state enable", 
+result_find=["vlan 10 bridge 1 type customer state enable"],grep="vlan"),
+Vlan(4, "vlan 10 bridge 1 type service-rooted-multipoint state enable", 
+result_find=["vlan 10 bridge 1 type service-rooted-multipoint state enable"],grep="vlan"),
 
 ]
 
-Vlan_DELETE = [
+Vlan_DELETE_Custom = [
 Vlan(1, "no vlan 10 bridge 1 type customer", 
 result_not_find=["vlan 10 bridge 1 type customer state enable"],grep= "vlan"),
 Vlan(2, "no vlan 11 bridge 1 type customer", 
-result_not_find=["vlan 11 bridge 1 type customer state enable"],grep= "vlan"),
-Vlan(3, "no vlan 110 bridge 1 type service-point-point", 
-result_not_find=["vlan 110 bridge 1 type service-point-point state enable"],grep= "vlan"),
-Vlan(4, "no vlan 111 bridge 1 type service-rooted-multipoint", 
-result_not_find=["vlan 111 bridge 1 type service-rooted-multipoint state enable"],grep= "vlan"),
-Vlan(5, "no vlan 111 bridge 1 type customer", 
-result_not_find=["vlan 111 bridge 1 type customer state disable"],grep= "vlan"),
+result_not_find=["vlan 11 bridge 1 type customer state enable"],grep= "vlan"),]
+Vlan_DELETE_Service = [
+Vlan(3, "no vlan 12 bridge 1 type service-rooted-multipoint state enable", 
+result_not_find=["vlan 12 bridge 1 type service-rooted-multipoint state enable"],grep= "vlan"),]
 
+Vlan_DELETE_Service_Custom = [
+Vlan(4, "no vlan 10 bridge 1 type customer state enable", 
+result_not_find=["vlan 10 bridge 1 type customer state enable"],grep= "vlan"),
+Vlan(5, "no vlan 10 bridge 1 type service-rooted-multipoint state enable", 
+result_not_find=["vlan 10 bridge 1 type service-rooted-multipoint state enable"],grep= "vlan"),
 ]
 
 def vlan_management(cli_interface_module, data=Vlan()): 
@@ -75,11 +86,27 @@ def vlan_management(cli_interface_module, data=Vlan()):
             result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
+@pytest.mark.order(2)        
 def test_vlan_management(cli_interface_module):
     cli_interface_module.change_to_config() 
     Bridge_definition(cli_interface_module, bridge_custom[0])
-    # for vlan in Vlan_DATA:
-    #     vlan_management(cli_interface_module, vlan)
-    for vlan in Vlan_DELETE:  
+    for vlan in Vlan_DATA_Custom:
+        vlan_management(cli_interface_module, vlan)
+    for vlan in Vlan_DELETE_Custom:  
+        vlan_management(cli_interface_module, vlan)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)   
+
+    Bridge_definition(cli_interface_module, bridge_service[0])
+    for vlan in Vlan_DATA_Service:
+        vlan_management(cli_interface_module, vlan)
+    for vlan in Vlan_DELETE_Service:  
         vlan_management(cli_interface_module, vlan)
     Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
+
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan in Vlan_DATA_Service_Custom:
+        vlan_management(cli_interface_module, vlan)
+    for vlan in Vlan_DELETE_Service_Custom:  
+        vlan_management(cli_interface_module, vlan)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
+

@@ -52,6 +52,8 @@ def Qos_Management(cli_interface_module, data=Qos_manage()):
             result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
+
+@pytest.mark.order(8)        
 def test_Qos_Management(cli_interface_module):
     cli_interface_module.change_to_config() 
     for qos in Qos_managegment_DATA:  

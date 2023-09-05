@@ -74,6 +74,8 @@ def Uplink_Port_L2_configuration(cli_interface_module, DATA=[Port_L2()]):
                 result = get_result(cli_interface_module, f"{grep}")
                 assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
+
+@pytest.mark.order(5)        
 def test_Uplink_Port_L2_configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
     for portl2 in Port_L2_DATA: 

@@ -7,7 +7,9 @@ from collections import namedtuple
 import pytest_check as check
 from config import *
 from conftest import *
-
+from Switch.test_Bridge_config import Bridge_definition
+from Switch.test_vlan_config import vlan_management
+from Switch.test_Bridge_Group_config import Switch_config
 
 
 
@@ -75,7 +77,7 @@ def Uplink_Vlan(cli_interface_module, data=Uplink_Vlan()):
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
 
-
+@pytest.mark.order(4)        
 def test_Uplink_Vlan(cli_interface_module):
 
     cli_interface_module.change_to_config() 
@@ -84,13 +86,15 @@ def test_Uplink_Vlan(cli_interface_module):
         vlan_management(cli_interface_module, vlan_custom)
 
     for port in range(1,2):
-        Switch_config(cli_interface_module, Switch_Enable)
-        for data_mode in [Uplink_Vlan_DATA_HYBRID]:#,Uplink_Vlan_DATA_TRUNK,Uplink_Vlan_DATA_HYBRID
+        if 1 <= port <=8 :
+            cli_interface_module.exec(f"interface ge1/{port}") 
+            Switch_config(cli_interface_module, Switch_Enable)
+        else:    
+            cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
+            Switch_config(cli_interface_module, Switch_Enable)
+        for data_mode in [Uplink_Vlan_DATA_ACCESS, Uplink_Vlan_DATA_TRUNK, Uplink_Vlan_DATA_HYBRID]:#,Uplink_Vlan_DATA_TRUNK,Uplink_Vlan_DATA_HYBRID
+
             if data_mode == Uplink_Vlan_DATA_ACCESS:
-                if 1 <= port <=8 :
-                    cli_interface_module.exec(f"interface ge1/{port}") 
-                else:    
-                    cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
                 set_mode_and_check(cli_interface_module, "access")
                 logger.info(f"IN ACCESS MODE")
                 for data_access in Uplink_Vlan_DATA_ACCESS:
@@ -98,23 +102,17 @@ def test_Uplink_Vlan(cli_interface_module):
                     Uplink_Vlan(cli_interface_module, data_access)
 #*********************************************************************************
             if data_mode == Uplink_Vlan_DATA_TRUNK:
-                cli_interface_module.change_to_config()  
-                if 1 <= port <=8 :
-                    cli_interface_module.exec(f"interface ge1/{port}") 
-                else:    
-                    cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
                 set_mode_and_check(cli_interface_module, "trunk")
+                logger.info(f"IN ATRUNK MODE")
                 for data_trunk in Uplink_Vlan_DATA_TRUNK:
+                    logger.info(f"IN INDEX {data_trunk.Index} DATA")
                     Uplink_Vlan(cli_interface_module, data_trunk)  
 #*********************************************************************************
             if data_mode == Uplink_Vlan_DATA_HYBRID:
-                cli_interface_module.change_to_config()  
-                if 1 <= port <=8 :
-                    cli_interface_module.exec(f"interface ge1/{port}") 
-                else:    
-                    cli_interface_module.exec(f"interface gpon-olt1/{port-8}")  
                 set_mode_and_check(cli_interface_module, "hybrid")
+                logger.info(f"IN HYBRID MODE")
                 for data_hybrid in Uplink_Vlan_DATA_HYBRID:
+                    logger.info(f"IN INDEX {data_hybrid.Index} DATA")
                     Uplink_Vlan(cli_interface_module, data_hybrid)     
         Switch_config(cli_interface_module, Switch_Disable)
 
