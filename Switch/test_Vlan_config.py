@@ -87,7 +87,7 @@ def vlan_management(cli_interface_module, data=Vlan()):
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
 @pytest.mark.order(2)        
-def test_vlan_management(cli_interface_module):
+def test_Vlan_management(cli_interface_module):
     cli_interface_module.change_to_config() 
     Bridge_definition(cli_interface_module, bridge_custom[0])
     for vlan in Vlan_DATA_Custom:
