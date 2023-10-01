@@ -83,7 +83,7 @@ def test_Bridge_Stp_Configuration(cli_interface_module):
     for bridge_stp in Bridge_Stp_Default:
         Bridge_Stp_Configuration(cli_interface_module, bridge_stp, "DELETE", False)
 
-    # Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
      
  
 

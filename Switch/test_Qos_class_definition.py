@@ -55,9 +55,9 @@ def Qos_class_definition(cli_interface_module, data=Qos_Class()):
 def test_Qos_class_definition(cli_interface_module):
 
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
+    Bridge_definition(cli_interface_module, bridge_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
     Qos_Management(cli_interface_module, Qos_Enable)    
 
 

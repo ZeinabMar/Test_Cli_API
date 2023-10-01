@@ -110,13 +110,13 @@ def Port_QinQ_Registeration_config(cli_interface_module, data=[]):
 
 def test_Port_QinQ_Registeration_config(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # for vlan_service in Vlan_Service:  
-    #     vlan_management(cli_interface_module, vlan_service)
-    # for qinq_reg in QinQ_Registration_Table:
-    #     QinQ_Registraion(cli_interface_module, qinq_reg, "SET")
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    for vlan_service in Vlan_Service:  
+        vlan_management(cli_interface_module, vlan_service)
+    for qinq_reg in QinQ_Registration_Table:
+        QinQ_Registraion(cli_interface_module, qinq_reg, "SET")
  
     for port in range(1,2):
         if 1 <= port <=8 :
@@ -125,8 +125,8 @@ def test_Port_QinQ_Registeration_config(cli_interface_module):
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
 
         if uplink_mode == "customer-edge-access":
-            # Switch_config(cli_interface_module, Switch_Enable)
-            # set_mode_and_check(cli_interface_module, "customer-edge-access")
+            Switch_config(cli_interface_module, Switch_Enable)
+            set_mode_and_check(cli_interface_module, "customer-edge-access")
 
             for port_qinq in Port_QinQ_Register_Access:
                 Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
@@ -134,8 +134,8 @@ def test_Port_QinQ_Registeration_config(cli_interface_module):
                 Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
             Switch_config(cli_interface_module, Switch_Disable)
         elif uplink_mode == "customer-edge-trunk":
-            # Switch_config(cli_interface_module, Switch_Enable)
-            # set_mode_and_check(cli_interface_module, "customer-edge-trunk")
+            Switch_config(cli_interface_module, Switch_Enable)
+            set_mode_and_check(cli_interface_module, "customer-edge-trunk")
 
             for port_qinq in Port_QinQ_Register_Trunk:
                 Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
@@ -144,21 +144,21 @@ def test_Port_QinQ_Registeration_config(cli_interface_module):
             Switch_config(cli_interface_module, Switch_Disable)  
 
         elif uplink_mode == "customer-edge-hybrid":
-            # Switch_config(cli_interface_module, Switch_Enable)
-            # set_mode_and_check(cli_interface_module, "customer-edge-hybrid")
+            Switch_config(cli_interface_module, Switch_Enable)
+            set_mode_and_check(cli_interface_module, "customer-edge-hybrid")
             for port_qinq in Port_QinQ_Register_Hybrid:
                 Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
             for port_qinq in Port_QinQ_Register_Hybrid_Default:
                 Port_QinQ_Registeration_config(cli_interface_module, port_qinq)
             Switch_config(cli_interface_module, Switch_Disable)    
     cli_interface_module.exec("exit") 
-    # for qinq_reg_del in QinQ_Registration_Table_Delete:
-    #     QinQ_Registraion(cli_interface_module, qinq_reg_del, "DELETE")
-    # for vlan_custom_del in Vlan_Custom_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_custom_del)
-    # for vlan_service_del in Vlan_Service_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_service_del)
-    # Bridge_definition(cli_interface_module, bridge_definition_DELETE)        
+    for qinq_reg_del in QinQ_Registration_Table_Delete:
+        QinQ_Registraion(cli_interface_module, qinq_reg_del, "DELETE")
+    for vlan_custom_del in Vlan_Custom_DELETE:  
+        vlan_management(cli_interface_module, vlan_custom_del)
+    for vlan_service_del in Vlan_Service_DELETE:  
+        vlan_management(cli_interface_module, vlan_service_del)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)        
             
 
 

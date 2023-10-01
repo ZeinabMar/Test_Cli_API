@@ -50,7 +50,7 @@ def test_total(cli_interface_module):
     test_Bridge_Mstp_Instance_Config(cli_interface_module)
     test_Port_Mirror_Configuration(cli_interface_module)
     test_Port_Mstp_Config(cli_interface_module)
-    test_Qos_Policy_configuration(cli_interface_module)
+    test_Qos_policy_configuration_new_featue(cli_interface_module)
     test_Port_QinQ_Registeration_config(cli_interface_module)
     # test_Lacp_management(snmp_interface_function, data, index)
     # test_Lacp_Interface(snmp_interface_function, data)

@@ -67,11 +67,11 @@ def Port_QinQ_Translation(cli_interface_module, data=Port_QinQ_Trans(), method="
 
 def test_Port_QinQ_Translation(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # for vlan_service in Vlan_Service:  
-    #     vlan_management(cli_interface_module, vlan_service)
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    for vlan_service in Vlan_Service:  
+        vlan_management(cli_interface_module, vlan_service)
 
     for port in range(1,2):
         if 1 <= port <=8 :
@@ -79,12 +79,12 @@ def test_Port_QinQ_Translation(cli_interface_module):
         else:    
             cli_interface_module.exec(f"interface gpon-olt1/{port-8}") 
 
-        # if uplink_mode == "provider-network":
-        #     Switch_config(cli_interface_module, Switch_Enable)
-        #     set_mode_and_check(cli_interface_module, "provider-network")
-        # else:
-        #     Switch_config(cli_interface_module, Switch_Enable)
-        #     set_mode_and_check(cli_interface_module, "customer-network")
+        if uplink_mode == "provider-network":
+            Switch_config(cli_interface_module, Switch_Enable)
+            set_mode_and_check(cli_interface_module, "provider-network")
+        else:
+            Switch_config(cli_interface_module, Switch_Enable)
+            set_mode_and_check(cli_interface_module, "customer-network")
 
         for port_qinq in Port_QinQ_Translation_Config:
             Port_QinQ_Translation(cli_interface_module, port_qinq, "SET")
@@ -94,11 +94,11 @@ def test_Port_QinQ_Translation(cli_interface_module):
         
         Switch_config(cli_interface_module, Switch_Disable)
     cli_interface_module.exec("exit") 
-    # for vlan_custom_del in Vlan_Custom_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_custom_del)
-    # for vlan_service_del in Vlan_Service_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_service_del)
-    # Bridge_definition(cli_interface_module, bridge_definition_DELETE)        
+    for vlan_custom_del in Vlan_Custom_DELETE:  
+        vlan_management(cli_interface_module, vlan_custom_del)
+    for vlan_service_del in Vlan_Service_DELETE:  
+        vlan_management(cli_interface_module, vlan_service_del)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)        
             
 
 

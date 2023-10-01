@@ -61,22 +61,22 @@ def Bridge_Mstp_Instance_Config(cli_interface_module, data=[], method="SET", int
 
 def test_Bridge_Mstp_Instance_Config(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # for vlan_service in Vlan_Service:  
-    #     vlan_management(cli_interface_module, vlan_service)
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    for vlan_service in Vlan_Service:  
+        vlan_management(cli_interface_module, vlan_service)
 
     for bridge_mstp_instance in Bridge_Mstp_Instance_Data:
         Bridge_Mstp_Instance_Config(cli_interface_module, bridge_mstp_instance, "SET", False)
     for bridge_mstp_instance in Bridge_Mstp_Instance_Delete:
         Bridge_Mstp_Instance_Config(cli_interface_module, bridge_mstp_instance, "DELETE", False)
 
-    # for vlan_custom_del in Vlan_Custom_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_custom_del)
-    # for vlan_service_del in Vlan_Service_DELETE:  
-    #     vlan_management(cli_interface_module, vlan_service_del)
-    # Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
+    for vlan_custom_del in Vlan_Custom_DELETE:  
+        vlan_management(cli_interface_module, vlan_custom_del)
+    for vlan_service_del in Vlan_Service_DELETE:  
+        vlan_management(cli_interface_module, vlan_service_del)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE)    
      
  
 

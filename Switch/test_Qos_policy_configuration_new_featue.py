@@ -99,12 +99,12 @@ def Qos_Policy_configuration(cli_interface_module, DATA=[Qos_policy()]):
 
 def test_Qos_Policy_configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_service_custom[0])
-    # for vlan_custom in Vlan_Custom:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # Qos_Management(cli_interface_module, Qos_Enable)    
-    # for qos_class in Qos_Class_Config:
-    #     Qos_class_definition(cli_interface_module, qos_class)
+    Bridge_definition(cli_interface_module, bridge_service_custom[0])
+    for vlan_custom in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan_custom)
+    Qos_Management(cli_interface_module, Qos_Enable)    
+    for qos_class in Qos_Class_Config:
+        Qos_class_definition(cli_interface_module, qos_class)
 
     for qos_policy in Qos_policy_DATA:
         Qos_Policy_configuration(cli_interface_module, qos_policy)
@@ -112,9 +112,9 @@ def test_Qos_Policy_configuration(cli_interface_module):
     for qos_policy_del in Qos_policy_DATA_Delete:
         Qos_Policy_configuration(cli_interface_module, qos_policy_del)
 
-    # for qos_class in Qos_Class_Config_Delete:
-    #     Qos_class_definition(cli_interface_module, qos_class)
-    # Qos_Management(cli_interface_module, Qos_Disable)    
-    # for vlan_custom in Vlan_Custom_DELETE:
-    #     vlan_management(cli_interface_module, vlan_custom)
-    # Bridge_definition(cli_interface_module, bridge_definition_DELETE) 
+    for qos_class in Qos_Class_Config_Delete:
+        Qos_class_definition(cli_interface_module, qos_class)
+    Qos_Management(cli_interface_module, Qos_Disable)    
+    for vlan_custom in Vlan_Custom_DELETE:
+        vlan_management(cli_interface_module, vlan_custom)
+    Bridge_definition(cli_interface_module, bridge_definition_DELETE) 
