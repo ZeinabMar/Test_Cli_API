@@ -8,7 +8,7 @@ import pytest_check as check
 from conftest import *
 from config import *
 from Switch.test_Bridge_config import Bridge_definition
-from Switch.test_vlan_config import vlan_management
+from Switch.test_Vlan_config import vlan_management
 from Switch.test_Qos_management import Qos_Management
 from Switch.test_Qos_class_definition import Qos_class_definition
 

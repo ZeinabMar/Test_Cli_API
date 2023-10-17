@@ -7,7 +7,7 @@ from conftest import *
 from collections import namedtuple
 import pytest_check as check
 from Switch.test_Bridge_config import Bridge_definition
-from Switch.test_vlan_config import vlan_management
+from Switch.test_Vlan_config import vlan_management
 from Switch.test_Bridge_Mstp_Instance import Bridge_Mstp_Instance_Config
 from Switch.test_Bridge_Group_config import Switch_config
 from config import *
