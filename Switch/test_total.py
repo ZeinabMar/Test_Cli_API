@@ -1,7 +1,6 @@
 import time
 import pytest
 import logging
-from basic_functions import *
 from conftest import Test_Target
 from Switch.test_Bridge_config import test_Bridge_definition
 from Switch.test_Vlan_config import test_Vlan_management
