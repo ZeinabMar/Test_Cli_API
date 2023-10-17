@@ -10,6 +10,7 @@ from conftest import *
 from conftest import *
 from Switch.test_Bridge_config import Bridge_definition
 from Switch.test_Vlan_config import vlan_management
+import colorlog
 
 
 
