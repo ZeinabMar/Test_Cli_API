@@ -114,6 +114,9 @@ Switch_Enable = [data_config(1, "switchport", result_find=["switchport"], grep="
                  data_config(1, "bridge-group 1 spanning-tree enable", result_find=["bridge-group 1 spanning-tree enable"], grep="bridge-group")]
 Switch_Disable = [data_config(1, "no bridge-group 1 spanning-tree disable", result_not_find=["bridge-group 1 spanning-tree"], grep="bridge-group"),
                   data_config(1, "no switchport", result_find=["no switchport"], grep="switchport")]
+#************************************************************************************************************************************
+Uplink_Vlan_Trunk = data_config(1, "switchport trunk tag 10-11", result_find=[f"switchport trunk tag 10-11"])
+Uplink_Vlan_Trunk_Delete = data_config(4, "no switchport trunk tag 10-11", result_not_find=["switchport trunk tag 10-11"])
 #*************************************************************************************************************************************
 Qos_Enable = data_config(1, "qos enable", result_find=["qos enable"],grep="qos")
 Qos_Disable = data_config(1, "qos disable", result_find=["qos disable"],grep="qos")
@@ -170,4 +173,6 @@ Bridge_Mstp_Instance_Config_Delete = [
 data_config(1, "no spanning-tree bridge 1 mstp instance 2", result_not_find=["spanning-tree bridge 1 mstp instance 2"], grep="spanning-tree bridge"),
 data_config(2, "no spanning-tree bridge 1 mstp instance 4", result_not_find=["spanning-tree bridge 1 mstp instance 4"], grep="spanning-tree bridge"),
 ]
-#*************************************************************************************************************************************
+#*******************************************************PON SECTION******************************************************************************
+Multicast_Enable = data_config(1, "multicast enable", result_find=["multicast enable"],grep="multicast")
+Multicast_Disable =  data_config(1, "multicast disable", result_not_find=["multicast"],grep="multicast")

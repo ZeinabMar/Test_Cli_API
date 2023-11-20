@@ -2,7 +2,7 @@ def USERNAME="olt_qa"
 def TEST_RUN_NAME
 def DATE_ISO_FORMAT
 
-pipeline {
+pipeline { 
     agent {label 'qms'}
     
     parameters {
