@@ -62,9 +62,9 @@ def IGMP_Configuration(cli_interface_module, data=IGMP()):
 
 def test_IGMP_Configuration(cli_interface_module):
     cli_interface_module.change_to_config() 
-    # Bridge_definition(cli_interface_module, bridge_custom[0])
-    # for vlan in Vlan_DATA_Custom:
-    #     vlan_management(cli_interface_module, vlan)
+    Bridge_definition(cli_interface_module, bridge_custom[0])
+    for vlan in Vlan_Custom:
+        vlan_management(cli_interface_module, vlan)
     for port in range(1,3):
         cli_interface_module.exec(f"interface ge1/{port}") 
         Switch_config(cli_interface_module, Switch_Enable)  
@@ -94,7 +94,7 @@ def test_IGMP_Configuration(cli_interface_module):
         Uplink_Vlan(cli_interface_module, Uplink_VlaUplink_Vlan_Trunk_Deleten_Trunk)  
         Switch_config(cli_interface_module, Switch_Disable)
     cli_interface_module.exec("exit")         
-    for vlan in Vlan_DELETE_Custom:  
+    for vlan in Vlan_Custom_DELETE:  
         vlan_management(cli_interface_module, vlan)
     Bridge_definition(cli_interface_module, bridge_definition_DELETE)   
 

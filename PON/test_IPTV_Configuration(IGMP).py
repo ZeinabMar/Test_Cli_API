@@ -62,17 +62,24 @@ def test_IPTV_Configuration(cli_interface_module):
         cli_interface_module.exec(f"interface gpon-olt1/{port}") 
         Muticast_Configuration(cli_interface_module, Multicast_Enable)
     cli_interface_module.exec("exit") 
-    for port in range(2,4):
-        for onu in range(1,2):
-            cli_interface_module.exec(f"interface gpon-onu1/{port}:{onu}") 
-            for iptv in IPTV_DATA:
-                IPTV_Configuration(cli_interface_module, iptv)
+    # for port in range(2,4):
+        # for onu in range(1,2):
+    cli_interface_module.exec(f"interface gpon-onu1/2:3") 
+    for iptv in IPTV_DATA:
+        IPTV_Configuration(cli_interface_module, iptv)
+    cli_interface_module.exec(f"interface gpon-onu1/3:1") 
+    for iptv in IPTV_DATA:
+        IPTV_Configuration(cli_interface_module, iptv)
 
-    for port in range(2,4):
-        for onu in range(1,2):
-            cli_interface_module.exec(f"interface gpon-onu1/{port}:{onu}") 
-            for iptv in IPTV_DELETE:
-                IPTV_Configuration(cli_interface_module, iptv)
+    # for port in range(2,4):
+    #     for onu in range(1,2):
+    cli_interface_module.exec(f"interface gpon-onu1/2:3") 
+    for iptv in IPTV_DELETE:
+        IPTV_Configuration(cli_interface_module, iptv)
+    cli_interface_module.exec(f"interface gpon-onu1/3:1") 
+    
+    for iptv in IPTV_DELETE:
+        IPTV_Configuration(cli_interface_module, iptv)
     for port in range(2,4):
         cli_interface_module.exec(f"interface gpon-olt1/{port}") 
         Muticast_Configuration(cli_interface_module, Multicast_Disable)
