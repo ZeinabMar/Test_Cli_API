@@ -21,7 +21,7 @@ Qos_Class.__new__.__defaults__ = (None, "", [], [], [], "")
 
 Qos_Class_DATA = [
  Qos_Class(1, "class-map B match vlan 10-11", result_find=["class-map B match vlan 10-11"], grep="class-map"),
- Qos_Class(2, "class-map B match vlan 10-11", result_error=["Error code: -1631"]),
+ Qos_Class(2, "class-map B match vlan 10-11", result_error=["Error code: -1632"]),
  Qos_Class(3, "class-map C match vlan 10", result_find=["class-map C match vlan 10"], grep="class-map"),
  Qos_Class(4, "class-map C match vlan 11", result_find=["class-map C match vlan 10 11"], grep="class-map"),
  Qos_Class(5, "no class-map C match vlan single-vlan", result_find=["class-map C match vlan"], result_not_find=["class-map C match vlan 10 11"], grep="class-map"),
