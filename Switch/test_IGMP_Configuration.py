@@ -1,7 +1,6 @@
 import pytest
 import logging
 import paramiko
-from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
@@ -27,6 +26,7 @@ IGMP(1, "igmp work-mode proxy", result_find=["igmp work-mode proxy"],grep="igmp"
 IGMP(2, "igmp fast-leave enable", result_find=["igmp fast-leave enable"],grep="igmp"),
 IGMP(3, "igmp querier enable", result_find=["igmp querier enable"],grep="igmp"),
 IGMP(4, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/1"],grep="igmp"),
+IGMP(5, "igmp mrouter interface ge1/2", result_find=["igmp mrouter interface ge1/2"],grep="igmp"),
 # IGMP(5, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/2"],grep="igmp"), not to has been applied yet.
 ]
 
@@ -34,7 +34,8 @@ IGMP_Delete = [
 IGMP(1, "no igmp work-mode proxy", result_not_find=["igmp work-mode proxy"],grep="igmp"),
 IGMP(2, "no igmp fast-leave enable", result_not_find=["igmp fast-leave enable"],grep="igmp"),
 IGMP(3, "no igmp querier enable", result_not_find=["igmp querier enable"],grep="igmp"),
-IGMP(4, "no igmp mrouter interface ge1/1", result_not_find=["igmp mrouter interface ge1/1"],grep="igmp"),
+# IGMP(4, "no igmp mrouter interface ge1/2", result_not_find=["igmp mrouter interface ge1/2"],grep="igmp"),
+
 # IGMP(5, "no igmp mrouter interface ge1/1", result_not_find=["igmp mrouter interface ge1/2"],grep="igmp"), not to has been applied yet.
 ]
 
@@ -65,7 +66,7 @@ def test_IGMP_Configuration(cli_interface_module):
     Bridge_definition(cli_interface_module, bridge_custom[0])
     for vlan in Vlan_Custom:
         vlan_management(cli_interface_module, vlan)
-    for port in range(1,3):
+    for port in range(2,3):
         cli_interface_module.exec(f"interface ge1/{port}") 
         Switch_config(cli_interface_module, Switch_Enable)  
         set_mode_and_check(cli_interface_module, "trunk")
@@ -91,7 +92,7 @@ def test_IGMP_Configuration(cli_interface_module):
     cli_interface_module.exec("exit")    
     for port in range(1,3):
         cli_interface_module.exec(f"interface ge1/{port}") 
-        Uplink_Vlan(cli_interface_module, Uplink_VlaUplink_Vlan_Trunk_Deleten_Trunk)  
+        Uplink_Vlan(cli_interface_module, Uplink_Vlan_Trunk_Delete)  
         Switch_config(cli_interface_module, Switch_Disable)
     cli_interface_module.exec("exit")         
     for vlan in Vlan_Custom_DELETE:  

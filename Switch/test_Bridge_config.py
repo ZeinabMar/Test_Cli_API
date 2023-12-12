@@ -1,7 +1,6 @@
 import pytest
 import logging
 import paramiko
-from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
@@ -114,7 +113,7 @@ def Bridge_definition(cli_interface_module, data=bridge_definition()):
             result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
-@pytest.mark.order(1)        
+
 def test_Bridge_definition(cli_interface_module):
     cli_interface_module.change_to_config() 
     for bridge in bridge_definition_DATA:

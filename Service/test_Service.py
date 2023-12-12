@@ -220,20 +220,20 @@ def Service_3(cli_interface_module, data_conf=config_Service_3):
 
 def Service_4(cli_interface_module, data_conf=config_Service_4):
     cli_interface_module.change_to_config()   
-    # cli_interface_module.exec("gpon")
-    # set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
-    # cli_interface_module.exec("exit")
-    # set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
-    # cli_interface_module.exec("exit")
-    # vlan_onu1_1 = [115,221,116]
-    # priority_1 = [3,6,3]
-    # for i in range(0,3):
-    #     set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/1:{i+1}")
-    #     replacement(cli_interface_module, data_conf['gpon-onu'][2], ["vlan_number"], [vlan_onu1_1[i]])
-    #     replacement(cli_interface_module, data_conf['gpon-onu'][3], ["vlan_number", "PI"], [vlan_onu1_1[i],priority_1[i]])
-    # cli_interface_module.exec("exit")
-    # set_and_check_config_total(cli_interface_module, data_conf['total'][:10])
-    # set_reg(cli_interface_module, reg("reg1", [115,221,116],[115,221,116]))
+    cli_interface_module.exec("gpon")
+    set_and_check_config_total(cli_interface_module, gpon("test", 0, 250, 100000), True)
+    cli_interface_module.exec("exit")
+    set_and_check_config_interface(cli_interface_module, [data_conf['gpon-olt'][0]], "gpon-olt1/1")
+    cli_interface_module.exec("exit")
+    vlan_onu1_1 = [115,221,116]
+    priority_1 = [3,6,3]
+    for i in range(0,3):
+        set_and_check_config_interface(cli_interface_module, data_conf['gpon-onu'][:2], f"gpon-onu1/1:{i+1}")
+        replacement(cli_interface_module, data_conf['gpon-onu'][2], ["vlan_number"], [vlan_onu1_1[i]])
+        replacement(cli_interface_module, data_conf['gpon-onu'][3], ["vlan_number", "PI"], [vlan_onu1_1[i],priority_1[i]])
+    cli_interface_module.exec("exit")
+    set_and_check_config_total(cli_interface_module, data_conf['total'][:10])
+    set_reg(cli_interface_module, reg("reg1", [115,221,116],[115,221,116]))
     set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt'][1:], "gpon-olt1/1")
     set_and_check_config_interface(cli_interface_module, data_conf['ge'][:5], "ge1/1")
     set_trans(cli_interface_module, trans([113,114,112],[115,221,116]))

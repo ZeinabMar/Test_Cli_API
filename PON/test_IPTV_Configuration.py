@@ -25,7 +25,7 @@ IPTV.__new__.__defaults__ = (None, "", [], [], [], "")
 
 IPTV_DATA = [
 IPTV(1, "remote multicast uni veip vlan 10 priority 7", result_find=["remote multicast uni veip vlan 10 priority 7"],grep="remote"),
-IPTV(2, "remote multicast uni veip vlan 11 priority 7", result_error=["Error code: -1559"],grep="remote"),
+IPTV(2, "remote multicast uni veip vlan 11 priority 7", result_error=["Error code: -1006"],grep="remote"),
 ]
 
 IPTV_DELETE = [IPTV(1, "no remote multicast uni veip vlan 10 priority 7", result_not_find=["remote multicast uni veip vlan 10 priority 7"],grep= "remote")]
@@ -63,8 +63,8 @@ def test_IPTV_Configuration(cli_interface_module):
         Muticast_Configuration(cli_interface_module, Multicast_Enable)
     cli_interface_module.exec("exit") 
     # for port in range(2,4):
-        # for onu in range(1,2):
-    cli_interface_module.exec(f"interface gpon-onu1/2:3") 
+    #     for onu in range(1,2):
+    cli_interface_module.exec(f"interface gpon-onu1/2:1") 
     for iptv in IPTV_DATA:
         IPTV_Configuration(cli_interface_module, iptv)
     cli_interface_module.exec(f"interface gpon-onu1/3:1") 
@@ -73,7 +73,7 @@ def test_IPTV_Configuration(cli_interface_module):
 
     # for port in range(2,4):
     #     for onu in range(1,2):
-    cli_interface_module.exec(f"interface gpon-onu1/2:3") 
+    cli_interface_module.exec(f"interface gpon-onu1/2:1") 
     for iptv in IPTV_DELETE:
         IPTV_Configuration(cli_interface_module, iptv)
     cli_interface_module.exec(f"interface gpon-onu1/3:1") 

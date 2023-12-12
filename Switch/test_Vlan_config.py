@@ -1,7 +1,6 @@
 import pytest
 import logging
 import paramiko
-from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
@@ -86,7 +85,6 @@ def vlan_management(cli_interface_module, data=Vlan()):
             result = get_result(cli_interface_module, f"{grep}", False)
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
-@pytest.mark.order(2)        
 def test_Vlan_management(cli_interface_module):
     cli_interface_module.change_to_config() 
     Bridge_definition(cli_interface_module, bridge_custom[0])

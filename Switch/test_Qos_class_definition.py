@@ -1,7 +1,6 @@
 import pytest
 import logging
 import paramiko
-from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
@@ -51,7 +50,6 @@ def Qos_class_definition(cli_interface_module, data=Qos_Class()):
             assert (result.find(nf)==-1),f"FIND {data.config} IN CONFIG OF SYSTEM AND NOT TO BE CLEARED"
 
 
-@pytest.mark.order(9)        
 def test_Qos_class_definition(cli_interface_module):
 
     cli_interface_module.change_to_config() 

@@ -1,7 +1,6 @@
 import pytest
 import logging
 import paramiko
-from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check

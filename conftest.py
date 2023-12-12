@@ -1,7 +1,6 @@
 import pytest
 from collections import namedtuple
 import logging
-from collections import namedtuple
 
 Test_Target = 'shelf_olt'
 data_config = namedtuple('data_config', ['Index', 'config', "result_find", "result_error", 'result_not_find', 'grep'])
