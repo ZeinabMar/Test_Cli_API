@@ -14,9 +14,9 @@ from config import *
 # from Switch.test_static_rout_configuration import test_Static_Rout_configuration
 # from Switch.test_Port_L3_configuration import test_Port_L3_configuration
 # from Switch.test_IGMP_Configuration import test_IGMP_Configuration
-from Switch.test_Qos_management import test_Qos_Management
-from Switch.test_Qos_class_definition import test_Qos_class_definition
-from Switch.test_Port_Qos_policy_configuration import test_Port_Qos_policy_configuration
+# from Switch.test_Qos_management import test_Qos_Management
+# from Switch.test_Qos_class_definition import test_Qos_class_definition
+# from Switch.test_Port_Qos_policy_configuration import test_Port_Qos_policy_configuration
 from Switch.test_QinQ_regirtration_table_configuration import test_QinQ_Registraion
 from Switch.test_Port_QinQ_Translation import test_Port_QinQ_Translation
 from Switch.test_Bridge_Stp import test_Bridge_Stp_Configuration

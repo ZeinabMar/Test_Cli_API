@@ -58,10 +58,10 @@ def Port_Qos_policy_configuration(cli_interface_module, data=Port_Qos_policy(), 
 def test_Port_Qos_policy_configuration(cli_interface_module):
 
     cli_interface_module.change_to_config() 
-    Bridge_definition(cli_interface_module, bridge_custom[0])
-    for vlan_custom in Vlan_Custom:
-        vlan_management(cli_interface_module, vlan_custom)
-    Qos_Management(cli_interface_module, Qos_Enable)    
+    # Bridge_definition(cli_interface_module, bridge_custom[0])
+    # for vlan_custom in Vlan_Custom:
+    #     vlan_management(cli_interface_module, vlan_custom)
+    # Qos_Management(cli_interface_module, Qos_Enable)    
     for qos_class in Qos_Class_Config:
         Qos_class_definition(cli_interface_module, qos_class)
     for qos_policy in Qos_policy_Config:
