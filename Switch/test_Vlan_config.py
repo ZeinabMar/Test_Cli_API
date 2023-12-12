@@ -27,7 +27,7 @@ Vlan(2, "vlan 11 bridge 1 type customer state enable",
 result_find=["vlan 11 bridge 1 type customer state enable"],grep="vlan"),
 
 Vlan(3, "vlan 110 bridge 1 type service-point-point state enable", 
-result_error=["Error code: -1635"], result_not_find=["vlan 110 bridge 1 type service-point-point state enable"], grep="vlan"),
+result_error=["Error code: -1636"], result_not_find=["vlan 110 bridge 1 type service-point-point state enable"], grep="vlan"),
 
 Vlan(4, "vlan 10 bridge 1 type customer state disable", 
 result_find=["vlan 10 bridge 1 type customer state disable"],grep="vlan"),
@@ -37,7 +37,7 @@ Vlan_DATA_Service = [
 Vlan(5, "vlan 12 bridge 1 type service-rooted-multipoint state enable", 
 result_find=["vlan 12 bridge 1 type service-rooted-multipoint state enable"],grep="vlan"),
 Vlan(6, "vlan 13 bridge 1 type customer state enable", 
-result_error=["Error code: -1635"], result_not_find=["vlan 13 bridge 1 type customer state enable"],grep="vlan"),
+result_error=["Error code: -1636"], result_not_find=["vlan 13 bridge 1 type customer state enable"],grep="vlan"),
 ]
 
 Vlan_DATA_Service_Custom = [
