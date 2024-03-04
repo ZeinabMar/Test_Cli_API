@@ -22,21 +22,25 @@ IGMP = namedtuple('IGMP', ['Index', 'config', "result_find", "result_error", 're
 IGMP.__new__.__defaults__ = (None, "", [], [], [], "")
 
 IGMP_DATA = [
-IGMP(1, "igmp work-mode proxy", result_find=["igmp work-mode proxy"],grep="igmp"),
-IGMP(2, "igmp fast-leave enable", result_find=["igmp fast-leave enable"],grep="igmp"),
-IGMP(3, "igmp querier enable", result_find=["igmp querier enable"],grep="igmp"),
-IGMP(4, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/1"],grep="igmp"),
-IGMP(5, "igmp mrouter interface ge1/2", result_find=["igmp mrouter interface ge1/2"],grep="igmp"),
-# IGMP(5, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/2"],grep="igmp"), not to has been applied yet.
+IGMP(1, "igmp work-mode proxy", result_find=["igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"], result_not_find=["igmp mrouter interface"],grep="igmp"),
+IGMP(2, "igmp fast-leave enable", result_find=["igmp work-mode proxy", "igmp fast-leave enable", "igmp querier disable"], result_not_find=["igmp mrouter interface"],grep="igmp"),
+IGMP(2, "igmp fast-leave disable", result_find=["igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"], result_not_find=["igmp mrouter interface"],grep="igmp"),
+IGMP(3, "igmp querier enable", result_find=["igmp work-mode proxy", "igmp fast-leave disable", "igmp querier enable"], result_not_find=["igmp mrouter interface"],grep="igmp"),
+IGMP(3, "igmp querier disable", result_find=["igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"], result_not_find=["igmp mrouter interface"],grep="igmp"),
+IGMP(4, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/1", "igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"],grep="igmp"),
+IGMP(5, "igmp mrouter interface ge1/2", result_find=["igmp mrouter interface ge1/2", "igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"],grep="igmp"),
+IGMP(6, "igmp work-mode snooping", result_find=["igmp work-mode snooping", "igmp mrouter interface ge1/2", "igmp fast-leave disable", "igmp querier disable"],grep="igmp"),
+IGMP(2, "no igmp fast-leave disable", result_not_find=["igmp"],grep="igmp"),
+IGMP(1, "igmp work-mode proxy", result_find=["igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"], result_not_find=["igmp mrouter interface"],grep="igmp"),
+IGMP(3, "no igmp work-mode proxy", result_not_find=["igmp"],grep="igmp"),
+IGMP(1, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/1" ,"igmp work-mode proxy", "igmp fast-leave disable", "igmp querier disable"],grep="igmp"),
+IGMP(3, "no igmp querier enable", result_not_find=["igmp"],grep="igmp"),
+
+# IGMP(5, "igmp mrouter interface ge1/1", result_find=["igmp mrouter interface ge1/2"],grep="igmp"), #not to has been applied yet.
 ]
 
 IGMP_Delete = [
-IGMP(1, "no igmp work-mode proxy", result_not_find=["igmp work-mode proxy"],grep="igmp"),
-IGMP(2, "no igmp fast-leave enable", result_not_find=["igmp fast-leave enable"],grep="igmp"),
-IGMP(3, "no igmp querier enable", result_not_find=["igmp querier enable"],grep="igmp"),
-# IGMP(4, "no igmp mrouter interface ge1/2", result_not_find=["igmp mrouter interface ge1/2"],grep="igmp"),
-
-# IGMP(5, "no igmp mrouter interface ge1/1", result_not_find=["igmp mrouter interface ge1/2"],grep="igmp"), not to has been applied yet.
+IGMP(1, "no igmp", result_not_find=["igmp work-mode snooping", ],grep="igmp"),
 ]
 
 
@@ -81,13 +85,13 @@ def test_IGMP_Configuration(cli_interface_module):
     for igmp in IGMP_DATA:
         IGMP_Configuration(cli_interface_module, igmp) 
 
-    cli_interface_module.exec("interface vlanif10")   
-    for igmp in IGMP_Delete:
-        IGMP_Configuration(cli_interface_module, igmp) 
+    # cli_interface_module.exec("interface vlanif10")   
+    # for igmp in IGMP_Delete:
+    #     IGMP_Configuration(cli_interface_module, igmp) 
 
-    cli_interface_module.exec("interface vlanif11")  
-    for igmp in IGMP_Delete:
-        IGMP_Configuration(cli_interface_module, igmp)
+    # cli_interface_module.exec("interface vlanif11")  
+    # for igmp in IGMP_Delete:
+    #     IGMP_Configuration(cli_interface_module, igmp)
 
     cli_interface_module.exec("exit")    
     for port in range(1,3):

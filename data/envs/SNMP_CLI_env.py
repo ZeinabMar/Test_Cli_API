@@ -5,10 +5,10 @@ DICT__SHELF = {
     'shelf_id': "int",#1
     'slot_id': "int",#1
     'index': "int",
-    'snmp_ip': "192.168.9.128",
+    'snmp_ip': "192.168.9.127",
     'snmp_community': "sina_private",
     'snmp_version': "2",
-    'ssh_ip':"192.168.9.128",
+    'ssh_ip': "192.168.9.127",
     'ssh_password': SecretText("root"),
     'ssh_username': "root",
     'cli_exec_username': "admin",
