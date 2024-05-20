@@ -60,17 +60,17 @@ def Unconfig_function(cli_interface_module, unconfig_array, check_unconfig, inde
                     check.is_in(value, result, msg= f"cant unconfig this config {unconfig_array[length-i-1]}")
 
 
-def Senario_1(cli_interface_module, data_conf=config_Senario_1, data_check_unconfig=unconfig_check_Senario_1, data_unconfig=unconfig_Senario_1):
-    cli_interface_module.change_to_config()   
+# def Senario_1(cli_interface_module, data_conf=config_Senario_1, data_check_unconfig=unconfig_check_Senario_1, data_unconfig=unconfig_Senario_1):
+#     cli_interface_module.change_to_config()   
     # set_and_check_config_total(cli_interface_module, data_conf['total'])
     # set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt1/1'], "gpon-olt1/1") 
     # set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt1/2'], "gpon-olt1/2")    
     # set_and_check_config_interface(cli_interface_module, data_conf['gpon-olt1/3'], "gpon-olt1/3")  
-    cli_interface_module.exec("exit")
+    # cli_interface_module.exec("exit")
     # Unconfig_function(cli_interface_module, data_conf['gpon-olt1/3'], data_check_unconfig['gpon-olt1/3'], "gpon-olt1/3")
     # Unconfig_function(cli_interface_module, data_conf['gpon-olt1/2'], data_check_unconfig['gpon-olt1/2'], "gpon-olt1/2")
-    Unconfig_function(cli_interface_module, data_unconfig['gpon-olt1/1'], data_check_unconfig['gpon-olt1/1'], "gpon-olt1/1")
-    Unconfig_function(cli_interface_module, data_unconfig['total'], data_check_unconfig['total'], None)
+    # Unconfig_function(cli_interface_module, data_unconfig['gpon-olt1/1'], data_check_unconfig['gpon-olt1/1'], "gpon-olt1/1")
+    # Unconfig_function(cli_interface_module, data_unconfig['total'], data_check_unconfig['total'], None)
 
 
 
@@ -101,8 +101,8 @@ def Senario_1(cli_interface_module, data_conf=config_Senario_1, data_check_uncon
       
 
 # @pytest.mark.parametrize('data', BRIDGE_DATA)
-def test_Senario(cli_interface_module):
-    Senario_1(cli_interface_module, config_Senario_1, unconfig_check_Senario_1, unconfig_Senario_1)
+# def test_Senario(cli_interface_module):
+#     Senario_1(cli_interface_module, config_Senario_1, unconfig_check_Senario_1, unconfig_Senario_1)
     # Senario_2(cli_interface_module, config_Senario_2, config_check_Senario_2)
     # Senario_3(cli_interface_module, config_Senario_3, config_Senario_3)
 

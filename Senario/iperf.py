@@ -36,7 +36,7 @@ import os
 
 # Set vars
 # Remote iperf server IP
-remote_site = '172.20.14.80'
+remote_site = '172.20.2.80'
 # Datadog API Key
 api_key = '<enter dd api key here>'
 # How long to run iperf3 test in seconds
