@@ -10,7 +10,7 @@ from Switch.test_Vlan_config import vlan_management
 from config import *
 import re
 
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("shelf_olt")]
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

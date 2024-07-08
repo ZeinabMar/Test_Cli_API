@@ -9,12 +9,11 @@ from conftest import *
 from conftest import *
 from Switch.test_Bridge_config import Bridge_definition
 from Switch.test_Vlan_config import vlan_management
-import colorlog
 
 
 
 
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("shelf_olt")]
 
 handler = colorlog.StreamHandler()
 logging.basicConfig(level=logging.INFO)

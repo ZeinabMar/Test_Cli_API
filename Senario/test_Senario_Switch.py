@@ -5,11 +5,10 @@ from clilib import CliInterface
 import time
 from collections import namedtuple
 import pytest_check as check
-from schema import Use
 from config import *
 
 
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("snmp_cli")]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("shelf_olt")]
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -30,7 +30,7 @@ from Switch.test_Port_QinQ_Registration import test_Port_QinQ_Registeration_conf
 # from Switch.test_Lacp_management import test_Lacp_management
 # from Switch.test_Lacp_Interface import test_Lacp_Interface
 
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("shelf_olt")]
 
 # logging.basicConfig(level=logging.DEBUG)
 # logger = logging.getLogger(__name__)

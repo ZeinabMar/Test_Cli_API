@@ -12,7 +12,7 @@ from Switch.test_Qos_management import Qos_Management
 from Switch.test_Qos_class_definition import Qos_class_definition
 from Switch.test_Qos_policy_configuration_new_featue import Qos_Policy_configuration
 
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev(Test_Target)]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.cli_dev("shelf_olt")]
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

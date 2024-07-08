@@ -13,7 +13,7 @@ from PON.test_IPTV_Configuration import test_IPTV_Configuration
 
 
 
-pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.snmp_dev(Test_Target)]
+pytestmark = [pytest.mark.env_name("SNMP_CLI_env"), pytest.mark.snmp_dev("shelf_olt")]
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
